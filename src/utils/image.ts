@@ -14,10 +14,10 @@ export const UNSPLASH_COLLECTIONS = {
  * For production, it's better to use static images or the official API,
  * but for this personal site, we'll use a reliable placeholder service that proxies Unsplash
  */
-export function getUnsplashUrl(keyword: string = 'technology', width: number = 800, height: number = 600): string {
+export function getUnsplashUrl(_keyword: string = 'technology', width: number = 800, _height: number = 600): string {
   // Using a reliable placeholder service that supports keywords
   // Random seed prevents all images from being the same
-  const randomSeed = Math.floor(Math.random() * 1000);
+  // const randomSeed = Math.floor(Math.random() * 1000);
   return `https://images.unsplash.com/photo-1517694712202-14dd9538aa97?q=80&w=${width}&auto=format&fit=crop`; // Fallback to a nice coding image
 }
 

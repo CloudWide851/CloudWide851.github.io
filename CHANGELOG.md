@@ -7,6 +7,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+### Fixed
+- Resolved TypeScript build errors (TS1484) by using `import type` for ReactNode.
+- Fixed unused variable warnings (TS6133) in image utility functions.
+
 ### Added
 - Initial project setup with React, Vite, TypeScript, and Tailwind CSS.
 - GitHub Actions workflow for automated deployment to GitHub Pages.
