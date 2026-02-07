@@ -2,7 +2,7 @@ import matter from 'gray-matter';
 import type { BlogFrontMatter } from '@/types/blog';
 
 /**
- * 解析 Markdown 文件内容
+ * Parse Markdown file content
  */
 export function parseMarkdown(markdownContent: string): {
   frontMatter: BlogFrontMatter;
@@ -16,7 +16,7 @@ export function parseMarkdown(markdownContent: string): {
 }
 
 /**
- * 从文件名提取 slug
+ * Extract slug from filename
  */
 export function extractSlugFromFileName(fileName: string): string {
   return fileName.replace(/\.md$/, '').replace(/^\d{4}-\d{2}-\d{2}-/, '');

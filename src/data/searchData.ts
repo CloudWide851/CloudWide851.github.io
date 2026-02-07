@@ -1,0 +1,17 @@
+export const techStackData = [
+  { id: 1, name: 'React', category: 'Frontend', description: 'A JavaScript library for building user interfaces' },
+  { id: 2, name: 'TypeScript', category: 'Language', description: 'Typed JavaScript at any scale' },
+  { id: 3, name: 'Vite', category: 'Tooling', description: 'Next Generation Frontend Tooling' },
+  { id: 4, name: 'Tailwind CSS', category: 'Styling', description: 'A utility-first CSS framework for rapid UI development' },
+  { id: 5, name: 'Framer Motion', category: 'Animation', description: 'A production-ready motion library for React' },
+  { id: 6, name: 'Node.js', category: 'Backend', description: 'JavaScript runtime built on Chrome\'s V8 JavaScript engine' },
+  { id: 7, name: 'Next.js', category: 'Framework', description: 'The React Framework for the Web' },
+  { id: 8, name: 'GraphQL', category: 'Data', description: 'A query language for your API' },
+  { id: 9, name: 'Docker', category: 'DevOps', description: 'Empowering App Development for Developers' },
+  { id: 10, name: 'Kubernetes', category: 'DevOps', description: 'Production-Grade Container Orchestration' },
+  { id: 11, name: 'Rust', category: 'Language', description: 'A language empowering everyone to build reliable and efficient software' },
+  { id: 12, name: 'Go', category: 'Language', description: 'Build simple, secure, scalable systems with Go' },
+  { id: 13, name: 'Python', category: 'Language', description: 'Python is a programming language that lets you work quickly' },
+  { id: 14, name: 'Redis', category: 'Database', description: 'The open source, in-memory data store used by millions' },
+  { id: 15, name: 'PostgreSQL', category: 'Database', description: 'The World\'s Most Advanced Open Source Relational Database' },
+];

@@ -6,12 +6,19 @@ import type { BlogPost } from '@/types/blog';
 export default function Blog() {
   const [posts, setPosts] = useState<BlogPost[]>([]);
   const [loading, setLoading] = useState(true);
+  const [error, setError] = useState<string | null>(null);
 
   useEffect(() => {
     async function fetchPosts() {
-      const data = await loadBlogPosts();
-      setPosts(data);
-      setLoading(false);
+      try {
+        const data = await loadBlogPosts();
+        setPosts(data);
+      } catch (err) {
+        console.error('Failed to fetch posts:', err);
+        setError('Unable to load blog posts. Please try again later.');
+      } finally {
+        setLoading(false);
+      }
     }
     fetchPosts();
   }, []);
@@ -20,6 +27,20 @@ export default function Blog() {
     return (
       <div className="container-custom py-12 text-center">
         <div className="animate-pulse">Loading posts...</div>
+      </div>
+    );
+  }
+
+  if (error) {
+    return (
+      <div className="container-custom py-12 text-center">
+        <div className="text-red-500 mb-4">{error}</div>
+        <button
+          onClick={() => window.location.reload()}
+          className="px-4 py-2 bg-primary-600 text-white rounded-md hover:bg-primary-700 transition-colors"
+        >
+          Retry
+        </button>
       </div>
     );
   }
