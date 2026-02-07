@@ -1,0 +1,18 @@
+{
+  "title": "About Me",
+  "intro": "Hello! I'm CloudWide851. Welcome to my personal corner of the internet.",
+  "description": "I am passionate about technology and software development. This website serves as a platform to showcase my work, share my learning journey, and experiment with new ideas.",
+  "journey": {
+    "title": "My Journey",
+    "content": "I started my coding journey exploring the basics of web development. Over time, I've dived deep into modern frameworks and tools, constantly learning and building. I believe in open source and the power of community-driven development."
+  },
+  "skills": {
+    "title": "Skills",
+    "items": [
+      "React & TypeScript",
+      "Frontend Development",
+      "Node.js & Backend",
+      "UI/UX Design"
+    ]
+  }
+}

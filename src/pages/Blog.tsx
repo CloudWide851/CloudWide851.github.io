@@ -2,8 +2,10 @@ import { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
 import { loadBlogPosts } from '@/utils/blog';
 import type { BlogPost } from '@/types/blog';
+import { useTranslation } from 'react-i18next';
 
 export default function Blog() {
+  const { t } = useTranslation('blog');
   const [posts, setPosts] = useState<BlogPost[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
@@ -15,18 +17,18 @@ export default function Blog() {
         setPosts(data);
       } catch (err) {
         console.error('Failed to fetch posts:', err);
-        setError('Unable to load blog posts. Please try again later.');
+        setError(t('error'));
       } finally {
         setLoading(false);
       }
     }
     fetchPosts();
-  }, []);
+  }, [t]);
 
   if (loading) {
     return (
       <div className="container-custom py-12 text-center">
-        <div className="animate-pulse">Loading posts...</div>
+        <div className="animate-pulse">{t('loading')}</div>
       </div>
     );
   }
@@ -39,7 +41,7 @@ export default function Blog() {
           onClick={() => window.location.reload()}
           className="px-4 py-2 bg-primary-600 text-white rounded-md hover:bg-primary-700 transition-colors"
         >
-          Retry
+          {t('retry')}
         </button>
       </div>
     );
@@ -47,7 +49,7 @@ export default function Blog() {
 
   return (
     <div className="container-custom py-12">
-      <h1 className="text-4xl font-bold mb-8">Blog</h1>
+      <h1 className="text-4xl font-bold mb-8">{t('title')}</h1>
       <div className="grid gap-8 md:grid-cols-2 lg:grid-cols-3">
         {posts.map((post) => (
           <Link
@@ -92,7 +94,7 @@ export default function Blog() {
 
       {posts.length === 0 && (
         <div className="text-center text-gray-500 py-12">
-          No posts found. Stay tuned!
+          {t('empty')}
         </div>
       )}
     </div>

@@ -1,24 +1,27 @@
+import { useTranslation } from 'react-i18next';
+
 export default function About() {
+  const { t } = useTranslation('about');
+
   return (
     <div className="container-custom py-12">
-      <h1 className="text-4xl font-bold mb-8">About Me</h1>
+      <h1 className="text-4xl font-bold mb-8">{t('title')}</h1>
       <div className="prose prose-lg text-gray-600">
         <p>
-          Hello! I'm CloudWide851. Welcome to my personal corner of the internet.
+          {t('intro')}
         </p>
         <p>
-          I am passionate about technology and software development. This website serves as a platform
-          to showcase my work, share my learning journey, and experiment with new ideas.
+          {t('description')}
         </p>
-        <h2>My Journey</h2>
+        <h2>{t('journey.title')}</h2>
         <p>
-          [Add your personal journey here]
+          {t('journey.content')}
         </p>
-        <h2>Skills</h2>
+        <h2>{t('skills.title')}</h2>
         <ul>
-          <li>React & TypeScript</li>
-          <li>Frontend Development</li>
-          <li>[Add more skills]</li>
+          {(t('skills.items', { returnObjects: true }) as string[]).map((skill, index) => (
+            <li key={index}>{skill}</li>
+          ))}
         </ul>
       </div>
     </div>

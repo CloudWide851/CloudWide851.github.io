@@ -1,0 +1,10 @@
+{
+  "title": "Blog",
+  "loading": "Loading posts...",
+  "error": "Unable to load blog posts. Please try again later.",
+  "retry": "Retry",
+  "empty": "No posts found. Stay tuned!",
+  "by": "By",
+  "notFound": "Post not found",
+  "back": "Back to Blog"
+}

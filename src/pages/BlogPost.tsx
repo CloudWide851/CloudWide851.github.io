@@ -4,8 +4,10 @@ import { loadBlogPost } from '@/utils/blog';
 import MarkdownRenderer from '@/components/blog/MarkdownRenderer';
 import type { BlogPost as BlogPostType } from '@/types/blog';
 import { ArrowLeft, Calendar } from 'lucide-react';
+import { useTranslation } from 'react-i18next';
 
 export default function BlogPost() {
+  const { t } = useTranslation('blog');
   const { slug } = useParams<{ slug: string }>();
   const [post, setPost] = useState<BlogPostType | null>(null);
   const [loading, setLoading] = useState(true);
@@ -24,15 +26,15 @@ export default function BlogPost() {
   }, [slug]);
 
   if (loading) {
-    return <div className="container-custom py-12 text-center">Loading...</div>;
+    return <div className="container-custom py-12 text-center">{t('loading')}</div>;
   }
 
   if (!post) {
     return (
       <div className="container-custom py-12 text-center">
-        <h1 className="text-2xl font-bold mb-4">Post not found</h1>
+        <h1 className="text-2xl font-bold mb-4">{t('notFound')}</h1>
         <Link to="/blog" className="text-primary-600 hover:underline">
-          Back to Blog
+          {t('back')}
         </Link>
       </div>
     );
@@ -41,7 +43,7 @@ export default function BlogPost() {
   return (
     <article className="container-custom py-12 max-w-4xl">
       <Link to="/blog" className="inline-flex items-center text-gray-500 hover:text-primary-600 mb-8 transition-colors">
-        <ArrowLeft size={16} className="mr-2" /> Back to Blog
+        <ArrowLeft size={16} className="mr-2" /> {t('back')}
       </Link>
 
       <header className="mb-10 text-center">
@@ -66,7 +68,7 @@ export default function BlogPost() {
           </div>
           {post.frontMatter.author && (
             <div className="flex items-center">
-              <span>By {post.frontMatter.author}</span>
+              <span>{t('by')} {post.frontMatter.author}</span>
             </div>
           )}
         </div>

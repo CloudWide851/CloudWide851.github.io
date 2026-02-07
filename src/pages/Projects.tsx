@@ -1,8 +1,12 @@
+import { useTranslation } from 'react-i18next';
+
 export default function Projects() {
+  const { t } = useTranslation('projects');
+
   return (
     <div className="container-custom py-12">
-      <h1 className="text-4xl font-bold mb-8">Projects</h1>
-      <p className="text-gray-600 mb-8">A showcase of my recent work.</p>
+      <h1 className="text-4xl font-bold mb-8">{t('title')}</h1>
+      <p className="text-gray-600 mb-8">{t('subtitle')}</p>
 
       <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
         {/* Placeholder for projects - you can make this dynamic later */}
@@ -21,7 +25,7 @@ export default function Projects() {
             rel="noopener noreferrer"
             className="text-primary-600 hover:underline text-sm font-medium"
           >
-            View Source
+            {t('viewSource')}
           </a>
         </div>
       </div>

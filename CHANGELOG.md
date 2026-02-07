@@ -7,22 +7,29 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+### Fixed
+- **Critical 404 Bug**: Fixed timing race condition in SPA routing for GitHub Pages.
+  - Moved redirect restoration from inline script to React lifecycle.
+  - Removed artificial 1.5s loading delay that prevented router initialization.
+  - Added `.nojekyll` file to prevent GitHub Pages Jekyll processing.
+  - Fixed language attributes (changed from zh-CN to en).
+- Build verification for 404.html deployment.
+
 ### Added
-- **Lab Page**: Added new interactive experiments section.
-  - **Fuzzy Search**: Real-time text search demo using `fuse.js`.
-  - **Snake Game**: Classic game implementation using HTML5 Canvas.
-- **Sidebar Navigation**: Replaced top navigation with a modern, collapsible sidebar layout.
-  - Responsive design with mobile drawer.
-  - Smooth animations using Framer Motion.
-- **Utility**: Added `cn` utility for better class merging (`clsx` + `tailwind-merge`).
+- **Free Search API Integration**: Agent now uses DuckDuckGo API for real web searches via CORS proxy.
+- **Complete i18n Support**: Translated all pages (About, Projects, Blog, NotFound) to Chinese.
+- Translation files for about, projects, blog, and notfound namespaces.
+- Post-build verification script for 404.html.
 
 ### Changed
-- **Internationalization**: Converted all UI text and code comments from Chinese to English.
-- **Layout**: Complete refactor of `MainLayout` to support sidebar architecture.
+- Search tool upgraded from mock implementation to real DuckDuckGo searches.
+- All page components now support language switching.
+- App.tsx initialization logic (removed loading delay, added redirect restoration).
 
-### Fixed
-- **Blog Loading**: Fixed infinite loading issue on Blog page by adding proper error handling and dependency checks.
-- **Build System**: Resolved TypeScript build errors (TS7034, TS7005) in new components.
+### Technical
+- Integrated `api.allorigins.win` CORS proxy for DuckDuckGo API access.
+- Extended i18n configuration with 4 additional namespaces.
+- Fixed GitHub Pages SPA routing pattern (sessionStorage redirect).
 
 ## [0.1.0] - 2024-02-07
 

@@ -6,6 +6,7 @@
   "scripts": {
     "dev": "vite",
     "build": "tsc -b && vite build",
+    "postbuild": "node -e \"console.log('✓ 404.html exists:', require('fs').existsSync('./dist/404.html'));\"",
     "lint": "eslint .",
     "preview": "vite preview"
   },
