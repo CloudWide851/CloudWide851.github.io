@@ -14,7 +14,9 @@ export default function LanguageSwitcher() {
     setIsOpen(false);
   };
 
-  const currentLang = i18n.language.startsWith('zh') ? '中文' : 'EN';
+  // Safely access language with fallback to 'en' to prevent crashes
+  const currentLangCode = i18n.language || 'en';
+  const currentLang = currentLangCode.startsWith('zh') ? '中文' : 'EN';
 
   useEffect(() => {
     function handleClickOutside(event: MouseEvent) {
@@ -51,21 +53,21 @@ export default function LanguageSwitcher() {
                 onClick={() => toggleLanguage('en')}
                 className={cn(
                   "w-full px-4 py-2 text-left text-sm hover:bg-gray-50 transition-colors flex items-center justify-between",
-                  i18n.language.startsWith('en') ? "text-primary-600 font-medium bg-primary-50" : "text-gray-700"
+                  (i18n.language || 'en').startsWith('en') ? "text-primary-600 font-medium bg-primary-50" : "text-gray-700"
                 )}
               >
                 <span>English</span>
-                {i18n.language.startsWith('en') && <Check size={14} />}
+                {(i18n.language || 'en').startsWith('en') && <Check size={14} />}
               </button>
               <button
                 onClick={() => toggleLanguage('zh')}
                 className={cn(
                   "w-full px-4 py-2 text-left text-sm hover:bg-gray-50 transition-colors flex items-center justify-between",
-                  i18n.language.startsWith('zh') ? "text-primary-600 font-medium bg-primary-50" : "text-gray-700"
+                  (i18n.language || 'en').startsWith('zh') ? "text-primary-600 font-medium bg-primary-50" : "text-gray-700"
                 )}
               >
                 <span>中文</span>
-                {i18n.language.startsWith('zh') && <Check size={14} />}
+                {(i18n.language || 'en').startsWith('zh') && <Check size={14} />}
               </button>
             </div>
           </motion.div>

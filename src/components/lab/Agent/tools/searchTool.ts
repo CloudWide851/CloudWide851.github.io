@@ -52,35 +52,13 @@ export async function searchWeb(query: string): Promise<SearchResult[]> {
       return results;
     }
 
-    // If no results found, fallback to mock
-    console.warn('No results found from DuckDuckGo, falling back to mock data');
-    return mockFallback(query);
+    // If no results found, return empty array (no mock fallback)
+    console.warn('No results found from DuckDuckGo');
+    return [];
 
   } catch (error) {
-    console.error('Search failed, using fallback:', error);
-    return mockFallback(query);
+    console.error('Search failed:', error);
+    // Return empty array on error instead of mock data
+    return [];
   }
-}
-
-/**
- * Mock search tool that returns dummy results if real API fails
- */
-function mockFallback(query: string): SearchResult[] {
-  return [
-    {
-      title: `${query} - Wikipedia`,
-      url: `https://en.wikipedia.org/wiki/${query.replace(/\s+/g, '_')}`,
-      snippet: `Wikipedia article explaining the core concepts and history of ${query}.`
-    },
-    {
-      title: `Understanding ${query} in 2024`,
-      url: `https://techblog.example.com/${query.toLowerCase().replace(/\s+/g, '-')}-guide`,
-      snippet: `A deep dive into ${query} and its ecosystem. Learn about the latest features, best practices, and performance tips.`
-    },
-    {
-      title: `${query} Documentation`,
-      url: `https://docs.example.com/${query.toLowerCase()}`,
-      snippet: `Official documentation and API reference for developers working with ${query}.`
-    }
-  ];
 }

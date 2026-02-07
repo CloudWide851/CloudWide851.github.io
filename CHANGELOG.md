@@ -8,6 +8,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ## [Unreleased]
 
 ### Fixed
+- **Critical Runtime Crash**: Fixed `i18n` initialization issue where configuration was not imported in entry file.
+- **LanguageSwitcher**: Added safe access to `i18n.language` to prevent white screen crashes on load.
 - **Critical 404 Bug**: Fixed timing race condition in SPA routing for GitHub Pages.
   - Moved redirect restoration from inline script to React lifecycle.
   - Removed artificial 1.5s loading delay that prevented router initialization.
@@ -22,6 +24,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Post-build verification script for 404.html.
 
 ### Changed
+- **Search Tool**: Removed mock fallback data; search now returns empty results on failure as requested.
 - Search tool upgraded from mock implementation to real DuckDuckGo searches.
 - All page components now support language switching.
 - App.tsx initialization logic (removed loading delay, added redirect restoration).
