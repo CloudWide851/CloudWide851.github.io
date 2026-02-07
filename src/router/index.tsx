@@ -6,6 +6,9 @@ import Blog from '@/pages/Blog';
 import BlogPost from '@/pages/BlogPost';
 import Projects from '@/pages/Projects';
 import Lab from '@/pages/Lab';
+import AgentPage from '@/pages/lab/AgentPage';
+import SnakePage from '@/pages/lab/SnakePage';
+import FuzzySearchPage from '@/pages/lab/FuzzySearchPage';
 import Resume from '@/pages/Resume';
 import Creative from '@/pages/Creative';
 import NotFound from '@/pages/NotFound';
@@ -39,6 +42,18 @@ const router = createBrowserRouter([
       {
         path: 'lab',
         element: <Lab />,
+      },
+      {
+        path: 'lab/agent',
+        element: <AgentPage />,
+      },
+      {
+        path: 'lab/snake',
+        element: <SnakePage />,
+      },
+      {
+        path: 'lab/fuzzy-search',
+        element: <FuzzySearchPage />,
       },
       {
         path: 'resume',

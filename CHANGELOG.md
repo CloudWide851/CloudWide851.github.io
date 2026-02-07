@@ -7,6 +7,16 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+### Added
+- **Feature Pages**: Migrated Lab experiments (Agent, Snake, Fuzzy Search) to dedicated pages with their own routes (`/lab/agent`, `/lab/snake`, `/lab/fuzzy-search`).
+- **Branding**: Added custom "XYZ Hourglass" SVG icon.
+- **UI**: Added "hide scrollbar" optimization for collapsed sidebar.
+
+### Changed
+- **i18n**: Set default language to English (en).
+- **Navigation**: Updated Lab page to serve as a gallery menu linking to sub-pages.
+- **Router**: Added new sub-routes for lab experiments.
+
 ### Fixed
 - **Critical Runtime Crash**: Fixed `i18n` initialization issue where configuration was not imported in entry file.
 - **LanguageSwitcher**: Added safe access to `i18n.language` to prevent white screen crashes on load.
