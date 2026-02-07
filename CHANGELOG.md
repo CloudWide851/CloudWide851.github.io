@@ -8,6 +8,12 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ## [Unreleased]
 
 ### Added
+- **3D Face Lab**: New experiment featuring real-time 3D face tracking with Cyberpunk aesthetic.
+- **Unique Page Designs**:
+  - **Agent**: Modern AI Chat interface with glassmorphism.
+  - **Snake**: Retro Arcade Dark mode with CRT effects.
+  - **Fuzzy Search**: Command Palette style with gradients.
+  - **Face 3D**: Sci-fi/Futuristic dashboard theme.
 - **Feature Pages**: Migrated Lab experiments (Agent, Snake, Fuzzy Search) to dedicated pages with their own routes (`/lab/agent`, `/lab/snake`, `/lab/fuzzy-search`).
 - **Branding**: Added custom "XYZ Hourglass" SVG icon.
 - **UI**: Added "hide scrollbar" optimization for collapsed sidebar.

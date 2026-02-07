@@ -1,5 +1,5 @@
 import { motion } from 'framer-motion';
-import { Search, Gamepad2, Bot, ArrowRight } from 'lucide-react';
+import { Search, Gamepad2, Bot, ArrowRight, ScanFace } from 'lucide-react';
 import { useTranslation } from 'react-i18next';
 import { Link } from 'react-router-dom';
 
@@ -80,6 +80,13 @@ export default function Lab() {
           icon={Gamepad2}
           tags={['Game', 'Canvas API', 'React Hooks', 'Retro']}
           link="/lab/snake"
+        />
+        <ExperimentCard
+          title="3D Face Lab"
+          description="Real-time 3D face tracking and reconstruction using MediaPipe and Three.js."
+          icon={ScanFace}
+          tags={['Computer Vision', '3D', 'Three.js', 'AI']}
+          link="/lab/face-3d"
         />
       </div>
     </div>
