@@ -1,5 +1,5 @@
 import matter from 'gray-matter';
-import { BlogFrontMatter } from '@/types/blog';
+import type { BlogFrontMatter } from '@/types/blog';
 
 /**
  * 解析 Markdown 文件内容

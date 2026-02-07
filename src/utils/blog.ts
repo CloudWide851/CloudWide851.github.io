@@ -1,5 +1,5 @@
 import { parseMarkdown, extractSlugFromFileName } from './markdown';
-import { BlogPost } from '@/types/blog';
+import type { BlogPost } from '@/types/blog';
 
 /**
  * 加载所有博客文章

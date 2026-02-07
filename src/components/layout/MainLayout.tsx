@@ -1,5 +1,5 @@
 import { Link, Outlet } from 'react-router-dom';
-import { Menu, X, Github, Moon, Sun } from 'lucide-react';
+import { Menu, X, Github } from 'lucide-react';
 import { useState } from 'react';
 
 export default function MainLayout() {

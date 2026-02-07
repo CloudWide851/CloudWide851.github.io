@@ -3,7 +3,7 @@ import { useParams, Link } from 'react-router-dom';
 import { loadBlogPost } from '@/utils/blog';
 import MarkdownRenderer from '@/components/blog/MarkdownRenderer';
 import type { BlogPost as BlogPostType } from '@/types/blog';
-import { ArrowLeft, Calendar, Tag } from 'lucide-react';
+import { ArrowLeft, Calendar } from 'lucide-react';
 
 export default function BlogPost() {
   const { slug } = useParams<{ slug: string }>();
