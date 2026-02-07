@@ -1,0 +1,16 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(pnpm create:*)",
+      "Bash(pnpm install)",
+      "Bash(pnpm add:*)",
+      "Bash(npm config set:*)",
+      "Bash(pnpm config set:*)",
+      "Bash(pnpm dlx tailwindcss init:*)",
+      "Bash(pnpm exec tailwindcss:*)",
+      "Bash(pnpm run build)",
+      "Bash(git add:*)",
+      "Bash(git commit:*)"
+    ]
+  }
+}
