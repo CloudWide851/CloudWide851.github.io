@@ -1,0 +1,36 @@
+{
+  "hero": {
+    "badge": "Open to new opportunities",
+    "title1": "Crafting Digital",
+    "title2": "Experiences",
+    "description": "I'm CloudWide851. A developer passionate about building performant web applications and experimenting with new technologies.",
+    "cta": "View My Work",
+    "github": "GitHub"
+  },
+  "bento": {
+    "about": {
+      "title": "About Me",
+      "subtitle": "Code is my craft.",
+      "description": "I specialize in the React ecosystem, TypeScript, and modern frontend tools. I love turning complex problems into simple, beautiful interfaces.",
+      "link": "Read more"
+    },
+    "stack": {
+      "title": "Tech Stack"
+    },
+    "blog": {
+      "title": "My Blog",
+      "description": "Thoughts on tech, life, and everything in between.",
+      "link": "Read Articles"
+    },
+    "projects": {
+      "title": "Featured Projects",
+      "subtitle": "Building ideas into reality.",
+      "description": "Check out my latest experiments and production-ready applications.",
+      "link": "View Portfolio"
+    }
+  },
+  "contact": {
+    "title": "Let's work together",
+    "description": "Have a project in mind or just want to say hi? I'm always open to discussing new ideas and opportunities."
+  }
+}

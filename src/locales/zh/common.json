@@ -1,0 +1,18 @@
+{
+  "nav": {
+    "home": "首页",
+    "about": "关于我",
+    "blog": "博客",
+    "projects": "项目",
+    "lab": "实验室"
+  },
+  "footer": {
+    "copyright": "© {{year}} CloudWide851. 保留所有权利。"
+  },
+  "common": {
+    "loading": "加载中...",
+    "error": "出错了",
+    "retry": "重试",
+    "back": "返回"
+  }
+}

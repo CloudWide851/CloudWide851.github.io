@@ -1,8 +1,10 @@
 import { useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { Search, Gamepad2, ChevronDown, ChevronUp } from 'lucide-react';
+import { Search, Gamepad2, ChevronDown, ChevronUp, Bot } from 'lucide-react';
 import FuzzySearch from '@/components/lab/FuzzySearch/FuzzySearch';
 import SnakeGame from '@/components/lab/SnakeGame/SnakeGame';
+import AgentExperiment from '@/components/lab/Agent/AgentExperiment';
+import { useTranslation } from 'react-i18next';
 
 interface ExperimentCardProps {
   title: string;
@@ -65,30 +67,40 @@ function ExperimentCard({ title, description, icon: Icon, tags, children, defaul
 }
 
 export default function Lab() {
+  const { t } = useTranslation('lab');
+
   return (
     <div className="container-custom py-8 max-w-5xl mx-auto">
       <div className="mb-10">
-        <h1 className="text-3xl font-bold mb-4">Lab</h1>
+        <h1 className="text-3xl font-bold mb-4">{t('title')}</h1>
         <p className="text-lg text-gray-600 max-w-2xl">
-          A playground for experimental features, tech demos, and creative coding.
-          Here I test new libraries, algorithms, and interactive UI concepts.
+          {t('description')}
         </p>
       </div>
 
       <div className="grid gap-6">
         <ExperimentCard
-          title="Fuzzy Search"
-          description="Real-time fuzzy string matching algorithm demo using Fuse.js. Try searching for tech stack terms like 'React', 'Database', or 'Language'."
+          title={t('experiments.agent.title')}
+          description={t('experiments.agent.description')}
+          icon={Bot}
+          tags={['AI', 'DeepSeek', 'Agent', 'Web Search']}
+          defaultOpen={true}
+        >
+          <AgentExperiment />
+        </ExperimentCard>
+
+        <ExperimentCard
+          title={t('experiments.fuzzySearch.title')}
+          description={t('experiments.fuzzySearch.description')}
           icon={Search}
           tags={['Algorithm', 'Search', 'Fuse.js', 'Interactive']}
-          defaultOpen={true}
         >
           <FuzzySearch />
         </ExperimentCard>
 
         <ExperimentCard
-          title="Snake Game"
-          description="Classic Snake game implementation using HTML5 Canvas and React state management. Features scoring, collision detection, and keyboard controls."
+          title={t('experiments.snakeGame.title')}
+          description={t('experiments.snakeGame.description')}
           icon={Gamepad2}
           tags={['Game', 'Canvas API', 'React Hooks', 'Retro']}
         >

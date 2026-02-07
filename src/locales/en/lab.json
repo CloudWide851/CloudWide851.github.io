@@ -1,0 +1,35 @@
+{
+  "title": "Lab",
+  "description": "A playground for experimental features, tech demos, and creative coding. Here I test new libraries, algorithms, and interactive UI concepts.",
+  "experiments": {
+    "fuzzySearch": {
+      "title": "Fuzzy Search",
+      "description": "Real-time fuzzy string matching algorithm demo using Fuse.js. Try searching for tech stack terms like 'React', 'Database', or 'Language'."
+    },
+    "snakeGame": {
+      "title": "Snake Game",
+      "description": "Classic Snake game implementation using HTML5 Canvas and React state management. Features scoring, collision detection, and keyboard controls."
+    },
+    "agent": {
+      "title": "AI Assistant",
+      "description": "Interactive AI agent powered by DeepSeek API with web search capabilities and citation support."
+    }
+  },
+  "agent": {
+    "welcome": "Hello! I'm an AI assistant powered by DeepSeek. I can search the web and answer your questions. Please set your API key to get started.",
+    "apiKey": {
+      "label": "DeepSeek API Key",
+      "placeholder": "Enter your API key (sk-...)",
+      "save": "Save Key",
+      "delete": "Delete Key",
+      "saved": "API Key saved locally"
+    },
+    "chat": {
+      "placeholder": "Ask me anything...",
+      "send": "Send",
+      "thinking": "Thinking...",
+      "searching": "Searching the web...",
+      "references": "References"
+    }
+  }
+}

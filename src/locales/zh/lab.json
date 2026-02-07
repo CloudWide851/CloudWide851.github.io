@@ -1,0 +1,35 @@
+{
+  "title": "实验室",
+  "description": "实验性功能、技术演示和创意编程的游乐场。在这里我测试新的库、算法和交互式 UI 概念。",
+  "experiments": {
+    "fuzzySearch": {
+      "title": "模糊搜索",
+      "description": "使用 Fuse.js 的实时模糊字符串匹配算法演示。尝试搜索 'React'、'Database' 或 'Language' 等技术栈术语。"
+    },
+    "snakeGame": {
+      "title": "贪吃蛇",
+      "description": "使用 HTML5 Canvas 和 React 状态管理的经典贪吃蛇游戏实现。具有计分、碰撞检测和键盘控制功能。"
+    },
+    "agent": {
+      "title": "AI 助手",
+      "description": "基于 DeepSeek API 的交互式 AI 代理，具有网络搜索能力和引用支持。"
+    }
+  },
+  "agent": {
+    "welcome": "你好！我是基于 DeepSeek 的 AI 助手。我可以搜索网络并回答你的问题。请先设置你的 API 密钥以开始使用。",
+    "apiKey": {
+      "label": "DeepSeek API 密钥",
+      "placeholder": "输入你的 API 密钥 (sk-...)",
+      "save": "保存密钥",
+      "delete": "删除密钥",
+      "saved": "API 密钥已保存到本地"
+    },
+    "chat": {
+      "placeholder": "问我任何问题...",
+      "send": "发送",
+      "thinking": "思考中...",
+      "searching": "正在搜索网络...",
+      "references": "参考资料"
+    }
+  }
+}

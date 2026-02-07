@@ -15,7 +15,11 @@ import { useState, useEffect } from 'react';
 import { cn } from '@/lib/utils';
 import { AnimatePresence, motion } from 'framer-motion';
 
+import LanguageSwitcher from '@/components/common/LanguageSwitcher';
+import { useTranslation } from 'react-i18next';
+
 export default function MainLayout() {
+  const { t } = useTranslation('common');
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
   const [isSidebarCollapsed, setIsSidebarCollapsed] = useState(false);
   const location = useLocation();
@@ -26,11 +30,11 @@ export default function MainLayout() {
   }, [location.pathname]);
 
   const navigation = [
-    { name: 'Home', href: '/', icon: Home },
-    { name: 'About', href: '/about', icon: User },
-    { name: 'Blog', href: '/blog', icon: BookOpen },
-    { name: 'Projects', href: '/projects', icon: FolderGit2 },
-    { name: 'Lab', href: '/lab', icon: FlaskConical },
+    { name: t('nav.home'), href: '/', icon: Home },
+    { name: t('nav.about'), href: '/about', icon: User },
+    { name: t('nav.blog'), href: '/blog', icon: BookOpen },
+    { name: t('nav.projects'), href: '/projects', icon: FolderGit2 },
+    { name: t('nav.lab'), href: '/lab', icon: FlaskConical },
   ];
 
   const sidebarWidth = isSidebarCollapsed ? 'w-20' : 'w-64';
@@ -190,6 +194,10 @@ export default function MainLayout() {
             {isSidebarCollapsed ? <ChevronRight size={16} /> : <ChevronLeft size={16} />}
             {!isSidebarCollapsed && <span className="text-xs font-medium">Collapse</span>}
           </button>
+
+          <div className={cn("mt-2 pt-2 border-t border-gray-100", isSidebarCollapsed && "hidden")}>
+             <LanguageSwitcher />
+          </div>
         </div>
       </aside>
 
@@ -222,7 +230,7 @@ export default function MainLayout() {
 
         <footer className="bg-white border-t border-gray-200 mt-auto py-6 px-4">
           <div className="text-center text-gray-500 text-sm">
-            © {new Date().getFullYear()} CloudWide851. All rights reserved.
+            {t('footer.copyright', { year: new Date().getFullYear() })}
           </div>
         </footer>
       </div>
