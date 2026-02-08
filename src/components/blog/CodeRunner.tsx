@@ -7,7 +7,7 @@ interface CodeRunnerProps {
   language?: string;
 }
 
-export default function CodeRunner({ initialCode = '', language = 'c' }: CodeRunnerProps) {
+export default function CodeRunner({ initialCode = '', language: _language = 'c' }: CodeRunnerProps) {
   const [code, setCode] = useState(initialCode);
   const [output, setOutput] = useState<string>('');
   const [isRunning, setIsRunning] = useState(false);

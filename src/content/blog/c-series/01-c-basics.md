@@ -1,6 +1,6 @@
 ---
 title: "Getting Started with C Programming"
-date: "2024-02-09"
+date: "2026-02-09"
 description: "Your first steps into the world of low-level programming. Learn how to write and run your first C program directly in the browser."
 tags: ["C", "Programming", "Tutorial"]
 author: "CloudWide851"

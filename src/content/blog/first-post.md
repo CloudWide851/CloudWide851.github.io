@@ -1,6 +1,6 @@
 ---
 title: Welcome to My New Website
-date: 2024-02-07
+date: "2026-02-07"
 description: Initial commit and introduction to my new personal website built with React and Vite.
 tags: [react, vite, tailwind, portfolio]
 author: CloudWide851
