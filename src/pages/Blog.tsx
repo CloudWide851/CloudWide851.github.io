@@ -4,7 +4,7 @@ import { loadBlogPosts } from '@/utils/blog';
 import type { BlogPost } from '@/types/blog';
 import { useTranslation } from 'react-i18next';
 import { motion } from 'framer-motion';
-import { ArrowRight, Calendar, Clock } from 'lucide-react';
+import { ArrowRight, Calendar, Clock, Layers } from 'lucide-react';
 
 export default function Blog() {
   const { t } = useTranslation('blog');
@@ -94,6 +94,12 @@ export default function Blog() {
               ) : (
                 <div className="absolute inset-0 bg-gradient-to-br from-gray-100 to-gray-200" />
               )}
+              {featuredPost.series && (
+                 <div className="absolute top-4 left-4 bg-white/90 backdrop-blur-sm px-3 py-1 rounded-full text-xs font-semibold text-gray-900 border border-gray-200/50 shadow-sm flex items-center gap-1.5">
+                   <Layers size={12} className="text-primary-600" />
+                   {featuredPost.series} Series
+                 </div>
+              )}
             </div>
 
             <div className="md:p-4">
@@ -134,8 +140,8 @@ export default function Blog() {
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.5, delay: 0.1 * (index + 2) }}
           >
-            <Link to={`/blog/${post.slug}`} className="group block h-full flex flex-col">
-              <div className="mb-6 overflow-hidden rounded-xl bg-gray-100 aspect-[3/2] border border-gray-100/50">
+            <Link to={`/blog/${post.slug}`} className="group block h-full flex flex-col relative">
+              <div className="mb-6 overflow-hidden rounded-xl bg-gray-100 aspect-[3/2] border border-gray-100/50 relative">
                 {post.frontMatter.cover ? (
                   <img
                     src={post.frontMatter.cover}
@@ -144,6 +150,12 @@ export default function Blog() {
                   />
                 ) : (
                   <div className="w-full h-full bg-gray-50" />
+                )}
+                 {post.series && (
+                   <div className="absolute top-3 left-3 bg-white/90 backdrop-blur-sm px-2.5 py-1 rounded-full text-[10px] font-bold text-gray-800 border border-gray-100 shadow-sm flex items-center gap-1">
+                     <Layers size={10} className="text-primary-500" />
+                     {post.series}
+                   </div>
                 )}
               </div>
 
