@@ -1,6 +1,6 @@
 import AgentExperiment from '@/components/lab/Agent/AgentExperiment';
 import { useTranslation } from 'react-i18next';
-import { ArrowLeft, Bot, Sparkles, Zap, MessageSquare } from 'lucide-react';
+import { ArrowLeft, Bot, Sparkles, Zap } from 'lucide-react';
 import { Link } from 'react-router-dom';
 import { motion } from 'framer-motion';
 

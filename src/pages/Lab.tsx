@@ -4,7 +4,8 @@ import { Search, ArrowRight } from 'lucide-react';
 import { useTranslation } from 'react-i18next';
 import { Link } from 'react-router-dom';
 import Fuse from 'fuse.js';
-import { labExperiments, Experiment } from '@/data/labExperiments';
+import { labExperiments } from '@/data/labExperiments';
+import type { Experiment } from '@/data/labExperiments';
 
 interface ExperimentCardProps {
   experiment: Experiment;
