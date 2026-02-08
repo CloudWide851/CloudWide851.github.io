@@ -21,6 +21,11 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - **3D Visuals**: Enhanced Face Recognition lab with cyberpunk shader effects and point cloud rendering.
 
 ### Changed
+- **Home Page Redesign**: Complete visual overhaul with "Playful/Experimental" theme.
+  - Added **Space Grotesk** and **JetBrains Mono** fonts for distinct typography.
+  - Implemented **Interactive Hero** with animated text and floating background elements.
+  - Added playful **micro-interactions** (tilt, rotate, scale) to Bento Grid cards.
+  - Moved Contact section to a **Header Action Button** with tooltip for a cleaner layout.
 - **Home Page**: Optimized layout to remove excessive bottom whitespace.
 - **Lab UI**: Refined Lab and Agent pages to use "exquisite" design patterns (gradients, blur effects) instead of stark borders.
 - **Experience Data**: Replaced mock "Tech Company" data with real "Independent Developer" and "Student" roles.
