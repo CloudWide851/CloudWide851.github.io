@@ -7,6 +7,13 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+### Fixed
+- **Build System**: Resolved TypeScript build failures causing exit code 2.
+  - Added missing `@types/three` dependency for 3D components.
+  - Fixed `verbatimModuleSyntax` errors by using `import type` for MediaPipe types.
+  - Resolved `bufferAttribute` type mismatch in React Three Fiber components.
+  - Cleaned up unused variables and imports across multiple files (`FaceMesh3D`, `Icons`, `About`, `Projects`).
+
 ### Added
 - **Design System**: Implemented a custom "Premium Flat" icon system and typography scale.
 - **Resume Page**: Transformed into an interactive Bento Grid with live GitHub data sync.

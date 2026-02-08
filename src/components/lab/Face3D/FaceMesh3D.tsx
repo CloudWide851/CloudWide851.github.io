@@ -1,7 +1,7 @@
 import { useRef, useMemo } from 'react';
 import { useFrame } from '@react-three/fiber';
-import { BufferAttribute, BufferGeometry, DoubleSide, Mesh, Vector3 } from 'three';
-import { Results } from '@mediapipe/face_mesh';
+import { BufferGeometry, DoubleSide, Mesh } from 'three';
+import type { Results } from '@mediapipe/face_mesh';
 import { TRIANGULATION } from '@/utils/faceTriangulation';
 
 interface FaceMesh3DProps {
@@ -19,6 +19,8 @@ export default function FaceMesh3D({ results, wireframe = true }: FaceMesh3DProp
     const positions = new Float32Array(count * 3);
     return positions;
   }, []);
+
+  const indices = useMemo(() => new Uint16Array(TRIANGULATION), []);
 
   // Update mesh every frame
   useFrame(() => {
@@ -51,15 +53,11 @@ export default function FaceMesh3D({ results, wireframe = true }: FaceMesh3DProp
       <bufferGeometry ref={geometryRef}>
         <bufferAttribute
           attach="attributes-position"
-          count={initialPositions.length / 3}
-          array={initialPositions}
-          itemSize={3}
+          args={[initialPositions, 3]}
         />
         <bufferAttribute
           attach="index"
-          count={TRIANGULATION.length}
-          array={new Uint16Array(TRIANGULATION)}
-          itemSize={1}
+          args={[indices, 1]}
         />
       </bufferGeometry>
       <meshStandardMaterial

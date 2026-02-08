@@ -1,6 +1,6 @@
 import { useTranslation } from 'react-i18next';
 import { motion } from 'framer-motion';
-import { Download, Mail, MapPin, Calendar } from 'lucide-react';
+import { Download, Mail, MapPin } from 'lucide-react';
 
 export default function About() {
   const { t } = useTranslation('about');

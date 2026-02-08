@@ -1,6 +1,6 @@
 import { useTranslation } from 'react-i18next';
 import { motion } from 'framer-motion';
-import { Github, Globe, ArrowUpRight } from 'lucide-react';
+import { Github, ArrowUpRight } from 'lucide-react';
 
 export default function Projects() {
   const { t } = useTranslation('projects');

@@ -3,13 +3,13 @@ import Webcam from 'react-webcam';
 import { Canvas } from '@react-three/fiber';
 import { OrbitControls, PerspectiveCamera, Stars } from '@react-three/drei';
 import { Link } from 'react-router-dom';
-import { ArrowLeft, Camera, Cpu, Activity, Video, Scan, Maximize2 } from 'lucide-react';
+import { ArrowLeft, Cpu, Activity, Video, Scan, Maximize2 } from 'lucide-react';
 import { useTranslation } from 'react-i18next';
 import { useFaceMesh } from '@/hooks/useFaceMesh';
 import FaceMesh3D from '@/components/lab/Face3D/FaceMesh3D';
 
 export default function FaceRecognitionPage() {
-  const { t } = useTranslation('lab');
+  useTranslation('lab');
   const webcamRef = useRef<Webcam>(null);
   const videoRef = useRef<HTMLVideoElement | null>(null);
   const { results, isLoading, onFrame } = useFaceMesh(videoRef);

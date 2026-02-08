@@ -1,6 +1,6 @@
 import FuzzySearch from '@/components/lab/FuzzySearch/FuzzySearch';
 import { useTranslation } from 'react-i18next';
-import { ArrowLeft, Search, Command, CornerDownLeft } from 'lucide-react';
+import { ArrowLeft, Search, Command } from 'lucide-react';
 import { Link } from 'react-router-dom';
 import { motion } from 'framer-motion';
 

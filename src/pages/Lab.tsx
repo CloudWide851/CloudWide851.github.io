@@ -6,7 +6,7 @@ import { Link } from 'react-router-dom';
 interface ExperimentCardProps {
   title: string;
   description: string;
-  icon: React.ElementType;
+  icon: React.ElementType<{ size?: number | string; className?: string }>;
   tags: string[];
   link: string;
 }

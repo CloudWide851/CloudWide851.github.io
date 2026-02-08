@@ -1,6 +1,6 @@
 import { useEffect, useRef, useState, useCallback } from 'react';
-import { FaceMesh, Results } from '@mediapipe/face_mesh';
-import * as Facemesh from '@mediapipe/face_mesh';
+import { FaceMesh } from '@mediapipe/face_mesh';
+import type { Results } from '@mediapipe/face_mesh';
 
 export const useFaceMesh = (videoRef: React.RefObject<HTMLVideoElement | null>) => {
   const [results, setResults] = useState<Results | null>(null);
