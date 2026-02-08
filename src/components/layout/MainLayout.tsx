@@ -8,6 +8,8 @@ import { AnimatePresence, motion } from 'framer-motion';
 import LanguageSwitcher from '@/components/common/LanguageSwitcher';
 import { useTranslation } from 'react-i18next';
 
+import FloatingContactButton from '@/components/common/FloatingContactButton';
+
 export default function MainLayout() {
   const { t } = useTranslation('common');
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
@@ -231,7 +233,7 @@ export default function MainLayout() {
         </header>
 
         {/* Page Content */}
-        <main className="flex-grow p-6 md:p-10 overflow-x-hidden max-w-[1600px] mx-auto w-full">
+        <main className="flex-grow p-6 md:p-10 overflow-x-hidden max-w-[1600px] mx-auto w-full relative">
           <Outlet />
         </main>
 
@@ -240,6 +242,8 @@ export default function MainLayout() {
             {t('footer.copyright', { year: new Date().getFullYear() })}
           </div>
         </footer>
+
+        <FloatingContactButton />
       </div>
     </div>
   );

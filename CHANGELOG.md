@@ -21,6 +21,21 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - **3D Visuals**: Enhanced Face Recognition lab with cyberpunk shader effects and point cloud rendering.
 
 ### Changed
+- **Home Page Redesign**: Refined to a "Mixed Style" (Clean/Professional + Personal).
+  - Replaced "Playful" hero with a cleaner, subtle `InteractiveHero` (OpenAI-inspired).
+  - Removed "Open to new opportunities" badge.
+  - Removed large bottom "Contact Section" in favor of a compact layout.
+- **Contact Experience**: Added a **Floating Contact Button** (bottom-right) that copies email to clipboard with animation.
+- **Bento Grid**: Polished card styles with subtle 3D tilt interactions and cleaner borders/shadows.
+- **Layout**: Optimized spacing to reduce whitespace and make the home page more compact.
+
+### Fixed
+- **Build System**: Resolved unused variable error in `FloatingContactButton`.
+
+### Added
+- **FloatingContactButton**: New component for persistent, non-intrusive contact access.
+
+### Changed
 - **Home Page Redesign**: Complete visual overhaul with "Playful/Experimental" theme.
   - Added **Space Grotesk** and **JetBrains Mono** fonts for distinct typography.
   - Implemented **Interactive Hero** with animated text and floating background elements.
