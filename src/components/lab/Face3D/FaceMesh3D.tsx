@@ -1,6 +1,6 @@
 import { useRef, useMemo } from 'react';
 import { useFrame } from '@react-three/fiber';
-import { BufferGeometry, DoubleSide, Mesh } from 'three';
+import { BufferGeometry, DoubleSide, Mesh, Points, ShaderMaterial, AdditiveBlending } from 'three';
 import type { Results } from '@mediapipe/face_mesh';
 import { TRIANGULATION } from '@/utils/faceTriangulation';
 
@@ -11,6 +11,7 @@ interface FaceMesh3DProps {
 
 export default function FaceMesh3D({ results, wireframe = true }: FaceMesh3DProps) {
   const meshRef = useRef<Mesh>(null);
+  const pointsRef = useRef<Points>(null);
   const geometryRef = useRef<BufferGeometry>(null);
 
   // Initialize geometry with dummy positions
@@ -23,7 +24,17 @@ export default function FaceMesh3D({ results, wireframe = true }: FaceMesh3DProp
   const indices = useMemo(() => new Uint16Array(TRIANGULATION), []);
 
   // Update mesh every frame
-  useFrame(() => {
+  useFrame(({ clock }) => {
+    const time = clock.getElapsedTime();
+
+    // Animate material if available
+    if (meshRef.current && meshRef.current.material) {
+      const material = meshRef.current.material as ShaderMaterial;
+      if (material.uniforms) {
+        material.uniforms.uTime.value = time;
+      }
+    }
+
     if (!results || !results.multiFaceLandmarks || results.multiFaceLandmarks.length === 0) return;
 
     const landmarks = results.multiFaceLandmarks[0];
@@ -33,8 +44,6 @@ export default function FaceMesh3D({ results, wireframe = true }: FaceMesh3DProp
       const positions = geometry.attributes.position.array as Float32Array;
 
       // Update positions
-      // We need to invert X and map coordinates to 3D space
-      // MediaPipe coordinates are normalized [0,1], we map them to a reasonable 3D range
       for (let i = 0; i < landmarks.length; i++) {
         const { x, y, z } = landmarks[i];
         // Scale and center the face
@@ -48,29 +57,96 @@ export default function FaceMesh3D({ results, wireframe = true }: FaceMesh3DProp
     }
   });
 
+  // Cyberpunk Hologram Shader
+  const hologramShader = useMemo(() => ({
+    uniforms: {
+      uTime: { value: 0 },
+      uColor: { value: new Float32Array([0.0, 0.85, 1.0]) } // Cyan
+    },
+    vertexShader: `
+      varying vec2 vUv;
+      varying vec3 vNormal;
+      varying vec3 vPosition;
+      uniform float uTime;
+
+      void main() {
+        vUv = uv;
+        vNormal = normalize(normalMatrix * normal);
+        vPosition = position;
+
+        // Glitch effect on vertex position
+        vec3 pos = position;
+        float glitch = sin(pos.y * 10.0 + uTime * 5.0) * 0.02;
+        pos.x += glitch;
+
+        gl_Position = projectionMatrix * modelViewMatrix * vec4(pos, 1.0);
+        gl_PointSize = 4.0;
+      }
+    `,
+    fragmentShader: `
+      varying vec2 vUv;
+      varying vec3 vNormal;
+      varying vec3 vPosition;
+      uniform float uTime;
+      uniform vec3 uColor;
+
+      void main() {
+        // Fresnel effect (glow at edges)
+        vec3 viewDir = normalize(cameraPosition - vPosition);
+        float fresnel = pow(1.0 - abs(dot(viewDir, vNormal)), 2.0);
+
+        // Scanline effect
+        float scanline = sin(vPosition.y * 20.0 - uTime * 2.0) * 0.5 + 0.5;
+
+        // Combine effects
+        vec3 color = uColor;
+        float alpha = fresnel * 0.6 + scanline * 0.1 + 0.1;
+
+        gl_FragColor = vec4(color, alpha);
+      }
+    `
+  }), []);
+
   return (
-    <mesh ref={meshRef} scale={[1.5, 1.5, 1.5]}>
-      <bufferGeometry ref={geometryRef}>
-        <bufferAttribute
-          attach="attributes-position"
-          args={[initialPositions, 3]}
+    <group scale={[1.5, 1.5, 1.5]}>
+      {/* Main Mesh Surface */}
+      <mesh ref={meshRef}>
+        <bufferGeometry ref={geometryRef}>
+          <bufferAttribute
+            attach="attributes-position"
+            args={[initialPositions, 3]}
+          />
+          <bufferAttribute
+            attach="index"
+            args={[indices, 1]}
+          />
+        </bufferGeometry>
+        <shaderMaterial
+          args={[hologramShader]}
+          transparent
+          side={DoubleSide}
+          depthWrite={false}
+          blending={AdditiveBlending}
+          wireframe={wireframe}
         />
-        <bufferAttribute
-          attach="index"
-          args={[indices, 1]}
+      </mesh>
+
+      {/* Points Cloud Overlay */}
+      <points ref={pointsRef}>
+        <bufferGeometry>
+          <bufferAttribute
+            attach="attributes-position"
+            args={[initialPositions, 3]}
+          />
+        </bufferGeometry>
+        <pointsMaterial
+          size={0.03}
+          color="#ffffff"
+          transparent
+          opacity={0.5}
+          sizeAttenuation
         />
-      </bufferGeometry>
-      <meshStandardMaterial
-        color="#00d9ff"
-        wireframe={wireframe}
-        side={DoubleSide}
-        transparent
-        opacity={0.6}
-        roughness={0.2}
-        metalness={0.8}
-        emissive="#0044aa"
-        emissiveIntensity={0.2}
-      />
-    </mesh>
+      </points>
+    </group>
   );
 }

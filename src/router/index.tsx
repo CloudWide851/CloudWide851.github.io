@@ -8,7 +8,6 @@ import Projects from '@/pages/Projects';
 import Lab from '@/pages/Lab';
 import AgentPage from '@/pages/lab/AgentPage';
 import SnakePage from '@/pages/lab/SnakePage';
-import FuzzySearchPage from '@/pages/lab/FuzzySearchPage';
 import FaceRecognitionPage from '@/pages/lab/FaceRecognitionPage';
 import Resume from '@/pages/Resume';
 import Creative from '@/pages/Creative';
@@ -51,10 +50,6 @@ const router = createBrowserRouter([
       {
         path: 'lab/snake',
         element: <SnakePage />,
-      },
-      {
-        path: 'lab/fuzzy-search',
-        element: <FuzzySearchPage />,
       },
       {
         path: 'lab/face-3d',

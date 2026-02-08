@@ -1,11 +1,8 @@
 {
   "title": "实验室",
   "description": "实验性功能、技术演示和创意编程的游乐场。在这里我测试新的库、算法和交互式 UI 概念。",
+  "back": "返回实验室",
   "experiments": {
-    "fuzzySearch": {
-      "title": "模糊搜索",
-      "description": "使用 Fuse.js 的实时模糊字符串匹配算法演示。尝试搜索 'React'、'Database' 或 'Language' 等技术栈术语。"
-    },
     "snakeGame": {
       "title": "贪吃蛇",
       "description": "使用 HTML5 Canvas 和 React 状态管理的经典贪吃蛇游戏实现。具有计分、碰撞检测和键盘控制功能。"
@@ -13,6 +10,10 @@
     "agent": {
       "title": "AI 助手",
       "description": "基于 DeepSeek API 的交互式 AI 代理，具有网络搜索能力和引用支持。"
+    },
+    "faceRecognition": {
+      "title": "3D 人脸分析",
+      "description": "使用 MediaPipe 和 React Three Fiber 进行实时人脸特征点检测和 3D 网格重建。"
     }
   },
   "agent": {
@@ -31,5 +32,22 @@
       "searching": "正在搜索网络...",
       "references": "参考资料"
     }
+  },
+  "face3d": {
+    "title": "生物识别分析",
+    "systemOnline": "系统在线",
+    "return": "返回实验室",
+    "initializing": "光学系统初始化中...",
+    "sourceFeed": "源信号_01",
+    "metrics": "实时指标",
+    "status": "状态",
+    "calibrating": "校准中...",
+    "trackingActive": "追踪活跃",
+    "confidence": "置信度",
+    "vertices": "顶点数",
+    "generated": "网格拓扑已生成",
+    "optimized": "渲染管线已优化",
+    "reconstruction": "3D 重建",
+    "controls": "旋转：已启用 | 缩放：已启用"
   }
 }

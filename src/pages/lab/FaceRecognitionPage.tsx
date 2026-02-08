@@ -9,7 +9,7 @@ import { useFaceMesh } from '@/hooks/useFaceMesh';
 import FaceMesh3D from '@/components/lab/Face3D/FaceMesh3D';
 
 export default function FaceRecognitionPage() {
-  useTranslation('lab');
+  const { t } = useTranslation('lab');
   const webcamRef = useRef<Webcam>(null);
   const videoRef = useRef<HTMLVideoElement | null>(null);
   const { results, isLoading, onFrame } = useFaceMesh(videoRef);
@@ -44,7 +44,7 @@ export default function FaceRecognitionPage() {
           <div className="p-2 border border-cyan-900/50 rounded bg-cyan-950/30 group-hover:bg-cyan-900/50 transition-all">
             <ArrowLeft size={18} />
           </div>
-          <span className="uppercase tracking-widest text-xs font-bold">Return to Lab</span>
+          <span className="uppercase tracking-widest text-xs font-bold">{t('face3d.return')}</span>
         </Link>
 
         <div className="flex items-center gap-4">
@@ -55,7 +55,7 @@ export default function FaceRecognitionPage() {
           <div className="flex items-center gap-3">
             <Activity className="animate-pulse text-cyan-400" size={20} />
             <h1 className="text-xl font-bold uppercase tracking-[0.2em] text-transparent bg-clip-text bg-gradient-to-r from-cyan-400 to-blue-600 shadow-cyan-500/20 drop-shadow-lg">
-              Biometric Analysis
+              {t('face3d.title')}
             </h1>
           </div>
         </div>
@@ -63,7 +63,7 @@ export default function FaceRecognitionPage() {
         <div className="flex items-center gap-4 text-xs text-cyan-700 font-bold">
           <div className="flex items-center gap-2">
             <span className="w-1.5 h-1.5 rounded-full bg-green-500 animate-ping"></span>
-            <span className="tracking-widest">SYSTEM ONLINE</span>
+            <span className="tracking-widest">{t('face3d.systemOnline')}</span>
           </div>
         </div>
       </header>
@@ -82,7 +82,7 @@ export default function FaceRecognitionPage() {
 
             <div className="absolute top-4 left-4 z-20 bg-black/80 backdrop-blur px-2 py-1 rounded border border-cyan-900/50 text-xs flex items-center gap-2 text-cyan-400 font-bold tracking-wider">
               <Video size={12} />
-              <span>SOURCE_FEED_01</span>
+              <span>{t('face3d.sourceFeed')}</span>
             </div>
 
             <div className="h-full w-full rounded overflow-hidden relative bg-black flex items-center justify-center">
@@ -99,7 +99,7 @@ export default function FaceRecognitionPage() {
               {!isCameraReady && (
                 <div className="absolute inset-0 flex items-center justify-center flex-col gap-4 bg-black/90 z-30">
                   <div className="w-12 h-12 border-4 border-cyan-900 border-t-cyan-500 rounded-full animate-spin"></div>
-                  <div className="text-cyan-500/80 animate-pulse text-sm tracking-widest">INITIALIZING OPTICS...</div>
+                  <div className="text-cyan-500/80 animate-pulse text-sm tracking-widest">{t('face3d.initializing')}</div>
                 </div>
               )}
               {/* Scanline overlay */}
@@ -112,20 +112,20 @@ export default function FaceRecognitionPage() {
             <div className="absolute inset-0 bg-cyan-900/5 pointer-events-none"></div>
 
             <div className="flex justify-between border-b border-cyan-900/50 pb-2 mb-1 relative z-10">
-              <span className="text-cyan-600 font-bold tracking-widest">REALTIME METRICS</span>
+              <span className="text-cyan-600 font-bold tracking-widest">{t('face3d.metrics')}</span>
               <Cpu size={14} className="text-cyan-600" />
             </div>
 
             <div className="space-y-2 relative z-10">
               <div className="flex justify-between items-center bg-cyan-950/20 p-2 rounded border border-cyan-900/30">
-                <span className="text-cyan-700">STATUS</span>
+                <span className="text-cyan-700">{t('face3d.status')}</span>
                 <span className={`font-bold tracking-wider ${isLoading ? "text-yellow-500" : "text-emerald-400"}`}>
-                  {isLoading ? "CALIBRATING..." : "TRACKING ACTIVE"}
+                  {isLoading ? t('face3d.calibrating') : t('face3d.trackingActive')}
                 </span>
               </div>
 
               <div className="flex justify-between items-center p-2">
-                <span className="text-cyan-700">CONFIDENCE</span>
+                <span className="text-cyan-700">{t('face3d.confidence')}</span>
                 <div className="flex items-center gap-2">
                   <div className="w-24 h-1.5 bg-cyan-950 rounded-full overflow-hidden">
                     <div
@@ -138,14 +138,14 @@ export default function FaceRecognitionPage() {
               </div>
 
               <div className="flex justify-between items-center p-2">
-                <span className="text-cyan-700">VERTICES</span>
+                <span className="text-cyan-700">{t('face3d.vertices')}</span>
                 <span className="font-mono text-cyan-300">{results?.multiFaceLandmarks?.[0]?.length || 0}</span>
               </div>
             </div>
 
             <div className="mt-auto pt-2 text-[10px] text-cyan-800 leading-tight border-t border-cyan-900/30">
-              <span className="animate-pulse">_</span> MESH TOPOLOGY GENERATED<br/>
-              <span className="animate-pulse">_</span> RENDER PIPELINE OPTIMIZED
+              <span className="animate-pulse">_</span> {t('face3d.generated')}<br/>
+              <span className="animate-pulse">_</span> {t('face3d.optimized')}
             </div>
           </div>
         </div>
@@ -158,7 +158,7 @@ export default function FaceRecognitionPage() {
           <div className="absolute top-4 right-4 z-20 flex gap-2">
              <div className="px-3 py-1.5 bg-cyan-950/80 border border-cyan-500/30 rounded backdrop-blur text-xs text-cyan-300 font-bold tracking-wider flex items-center gap-2 shadow-lg">
                <Maximize2 size={12} />
-               3D RECONSTRUCTION
+               {t('face3d.reconstruction')}
              </div>
           </div>
 
@@ -176,7 +176,7 @@ export default function FaceRecognitionPage() {
           </Canvas>
 
           <div className="absolute bottom-4 left-4 text-[10px] text-cyan-700 pointer-events-none font-bold tracking-widest bg-black/50 px-2 py-1 rounded backdrop-blur">
-            ROTATION: ENABLED | ZOOM: ENABLED
+            {t('face3d.controls')}
           </div>
         </div>
       </main>

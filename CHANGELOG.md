@@ -15,7 +15,20 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
   - Cleaned up unused variables and imports across multiple files (`FaceMesh3D`, `Icons`, `About`, `Projects`).
 
 ### Added
-- **Design System**: Implemented a custom "Premium Flat" icon system and typography scale.
+- **Dynamic Site Title**: Title now automatically switches between "Cloud Wide" and "云潮工作室" based on language.
+- **Lab Search**: Integrated a real-time fuzzy search bar in the Lab index page, replacing the standalone demo page.
+- **Dynamic Resume**: Resume page now automatically calculates years of experience (from 2022) and project counts.
+- **3D Visuals**: Enhanced Face Recognition lab with cyberpunk shader effects and point cloud rendering.
+
+### Changed
+- **Home Page**: Optimized layout to remove excessive bottom whitespace.
+- **Lab UI**: Refined Lab and Agent pages to use "exquisite" design patterns (gradients, blur effects) instead of stark borders.
+- **Experience Data**: Replaced mock "Tech Company" data with real "Independent Developer" and "Student" roles.
+- **Localization**: Completed i18n support for all Lab experiments and removed forced English default.
+
+### Removed
+- **Fuzzy Search Page**: Deleted standalone page in favor of integrated search functionality.
+- **Mock Data**: Removed "Contributions" stat and generic timeline data.
 - **Resume Page**: Transformed into an interactive Bento Grid with live GitHub data sync.
 - **Print Support**: Added optimized print styles for the Resume page.
 

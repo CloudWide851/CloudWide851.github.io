@@ -46,7 +46,6 @@ i18n
     resources,
     fallbackLng: 'en',
     defaultNS: 'common',
-    lng: 'en', // Force English as default language
     interpolation: {
       escapeValue: false,
     },

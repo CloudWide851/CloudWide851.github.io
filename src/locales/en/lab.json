@@ -1,11 +1,8 @@
 {
   "title": "Lab",
   "description": "A playground for experimental features, tech demos, and creative coding. Here I test new libraries, algorithms, and interactive UI concepts.",
+  "back": "Back to Lab",
   "experiments": {
-    "fuzzySearch": {
-      "title": "Fuzzy Search",
-      "description": "Real-time fuzzy string matching algorithm demo using Fuse.js. Try searching for tech stack terms like 'React', 'Database', or 'Language'."
-    },
     "snakeGame": {
       "title": "Snake Game",
       "description": "Classic Snake game implementation using HTML5 Canvas and React state management. Features scoring, collision detection, and keyboard controls."
@@ -13,6 +10,10 @@
     "agent": {
       "title": "AI Assistant",
       "description": "Interactive AI agent powered by DeepSeek API with web search capabilities and citation support."
+    },
+    "faceRecognition": {
+      "title": "3D Face Analysis",
+      "description": "Real-time facial landmark detection and 3D mesh reconstruction using MediaPipe and React Three Fiber."
     }
   },
   "agent": {
@@ -31,5 +32,22 @@
       "searching": "Searching the web...",
       "references": "References"
     }
+  },
+  "face3d": {
+    "title": "Biometric Analysis",
+    "systemOnline": "SYSTEM ONLINE",
+    "return": "Return to Lab",
+    "initializing": "INITIALIZING OPTICS...",
+    "sourceFeed": "SOURCE_FEED_01",
+    "metrics": "REALTIME METRICS",
+    "status": "STATUS",
+    "calibrating": "CALIBRATING...",
+    "trackingActive": "TRACKING ACTIVE",
+    "confidence": "CONFIDENCE",
+    "vertices": "VERTICES",
+    "generated": "MESH TOPOLOGY GENERATED",
+    "optimized": "RENDER PIPELINE OPTIMIZED",
+    "reconstruction": "3D RECONSTRUCTION",
+    "controls": "ROTATION: ENABLED | ZOOM: ENABLED"
   }
 }
