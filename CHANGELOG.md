@@ -8,6 +8,17 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ## [Unreleased]
 
 ### Added
+- **Design System**: Implemented a custom "Premium Flat" icon system and typography scale.
+- **Resume Page**: Transformed into an interactive Bento Grid with live GitHub data sync.
+- **Print Support**: Added optimized print styles for the Resume page.
+
+### Changed
+- **Global Design**: Complete visual overhaul of Blog, About, and Projects pages with "Exquisite" design standards.
+- **Navigation**: Refactored sidebar with top-aligned toggle and fixed horizontal scrolling issues.
+- **Snake Game**: Fixed UX issue where arrow keys scrolled the window.
+- **Lab Pages**: Polished UI for Agent, Fuzzy Search, and Face 3D pages with micro-interactions and improved layouts.
+
+### Added
 - **3D Face Lab**: New experiment featuring real-time 3D face tracking with Cyberpunk aesthetic.
 - **Unique Page Designs**:
   - **Agent**: Modern AI Chat interface with glassmorphism.

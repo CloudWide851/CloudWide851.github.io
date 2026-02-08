@@ -3,6 +3,8 @@ import { Link } from 'react-router-dom';
 import { loadBlogPosts } from '@/utils/blog';
 import type { BlogPost } from '@/types/blog';
 import { useTranslation } from 'react-i18next';
+import { motion } from 'framer-motion';
+import { ArrowRight, Calendar, Clock } from 'lucide-react';
 
 export default function Blog() {
   const { t } = useTranslation('blog');
@@ -27,74 +29,151 @@ export default function Blog() {
 
   if (loading) {
     return (
-      <div className="container-custom py-12 text-center">
-        <div className="animate-pulse">{t('loading')}</div>
+      <div className="min-h-[60vh] flex items-center justify-center">
+        <div className="flex flex-col items-center gap-4">
+          <div className="w-6 h-6 border-2 border-gray-200 border-t-gray-900 rounded-full animate-spin" />
+          <p className="text-gray-400 font-mono text-xs tracking-widest uppercase">{t('loading')}</p>
+        </div>
       </div>
     );
   }
 
   if (error) {
     return (
-      <div className="container-custom py-12 text-center">
-        <div className="text-red-500 mb-4">{error}</div>
-        <button
-          onClick={() => window.location.reload()}
-          className="px-4 py-2 bg-primary-600 text-white rounded-md hover:bg-primary-700 transition-colors"
-        >
-          {t('retry')}
-        </button>
+      <div className="min-h-[60vh] flex items-center justify-center">
+        <div className="text-center max-w-md mx-auto p-8 rounded-2xl bg-gray-50 border border-gray-100">
+          <p className="text-red-500 mb-6">{error}</p>
+          <button
+            onClick={() => window.location.reload()}
+            className="px-6 py-2.5 bg-gray-900 text-white text-sm font-medium rounded-lg hover:bg-black transition-colors shadow-lg shadow-gray-200"
+          >
+            {t('retry')}
+          </button>
+        </div>
       </div>
     );
   }
 
+  // Separate the first post as featured
+  const featuredPost = posts[0];
+  const remainingPosts = posts.slice(1);
+
   return (
-    <div className="container-custom py-12">
-      <h1 className="text-4xl font-bold mb-8">{t('title')}</h1>
-      <div className="grid gap-8 md:grid-cols-2 lg:grid-cols-3">
-        {posts.map((post) => (
-          <Link
-            key={post.slug}
-            to={`/blog/${post.slug}`}
-            className="block group h-full"
-          >
-            <div className="bg-white rounded-xl shadow-sm border border-gray-200 overflow-hidden hover:shadow-md transition-all h-full flex flex-col">
-              {post.frontMatter.cover && (
-                <div className="h-48 overflow-hidden bg-gray-100">
-                  <img
-                    src={post.frontMatter.cover}
-                    alt={post.frontMatter.title}
-                    className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
-                  />
-                </div>
+    <div className="max-w-6xl mx-auto py-12 lg:py-20 px-4">
+      {/* Header Section */}
+      <motion.div
+        initial={{ opacity: 0, y: 20 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ duration: 0.6, ease: "easeOut" }}
+        className="mb-16 md:mb-24 text-center md:text-left border-b border-gray-100 pb-12"
+      >
+        <h1 className="text-5xl md:text-7xl font-bold tracking-tight text-gray-900 mb-6">
+          {t('title')}
+        </h1>
+        <p className="text-xl text-gray-500 max-w-2xl font-light leading-relaxed">
+          Thoughts, tutorials, and insights on software engineering, design, and the future of AI.
+        </p>
+      </motion.div>
+
+      {/* Featured Post */}
+      {featuredPost && (
+        <motion.div
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.6, delay: 0.1 }}
+          className="mb-24"
+        >
+          <Link to={`/blog/${featuredPost.slug}`} className="group grid grid-cols-1 md:grid-cols-2 gap-8 items-center">
+            <div className="relative overflow-hidden rounded-2xl bg-gray-100 aspect-[16/10] shadow-sm group-hover:shadow-md transition-all">
+              {featuredPost.frontMatter.cover ? (
+                <img
+                  src={featuredPost.frontMatter.cover}
+                  alt={featuredPost.frontMatter.title}
+                  className="absolute inset-0 w-full h-full object-cover group-hover:scale-105 transition-transform duration-700 ease-[cubic-bezier(0.25,1,0.5,1)]"
+                />
+              ) : (
+                <div className="absolute inset-0 bg-gradient-to-br from-gray-100 to-gray-200" />
               )}
-              <div className="p-6 flex flex-col flex-grow">
-                <div className="text-sm text-gray-500 mb-2">
-                  {new Date(post.frontMatter.date).toLocaleDateString()}
-                </div>
-                <h2 className="text-xl font-bold mb-3 group-hover:text-primary-600 transition-colors">
-                  {post.frontMatter.title}
-                </h2>
-                <p className="text-gray-600 line-clamp-3 mb-4 flex-grow">
-                  {post.frontMatter.description}
-                </p>
-                {post.frontMatter.tags && (
-                  <div className="flex flex-wrap gap-2 mt-auto">
-                    {post.frontMatter.tags.map(tag => (
-                      <span key={tag} className="text-xs bg-gray-100 text-gray-700 px-2 py-1 rounded-full">
-                        #{tag}
-                      </span>
-                    ))}
-                  </div>
-                )}
+            </div>
+
+            <div className="md:p-4">
+              <div className="flex items-center gap-4 text-gray-500 text-sm mb-6 font-mono">
+                <span className="flex items-center gap-1.5">
+                  <Calendar size={14} />
+                  {new Date(featuredPost.frontMatter.date).toLocaleDateString(undefined, { month: 'long', year: 'numeric' })}
+                </span>
+                <span className="w-1 h-1 rounded-full bg-gray-300" />
+                <span className="flex items-center gap-1.5">
+                  <Clock size={14} />
+                  5 min read
+                </span>
+              </div>
+
+              <h2 className="text-3xl md:text-4xl font-bold text-gray-900 mb-4 leading-tight group-hover:text-primary-600 transition-colors">
+                {featuredPost.frontMatter.title}
+              </h2>
+
+              <p className="text-gray-500 text-lg mb-8 leading-relaxed line-clamp-3">
+                {featuredPost.frontMatter.description}
+              </p>
+
+              <div className="flex items-center gap-2 text-gray-900 font-medium group-hover:gap-3 transition-all">
+                Read Article <ArrowRight size={18} />
               </div>
             </div>
           </Link>
+        </motion.div>
+      )}
+
+      {/* Grid of other posts */}
+      <div className="grid gap-x-8 gap-y-16 md:grid-cols-2 lg:grid-cols-3">
+        {remainingPosts.map((post, index) => (
+          <motion.div
+            key={post.slug}
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.5, delay: 0.1 * (index + 2) }}
+          >
+            <Link to={`/blog/${post.slug}`} className="group block h-full flex flex-col">
+              <div className="mb-6 overflow-hidden rounded-xl bg-gray-100 aspect-[3/2] border border-gray-100/50">
+                {post.frontMatter.cover ? (
+                  <img
+                    src={post.frontMatter.cover}
+                    alt={post.frontMatter.title}
+                    className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500 ease-[cubic-bezier(0.25,1,0.5,1)]"
+                  />
+                ) : (
+                  <div className="w-full h-full bg-gray-50" />
+                )}
+              </div>
+
+              <div className="flex-1 flex flex-col">
+                <div className="flex items-center gap-3 text-xs font-medium text-gray-400 mb-3 font-mono">
+                  <span>{new Date(post.frontMatter.date).toLocaleDateString()}</span>
+                  {post.frontMatter.tags && post.frontMatter.tags.length > 0 && (
+                    <>
+                      <span className="w-1 h-1 rounded-full bg-gray-300" />
+                      <span className="text-gray-500">{post.frontMatter.tags[0]}</span>
+                    </>
+                  )}
+                </div>
+
+                <h3 className="text-xl font-bold text-gray-900 mb-3 leading-snug group-hover:text-primary-600 transition-colors">
+                  {post.frontMatter.title}
+                </h3>
+
+                <p className="text-gray-500 line-clamp-3 mb-4 text-sm leading-relaxed flex-grow">
+                  {post.frontMatter.description}
+                </p>
+              </div>
+            </Link>
+          </motion.div>
         ))}
       </div>
 
       {posts.length === 0 && (
-        <div className="text-center text-gray-500 py-12">
-          {t('empty')}
+        <div className="text-center py-32 bg-gray-50 rounded-3xl border border-dashed border-gray-200">
+          <p className="text-gray-400 font-medium">{t('empty')}</p>
         </div>
       )}
     </div>

@@ -108,6 +108,10 @@ export default function SnakeGame() {
   // Keyboard Controls
   useEffect(() => {
     const handleKeyPress = (e: KeyboardEvent) => {
+      if (['ArrowUp', 'ArrowDown', 'ArrowLeft', 'ArrowRight'].includes(e.key)) {
+        e.preventDefault();
+      }
+
       if (!isPlaying) return;
 
       switch (e.key) {
