@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react';
-import type { AgentMessage } from '../types';
-import { STORAGE_KEY_API_KEY } from '../types';
+import type { AgentMessage, SearchResult } from '../types';
+import { STORAGE_KEY_API_KEY, STORAGE_KEY_CONVERSATIONS } from '../types';
 import { searchWeb } from '../tools/searchTool';
 
 const SYSTEM_PROMPT = `You are a helpful AI assistant powered by DeepSeek.
@@ -20,11 +20,27 @@ export function useAgent() {
   ]);
   const [isLoading, setIsLoading] = useState(false);
   const [status, setStatus] = useState<string>(''); // 'Thinking...', 'Searching...'
+  const [searchResults, setSearchResults] = useState<SearchResult[]>([]);
 
   useEffect(() => {
     const savedKey = localStorage.getItem(STORAGE_KEY_API_KEY);
     if (savedKey) setApiKey(savedKey);
+
+    const savedMessages = localStorage.getItem(STORAGE_KEY_CONVERSATIONS);
+    if (savedMessages) {
+      try {
+        setMessages(JSON.parse(savedMessages));
+      } catch (e) {
+        console.error('Failed to load messages', e);
+      }
+    }
   }, []);
+
+  useEffect(() => {
+    if (messages.length > 0) {
+      localStorage.setItem(STORAGE_KEY_CONVERSATIONS, JSON.stringify(messages));
+    }
+  }, [messages]);
 
   const saveApiKey = (key: string) => {
     setApiKey(key);
@@ -34,6 +50,18 @@ export function useAgent() {
   const deleteApiKey = () => {
     setApiKey('');
     localStorage.removeItem(STORAGE_KEY_API_KEY);
+  };
+
+  const clearMessages = () => {
+    const welcomeMsg: AgentMessage = {
+      id: 'welcome',
+      role: 'assistant',
+      content: 'Hello! I\'m an AI assistant. How can I help you today?',
+      timestamp: Date.now()
+    };
+    setMessages([welcomeMsg]);
+    setSearchResults([]);
+    localStorage.removeItem(STORAGE_KEY_CONVERSATIONS);
   };
 
   const sendMessage = async (content: string) => {
@@ -53,10 +81,10 @@ export function useAgent() {
     setMessages(prev => [...prev, userMsg]);
     setIsLoading(true);
     setStatus('Thinking...');
+    setSearchResults([]); // Clear previous search results
 
     try {
-      // 1. Check if search is needed (Mock logic: always search for "what", "who", "when", "latest")
-      // In a real agent, we would ask the LLM to decide
+      // 1. Check if search is needed
       const shouldSearch = /what|who|when|where|why|how|latest|current|news/i.test(content);
 
       let systemContext = SYSTEM_PROMPT;
@@ -64,11 +92,12 @@ export function useAgent() {
 
       if (shouldSearch) {
         setStatus('Searching the web...');
-        const searchResults = await searchWeb(content);
+        const results = await searchWeb(content);
+        setSearchResults(results);
 
         // Add search results to context
         systemContext += `\n\nSearch Results for "${content}":\n`;
-        searchResults.forEach((result, index) => {
+        results.forEach((result, index) => {
           systemContext += `[${index + 1}] Title: ${result.title}\nURL: ${result.url}\nSnippet: ${result.snippet}\n\n`;
           citations.push(result.url);
         });
@@ -76,7 +105,7 @@ export function useAgent() {
 
       setStatus('Thinking...');
 
-      // 2. Call DeepSeek API
+      // 2. Call DeepSeek API with streaming
       const response = await fetch('https://api.deepseek.com/chat/completions', {
         method: 'POST',
         headers: {
@@ -90,7 +119,7 @@ export function useAgent() {
             ...messages.filter(m => m.role !== 'system').map(m => ({ role: m.role, content: m.content })),
             { role: 'user', content }
           ],
-          stream: false
+          stream: true
         })
       });
 
@@ -99,18 +128,54 @@ export function useAgent() {
         throw new Error(errorData.error?.message || `API Error: ${response.status}`);
       }
 
-      const data = await response.json();
-      const aiContent = data.choices[0].message.content;
+      if (!response.body) throw new Error('ReadableStream not supported');
 
+      // Create placeholder assistant message
+      const assistantMsgId = (Date.now() + 1).toString();
       const assistantMsg: AgentMessage = {
-        id: (Date.now() + 1).toString(),
+        id: assistantMsgId,
         role: 'assistant',
-        content: aiContent,
+        content: '',
         citations: citations.length > 0 ? citations : undefined,
         timestamp: Date.now()
       };
 
       setMessages(prev => [...prev, assistantMsg]);
+
+      const reader = response.body.getReader();
+      const decoder = new TextDecoder();
+      let accumulatedContent = '';
+
+      while (true) {
+        const { done, value } = await reader.read();
+        if (done) break;
+
+        const chunk = decoder.decode(value, { stream: true });
+        const lines = chunk.split('\n');
+
+        for (const line of lines) {
+          if (line.startsWith('data: ')) {
+            const dataStr = line.slice(6);
+            if (dataStr === '[DONE]') continue;
+
+            try {
+              const data = JSON.parse(dataStr);
+              const content = data.choices[0]?.delta?.content || '';
+              if (content) {
+                accumulatedContent += content;
+                setMessages(prev => prev.map(msg =>
+                  msg.id === assistantMsgId
+                    ? { ...msg, content: accumulatedContent }
+                    : msg
+                ));
+              }
+            } catch (e) {
+              console.warn('Error parsing SSE message', e);
+            }
+          }
+        }
+      }
+
     } catch (error: any) {
       console.error('Agent Error:', error);
       const errorMsg: AgentMessage = {
@@ -133,6 +198,8 @@ export function useAgent() {
     messages,
     isLoading,
     status,
-    sendMessage
+    searchResults,
+    sendMessage,
+    clearMessages
   };
 }

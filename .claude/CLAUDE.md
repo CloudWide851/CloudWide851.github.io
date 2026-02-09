@@ -9,6 +9,7 @@ This file records the context, architectural decisions, and operation logs for t
 - **Design Style**: Modern Minimalist (Linear/Vercel inspired)
 
 ## Operation Logs
+### 2026-02-09: Feature: C Tutorial & Web Search Agent Upgrade- **Task**: Added "Variables and Data Types" tutorial; Renamed AI Assistant to "Web Search Agent" with streaming responses, conversation persistence, and citation/source preview UI.
 
 
 ### 2026-02-09: Bug Fix: Blog Loading (Buffer Error)

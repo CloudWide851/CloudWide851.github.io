@@ -13,3 +13,5 @@ export interface SearchResult {
 }
 
 export const STORAGE_KEY_API_KEY = 'deepseek_api_key';
+export const STORAGE_KEY_CONVERSATIONS = 'web-search-agent-conversations';
+

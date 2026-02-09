@@ -16,7 +16,7 @@ export const labExperiments: Experiment[] = [
     id: 'agent',
     titleKey: 'experiments.agent.title',
     descriptionKey: 'experiments.agent.description',
-    defaultTitle: 'AI Agent',
+    defaultTitle: 'Web Search Agent',
     defaultDescription: 'Intelligent conversational agent powered by DeepSeek V3 with real-time web search capabilities.',
     icon: Bot,
     tags: ['AI', 'DeepSeek', 'Agent', 'Web Search'],

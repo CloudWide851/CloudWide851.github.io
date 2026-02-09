@@ -68,7 +68,41 @@ export default function ChatInterface({ messages, isLoading, status, onSendMessa
                   <p>{msg.content}</p>
                 ) : (
                   <div className="prose prose-sm max-w-none prose-p:my-1 prose-headings:my-2">
-                    <ReactMarkdown>{msg.content}</ReactMarkdown>
+                    <ReactMarkdown
+                      components={{
+                        a: ({ node, href, children, ...props }) => {
+                          const isCitation = typeof children === 'string' && /^\[\d+\]$/.test(children);
+                          if (isCitation) {
+                            return (
+                              <sup className="inline-block ml-0.5 select-none">
+                                <a
+                                  href={href}
+                                  target="_blank"
+                                  rel="noopener noreferrer"
+                                  className="text-primary-600 hover:text-primary-700 font-bold no-underline px-1 rounded hover:bg-primary-50 transition-colors cursor-pointer"
+                                  {...props}
+                                >
+                                  {children}
+                                </a>
+                              </sup>
+                            );
+                          }
+                          return (
+                            <a
+                              href={href}
+                              target="_blank"
+                              rel="noopener noreferrer"
+                              className="text-primary-600 hover:underline break-all"
+                              {...props}
+                            >
+                              {children}
+                            </a>
+                          );
+                        }
+                      }}
+                    >
+                      {msg.content}
+                    </ReactMarkdown>
                   </div>
                 )}
               </div>

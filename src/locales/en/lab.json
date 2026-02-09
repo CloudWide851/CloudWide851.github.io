@@ -8,8 +8,8 @@
       "description": "Classic Snake game implementation using HTML5 Canvas and React state management. Features scoring, collision detection, and keyboard controls."
     },
     "agent": {
-      "title": "AI Assistant",
-      "description": "Interactive AI agent powered by DeepSeek API with web search capabilities and citation support."
+      "title": "Web Search Agent",
+      "description": "Intelligent conversational agent powered by DeepSeek V3 with real-time web search capabilities."
     },
     "faceRecognition": {
       "title": "3D Face Analysis",

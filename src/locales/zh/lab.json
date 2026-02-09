@@ -8,8 +8,8 @@
       "description": "使用 HTML5 Canvas 和 React 状态管理的经典贪吃蛇游戏实现。具有计分、碰撞检测和键盘控制功能。"
     },
     "agent": {
-      "title": "AI 助手",
-      "description": "基于 DeepSeek API 的交互式 AI 代理，具有网络搜索能力和引用支持。"
+      "title": "网络搜索代理",
+      "description": "基于 DeepSeek V3 的智能对话代理，具备实时网络搜索能力。"
     },
     "faceRecognition": {
       "title": "3D 人脸分析",
