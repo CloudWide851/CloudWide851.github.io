@@ -1,4 +1,4 @@
-import matter from 'gray-matter';
+import fm from 'front-matter';
 import type { BlogFrontMatter } from '@/types/blog';
 
 /**
@@ -8,10 +8,10 @@ export function parseMarkdown(markdownContent: string): {
   frontMatter: BlogFrontMatter;
   content: string;
 } {
-  const { data, content } = matter(markdownContent);
+  const { attributes, body } = fm<BlogFrontMatter>(markdownContent);
   return {
-    frontMatter: data as BlogFrontMatter,
-    content,
+    frontMatter: attributes,
+    content: body,
   };
 }
 
