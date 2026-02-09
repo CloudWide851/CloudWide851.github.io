@@ -54,9 +54,9 @@ export default function Blog() {
     );
   }
 
-  // Separate the first post as featured
+  // Separate the first post as featured and limit recent posts
   const featuredPost = posts[0];
-  const remainingPosts = posts.slice(1);
+  const recentPosts = posts.slice(1, 4); // Only show next 3 posts
 
   return (
     <div className="max-w-6xl mx-auto py-12 lg:py-20 px-4">
@@ -65,14 +65,22 @@ export default function Blog() {
         initial={{ opacity: 0, y: 20 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.6, ease: "easeOut" }}
-        className="mb-16 md:mb-24 text-center md:text-left border-b border-gray-100 pb-12"
+        className="mb-16 md:mb-24 text-center md:text-left border-b border-gray-100 pb-12 flex flex-col md:flex-row md:items-end justify-between gap-6"
       >
-        <h1 className="text-5xl md:text-7xl font-bold tracking-tight text-gray-900 mb-6">
-          {t('title')}
-        </h1>
-        <p className="text-xl text-gray-500 max-w-2xl font-light leading-relaxed">
-          Thoughts, tutorials, and insights on software engineering, design, and the future of AI.
-        </p>
+        <div>
+          <h1 className="text-5xl md:text-7xl font-bold tracking-tight text-gray-900 mb-6">
+            {t('title')}
+          </h1>
+          <p className="text-xl text-gray-500 max-w-2xl font-light leading-relaxed">
+            Thoughts, tutorials, and insights on software engineering, design, and the future of AI.
+          </p>
+        </div>
+        <Link
+          to="/blog/all"
+          className="inline-flex items-center gap-2 px-6 py-3 bg-gray-900 text-white rounded-full font-medium hover:bg-black transition-all shadow-lg shadow-gray-200 hover:shadow-xl self-start md:self-end mb-2"
+        >
+          View All Posts <ArrowRight size={16} />
+        </Link>
       </motion.div>
 
       {/* Featured Post */}
@@ -133,7 +141,7 @@ export default function Blog() {
 
       {/* Grid of other posts */}
       <div className="grid gap-x-8 gap-y-16 md:grid-cols-2 lg:grid-cols-3">
-        {remainingPosts.map((post, index) => (
+        {recentPosts.map((post, index) => (
           <motion.div
             key={post.slug}
             initial={{ opacity: 0, y: 20 }}

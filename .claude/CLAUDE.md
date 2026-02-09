@@ -12,6 +12,13 @@ This file records the context, architectural decisions, and operation logs for t
 ### 2026-02-09: Feature: C Tutorial & Web Search Agent Upgrade- **Task**: Added "Variables and Data Types" tutorial; Renamed AI Assistant to "Web Search Agent" with streaming responses, conversation persistence, and citation/source preview UI.
 
 
+### 2026-02-09: Blog Archive & UI Enhancements
+- **Task**: comprehensive blog upgrade and agent UI polish.
+- **Changes**:
+  - **Blog**: Implemented `BlogArchive` page with search, series filtering, and tag filtering.
+  - **UI**: Added cover image support to blog posts and improved card layout.
+  - **Fixes**: Resolved TypeScript errors in `BlogArchive.tsx` (unused imports, missing icons) and fixed C-tutorial runner.
+
 ### 2026-02-09: Bug Fix: Blog Loading (Buffer Error)
 - **Task**: Fix blog loading failure due to `Buffer` not defined error.
 - **Details**: Fixed `ReferenceError: Buffer is not defined` by replacing `gray-matter` (Node.js only) with `front-matter` (Browser compatible).

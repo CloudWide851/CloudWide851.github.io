@@ -39,6 +39,20 @@ export async function loadBlogPosts(): Promise<BlogPost[]> {
             series = frontMatter.series;
         }
 
+        // Assign default covers based on tags or content
+        if (!frontMatter.cover) {
+          if (series?.includes('C Language') || frontMatter.tags?.includes('C')) {
+            frontMatter.cover = 'https://images.unsplash.com/photo-1629654297299-c8506221ca97?q=80&w=2070&auto=format&fit=crop';
+          } else if (frontMatter.tags?.includes('React') || frontMatter.tags?.includes('Web')) {
+            frontMatter.cover = 'https://images.unsplash.com/photo-1633356122544-f134324a6cee?q=80&w=2070&auto=format&fit=crop';
+          } else if (frontMatter.tags?.includes('AI') || frontMatter.tags?.includes('Agent')) {
+            frontMatter.cover = 'https://images.unsplash.com/photo-1677442136019-21780ecad995?q=80&w=2070&auto=format&fit=crop';
+          } else {
+            // Generic tech background
+            frontMatter.cover = 'https://images.unsplash.com/photo-1555066931-4365d14bab8c?q=80&w=2070&auto=format&fit=crop';
+          }
+        }
+
         posts.push({
           slug,
           series,

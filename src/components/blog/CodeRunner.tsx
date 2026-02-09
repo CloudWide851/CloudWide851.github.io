@@ -24,16 +24,51 @@ export default function CodeRunner({ initialCode = '', language: _language = 'c'
       // Simulate network delay
       await new Promise(resolve => setTimeout(resolve, 1500));
 
-      // Mock output logic based on simple content check
+      // Mock output logic based on content check
       let result = '';
-      if (code.includes('printf("Hello, World!");')) {
-        result = 'Hello, World!';
-      } else if (code.includes('printf')) {
-        // Extract content inside printf
-        const match = code.match(/printf\("(.+)"\)/);
-        result = match ? match[1] : 'Program exited with code 0';
-      } else {
-        result = 'Program exited with code 0 (No output)';
+
+      // Match all printf statements including newlines and format specifiers
+      // Regex explanation:
+      // printf\s*\(\s*  -> matches printf( with optional spaces
+      // "([^"]*)"       -> captures the format string inside quotes
+      // (?:,\s*[^)]+)?  -> optionally matches arguments after comma
+      // \s*\)           -> matches closing parenthesis
+      const printMatches = code.matchAll(/printf\s*\(\s*"([^"]*)"(?:,\s*[^)]+)?\s*\)/g);
+      let matchCount = 0;
+
+      for (const match of printMatches) {
+        matchCount++;
+        let content = match[1];
+        // Handle escape sequences
+        content = content.replace(/\\n/g, '\n').replace(/\\t/g, '\t');
+
+        // Replace format specifiers with mock values appropriate for the tutorial
+        // Tutorial 2 specific values:
+        if (code.includes('studentID')) content = content.replace(/%d/g, '12345');
+        if (code.includes('gpa')) content = content.replace(/%.2f/g, '3.85');
+        if (code.includes('grade')) content = content.replace(/%c/g, 'A');
+
+        // Tutorial 1 / General values
+        if (content.includes('Hello')) {
+             // Keep as is
+        }
+
+        // Generic fallbacks for other specifiers if not caught above
+        content = content.replace(/%d/g, '42')
+                       .replace(/%f/g, '3.14159')
+                       .replace(/%.?\d*f/g, '3.14')
+                       .replace(/%s/g, 'Hello World')
+                       .replace(/%c/g, 'X');
+
+        result += content;
+      }
+
+      // Fallback if regex didn't match anything but code looks valid
+      if (!result && code.includes('printf')) {
+         if (code.includes('Hello, World')) result = "Hello, World!";
+         else result = "Program exited with code 0 (No output captured)";
+      } else if (!result) {
+         result = "Program exited with code 0";
       }
 
       setOutput(result);

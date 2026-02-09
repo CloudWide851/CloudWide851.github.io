@@ -92,18 +92,23 @@ export function useAgent() {
 
       if (shouldSearch) {
         setStatus('Searching the web...');
+        // Force a small delay so UI updates to "Searching..." before the async call blocks
+        await new Promise(r => setTimeout(r, 100));
+
         const results = await searchWeb(content);
         setSearchResults(results);
 
         // Add search results to context
-        systemContext += `\n\nSearch Results for "${content}":\n`;
-        results.forEach((result, index) => {
-          systemContext += `[${index + 1}] Title: ${result.title}\nURL: ${result.url}\nSnippet: ${result.snippet}\n\n`;
-          citations.push(result.url);
-        });
+        if (results.length > 0) {
+            systemContext += `\n\nSearch Results for "${content}":\n`;
+            results.forEach((result, index) => {
+            systemContext += `[${index + 1}] Title: ${result.title}\nURL: ${result.url}\nSnippet: ${result.snippet}\n\n`;
+            citations.push(result.url);
+            });
+        }
       }
 
-      setStatus('Thinking...');
+      setStatus('Thinking...'); // Reset status for LLM generation
 
       // 2. Call DeepSeek API with streaming
       const response = await fetch('https://api.deepseek.com/chat/completions', {
