@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { animations, getRandomAnimation, AnimationType } from './animations/HeroAnimations';
+import { animations, getRandomAnimation, type AnimationType } from './animations/HeroAnimations';
 
 const titles = [
   "Building the web, one pixel at a time",
@@ -47,18 +47,6 @@ export default function InteractiveHero() {
       />
 
       <div className="container-custom max-w-4xl relative z-10 px-4">
-        <motion.div
-          initial={{ opacity: 0, y: 10 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.5 }}
-          className="mb-8"
-        >
-          <span className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-gray-100/80 border border-gray-200 text-sm font-medium text-gray-600 backdrop-blur-sm">
-            <span className="w-2 h-2 rounded-full bg-green-500 animate-pulse" />
-            Available for projects
-          </span>
-        </motion.div>
-
         <div className="min-h-[8rem] md:min-h-[10rem] flex items-center justify-center mb-6 w-full">
           <AnimatePresence mode="wait">
             <motion.h1

@@ -3,7 +3,6 @@ import { ArrowRight, Terminal, Coffee, Layers, Code2 } from 'lucide-react';
 import { motion, useMotionValue, useSpring, useTransform } from 'framer-motion';
 import PageTransition from '@/components/common/PageTransition';
 import InteractiveHero from '@/components/home/InteractiveHero';
-import { getProjectImage } from '@/utils/image';
 import { cn } from '@/lib/utils';
 
 // Helper for 3D tilt effect

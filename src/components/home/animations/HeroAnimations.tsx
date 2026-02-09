@@ -1,4 +1,4 @@
-import { motion, AnimatePresence } from 'framer-motion';
+import { motion } from 'framer-motion';
 
 // 1. Typewriter (Character by character)
 export function TypewriterText({ text }: { text: string }) {

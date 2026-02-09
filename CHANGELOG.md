@@ -8,6 +8,9 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ## [Unreleased]
 
 ### Fixed
+- **Build System**: Resolved TypeScript build failures causing exit code 2.
+  - Corrected `AnimationType` import to use `import type` syntax.
+  - Removed unused `AnimatePresence` and `getProjectImage` imports.
 - **Routing Bug**: Fixed "Post not found" error when clicking "View All Posts" by explicitly defining the `/blog/all` route.
 - **Lab Layout**: Removed double scrollbars in Agent and Snake pages by resolving conflicting height constraints (`min-h-screen` vs `h-full`).
 - **Home UI**: Fixed cramped spacing in "Featured Work" section and resized "View Portfolio" button to be slimmer.
@@ -19,6 +22,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - **Home Animation**: Added **Typewriter effect** to the Hero section titles using Framer Motion.
 
 ### Changed
+- **Home UI**: Removed the "Available for projects" status badge for a cleaner Hero section.
 - **Blog**: "View All Posts" button now correctly navigates to the archive page.
 - **Agent Page**: Layout optimized for full-height chat experience without window-level scrolling.
 

@@ -211,6 +211,15 @@ This file records the context, architectural decisions, and operation logs for t
 - **Animations**: `framer-motion` for complex interactions.
 - **Images**: Unsplash API for dynamic, high-quality placeholders.
 
+### 2026-02-09: Build Fixes & Cleanup
+- **Task**: Fix TypeScript build errors and remove "Available for projects" badge.
+- **Changes**:
+  - **Hero**: Removed "Available for projects" component from `InteractiveHero.tsx` as requested.
+  - **Fixes**:
+    - `TS1484`: Changed `AnimationType` import to `import type` in `InteractiveHero.tsx`.
+    - `TS6133`: Removed unused `AnimatePresence` in `HeroAnimations.tsx` and `getProjectImage` in `Home.tsx`.
+- **Lesson**: When enabling `verbatimModuleSyntax` in TypeScript, always use `import type` for type-only imports to avoid build failures.
+
 ### 2026-02-09: UI Refinement & Feature Polish
 - **Task**: Comprehensive UI overhaul including layout spacing, hero animations, and blog archive redesign.
 - **Changes**:
