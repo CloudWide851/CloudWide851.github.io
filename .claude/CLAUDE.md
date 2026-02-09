@@ -210,3 +210,11 @@ This file records the context, architectural decisions, and operation logs for t
 - **Styling**: Tailwind CSS + `clsx` + `tailwind-merge` (`cn` utility) for dynamic classes.
 - **Animations**: `framer-motion` for complex interactions.
 - **Images**: Unsplash API for dynamic, high-quality placeholders.
+
+### 2026-02-09: Feature: Agent UI & C Tutorials
+- **Task**: Polish agent UI, add blog covers, create C tutorial #3.
+- **Changes**:
+  - **Agent UI**: Removed agent container for cleaner look.
+  - **Blog**: Fixed blog covers and "view all" button functionality.
+  - **Content**: Added C Tutorial #3 (Variables and Data Types).
+  - **Research**: Investigated Judge0 compiler for potential future integration.

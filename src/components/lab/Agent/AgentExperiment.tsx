@@ -70,12 +70,16 @@ export default function AgentExperiment() {
           </button>
 
           <button
-            onClick={clearMessages}
-            className="flex items-center gap-2 text-sm text-gray-500 hover:text-red-600 px-3 py-1.5 rounded-md hover:bg-red-50 transition-colors"
+            onClick={() => {
+              if (confirm('Are you sure you want to clear the conversation? This cannot be undone.')) {
+                clearMessages();
+              }
+            }}
+            className="flex items-center gap-2 text-sm text-red-600 hover:text-red-700 px-3 py-1.5 rounded-md hover:bg-red-50 transition-colors border border-red-200 hover:border-red-300 shadow-sm"
             title="Clear conversation"
           >
             <Trash2 size={16} />
-            <span>Clear Chat</span>
+            <span className="font-medium">Clear Chat</span>
           </button>
         </div>
 

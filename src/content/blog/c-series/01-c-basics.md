@@ -4,7 +4,7 @@ date: "2026-02-09"
 description: "Your first steps into the world of low-level programming. Learn how to write and run your first C program directly in the browser."
 tags: ["C", "Programming", "Tutorial"]
 author: "CloudWide851"
-cover: "https://images.unsplash.com/photo-1515879218367-8466d910aaa4?q=80&w=2069&auto=format&fit=crop"
+cover: "https://images.unsplash.com/photo-1629654297299-c8506221ca97?q=80&w=2069&auto=format&fit=crop"
 series: "C Language"
 ---
 

@@ -2,7 +2,7 @@ import AgentExperiment from '@/components/lab/Agent/AgentExperiment';
 import { useTranslation } from 'react-i18next';
 import { ArrowLeft, Bot, Sparkles, Zap } from 'lucide-react';
 import { Link } from 'react-router-dom';
-import { motion } from 'framer-motion';
+
 
 export default function AgentPage() {
   const { t } = useTranslation('lab');
@@ -48,19 +48,9 @@ export default function AgentPage() {
 
       {/* Main Content */}
       <main className="flex-1 max-w-6xl mx-auto w-full p-4 md:p-6 flex flex-col h-[calc(100vh-4rem)]">
-        <motion.div
-          initial={{ opacity: 0, y: 10 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.4 }}
-          className="flex-1 bg-white/80 backdrop-blur-sm rounded-2xl shadow-[0_8px_30px_rgb(0,0,0,0.04)] border border-white/20 overflow-hidden flex flex-col relative ring-1 ring-gray-900/5"
-        >
-          {/* Background decoration */}
-          <div className="absolute top-0 left-0 w-full h-1 bg-gradient-to-r from-violet-500 via-fuchsia-500 to-amber-500 opacity-30" />
-
-          <div className="flex-1 overflow-hidden flex flex-col relative z-10">
-            <AgentExperiment />
-          </div>
-        </motion.div>
+        <div className="flex-1 overflow-hidden flex flex-col relative z-10">
+          <AgentExperiment />
+        </div>
 
         <div className="mt-4 flex justify-center gap-6 text-xs text-gray-400 font-medium">
           <span className="flex items-center gap-1.5">

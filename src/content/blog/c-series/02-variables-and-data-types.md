@@ -5,6 +5,7 @@ description: "Learn how to store and manipulate data in C programming with varia
 tags: ["C", "Programming", "Tutorial", "Variables"]
 author: "CloudWide851"
 series: "C Language"
+cover: "https://images.unsplash.com/photo-1629654297299-c8506221ca97?q=80&w=2069&auto=format&fit=crop"
 ---
 
 ## Introduction to Variables
