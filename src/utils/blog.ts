@@ -7,7 +7,7 @@ import type { BlogPost } from '@/types/blog';
 export async function loadBlogPosts(): Promise<BlogPost[]> {
   try {
     // Recursive glob to support series subfolders
-    const modules = import.meta.glob('../content/blog/**/*.md', {
+    const modules = import.meta.glob('/src/content/blog/**/*.md', {
       as: 'raw',
       eager: false
     });
@@ -65,7 +65,7 @@ export async function loadBlogPosts(): Promise<BlogPost[]> {
  */
 export async function loadBlogPost(slug: string): Promise<BlogPost | null> {
   try {
-    const modules = import.meta.glob('../content/blog/**/*.md', {
+    const modules = import.meta.glob('/src/content/blog/**/*.md', {
       as: 'raw',
       eager: false
     });

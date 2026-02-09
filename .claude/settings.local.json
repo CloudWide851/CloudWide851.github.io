@@ -14,7 +14,8 @@
       "Bash(git push:*)",
       "Bash(cat:*)",
       "Bash(python3:*)",
-      "Bash(pnpm install:*)"
+      "Bash(pnpm install:*)",
+      "Bash(ls -la \"H:\\\\个人网站\\\\CloudWide851.github.io\\\\src\\\\content\\\\blog\"\" 2>&1 || echo \"src/content/blog does not exist \")"
     ]
   }
 }
