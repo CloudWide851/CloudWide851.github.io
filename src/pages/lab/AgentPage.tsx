@@ -8,9 +8,9 @@ export default function AgentPage() {
   const { t } = useTranslation('lab');
 
   return (
-    <div className="min-h-[calc(100vh-4rem)] bg-gradient-to-b from-gray-50 to-white flex flex-col font-sans">
+    <div className="h-full flex-1 bg-gradient-to-b from-gray-50 to-white flex flex-col font-sans overflow-hidden">
       {/* Header */}
-      <header className="bg-white/50 backdrop-blur-xl border-b border-gray-100 sticky top-0 z-20">
+      <header className="bg-white/50 backdrop-blur-xl border-b border-gray-100 sticky top-0 z-20 shrink-0">
         <div className="max-w-6xl mx-auto px-4 sm:px-6 h-16 flex items-center justify-between">
           <div className="flex items-center gap-4">
             <Link
@@ -47,12 +47,12 @@ export default function AgentPage() {
       </header>
 
       {/* Main Content */}
-      <main className="flex-1 max-w-6xl mx-auto w-full p-4 md:p-6 flex flex-col h-[calc(100vh-4rem)]">
+      <main className="flex-1 w-full max-w-6xl mx-auto p-4 md:p-6 flex flex-col overflow-hidden">
         <div className="flex-1 overflow-hidden flex flex-col relative z-10">
           <AgentExperiment />
         </div>
 
-        <div className="mt-4 flex justify-center gap-6 text-xs text-gray-400 font-medium">
+        <div className="mt-4 flex justify-center gap-6 text-xs text-gray-400 font-medium shrink-0">
           <span className="flex items-center gap-1.5">
             <Zap size={12} className="text-amber-400" /> Fast Inference
           </span>

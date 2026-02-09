@@ -127,13 +127,13 @@ export default function Home() {
                 <div className="absolute inset-0 bg-gradient-to-r from-gray-50 to-white opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
 
                 <div className="relative z-10 flex flex-col md:flex-row gap-8 items-center h-full">
-                  <div className="flex-1">
-                    <h3 className="text-primary-600 font-medium mb-2 text-sm uppercase tracking-wider">Featured Work</h3>
-                    <h2 className="text-3xl font-bold text-gray-900 mb-4 font-display">Building ideas into reality.</h2>
-                    <p className="text-gray-600 mb-6 leading-relaxed">
+                  <div className="flex-1 pt-4">
+                    <h3 className="text-primary-600 font-medium mb-6 text-sm uppercase tracking-wider">Featured Work</h3>
+                    <h2 className="text-3xl font-bold text-gray-900 mb-6 font-display">Building ideas into reality.</h2>
+                    <p className="text-gray-600 mb-8 leading-relaxed">
                       A curated collection of my latest experiments, production applications, and open source contributions.
                     </p>
-                    <Link to="/projects" className="btn-primary inline-flex items-center gap-2">
+                    <Link to="/projects" className="btn-primary py-2.5 px-6 inline-flex items-center gap-2 text-sm">
                       View Portfolio <ArrowRight size={16} />
                     </Link>
                   </div>

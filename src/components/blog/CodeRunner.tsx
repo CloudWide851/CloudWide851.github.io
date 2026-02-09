@@ -13,72 +13,131 @@ export default function CodeRunner({ initialCode = '', language: _language = 'c'
   const [isRunning, setIsRunning] = useState(false);
   const [status, setStatus] = useState<'idle' | 'running' | 'success' | 'error'>('idle');
 
-  // Simple mock execution for demonstration since we don't have a real API key yet
-  // In a real app, this would call Judge0 or similar API
+  // Real execution using Judge0 API
   const runCode = async () => {
     setIsRunning(true);
     setStatus('running');
     setOutput('Compiling and running...');
 
     try {
-      // Simulate network delay
-      await new Promise(resolve => setTimeout(resolve, 1500));
+      // API Configuration
+      // Using Judge0 CE on RapidAPI (Free Tier)
+      const API_URL = 'https://judge0-ce.p.rapidapi.com/submissions';
+      const API_KEY = import.meta.env.VITE_JUDGE0_API_KEY;
 
+      // If no API key is present, fallback to mock with a warning
+      if (!API_KEY) {
+        setOutput("Warning: VITE_JUDGE0_API_KEY not found. Running in simulation mode...\n\n" + simulateExecution(code));
+        setStatus('success');
+        setIsRunning(false);
+        return;
+      }
+
+      // 1. Submit Code
+      const submitResponse = await fetch(`${API_URL}?base64_encoded=true&wait=false`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          'X-RapidAPI-Key': API_KEY,
+          'X-RapidAPI-Host': 'judge0-ce.p.rapidapi.com'
+        },
+        body: JSON.stringify({
+          source_code: btoa(code),
+          language_id: 50, // C (GCC 9.2.0)
+          stdin: btoa("") // No input for now
+        })
+      });
+
+      if (!submitResponse.ok) {
+        throw new Error(`Submission failed: ${submitResponse.statusText}`);
+      }
+
+      const { token } = await submitResponse.json();
+
+      // 2. Poll for results
+      let result = null;
+      let attempts = 0;
+      const maxAttempts = 10; // 20 seconds timeout
+
+      while (attempts < maxAttempts) {
+        await new Promise(resolve => setTimeout(resolve, 2000)); // Wait 2s
+
+        const checkResponse = await fetch(`${API_URL}/${token}?base64_encoded=true`, {
+          headers: {
+            'X-RapidAPI-Key': API_KEY,
+            'X-RapidAPI-Host': 'judge0-ce.p.rapidapi.com'
+          }
+        });
+
+        result = await checkResponse.json();
+
+        // Status: 1=In Queue, 2=Processing, 3=Accepted, >3=Error/Wrong Answer
+        if (result.status.id >= 3) break;
+        attempts++;
+      }
+
+      if (!result || result.status.id < 3) {
+        throw new Error('Execution timed out.');
+      }
+
+      // 3. Process Output
+      let finalOutput = '';
+      if (result.stdout) finalOutput += atob(result.stdout);
+      if (result.stderr) finalOutput += `\nError:\n${atob(result.stderr)}`;
+      if (result.compile_output) finalOutput += `\nCompilation:\n${atob(result.compile_output)}`;
+
+      if (result.status.id !== 3) { // Not Accepted
+        finalOutput += `\n\nStatus: ${result.status.description}`;
+        setStatus('error');
+      } else {
+        setStatus('success');
+      }
+
+      setOutput(finalOutput.trim() || "Program exited with code 0 (No output)");
+
+    } catch (error) {
+      console.error(error);
+      setOutput(`Error: ${error instanceof Error ? error.message : 'Unknown error occurred'}`);
+      setStatus('error');
+    } finally {
+      setIsRunning(false);
+    }
+  };
+
+  // Fallback simulation for when API key is missing
+  const simulateExecution = (code: string) => {
       // Mock output logic based on content check
       let result = '';
 
       // Match all printf statements including newlines and format specifiers
-      // Regex explanation:
-      // printf\s*\(\s*  -> matches printf( with optional spaces
-      // "([^"]*)"       -> captures the format string inside quotes
-      // (?:,\s*[^)]+)?  -> optionally matches arguments after comma
-      // \s*\)           -> matches closing parenthesis
       const printMatches = code.matchAll(/printf\s*\(\s*"([^"]*)"(?:,\s*[^)]+)?\s*\)/g);
-      let matchCount = 0;
 
       for (const match of printMatches) {
-        matchCount++;
         let content = match[1];
         // Handle escape sequences
         content = content.replace(/\\n/g, '\n').replace(/\\t/g, '\t');
 
-        // Replace format specifiers with mock values appropriate for the tutorial
-        // Tutorial 2 specific values:
+        // Replace format specifiers with mock values
         if (code.includes('studentID')) content = content.replace(/%d/g, '12345');
         if (code.includes('gpa')) content = content.replace(/%.2f/g, '3.85');
         if (code.includes('grade')) content = content.replace(/%c/g, 'A');
 
-        // Tutorial 1 / General values
-        if (content.includes('Hello')) {
-             // Keep as is
-        }
-
-        // Generic fallbacks for other specifiers if not caught above
+        // Generic fallbacks
         content = content.replace(/%d/g, '42')
                        .replace(/%f/g, '3.14159')
                        .replace(/%.?\d*f/g, '3.14')
                        .replace(/%s/g, 'Hello World')
                        .replace(/%c/g, 'X');
-
         result += content;
       }
 
-      // Fallback if regex didn't match anything but code looks valid
       if (!result && code.includes('printf')) {
          if (code.includes('Hello, World')) result = "Hello, World!";
          else result = "Program exited with code 0 (No output captured)";
       } else if (!result) {
          result = "Program exited with code 0";
       }
-
-      setOutput(result);
-      setStatus('success');
-    } catch (error) {
-      setOutput('Error: Compilation failed.');
-      setStatus('error');
-    } finally {
-      setIsRunning(false);
-    }
+      return result;
   };
 
   const resetCode = () => {

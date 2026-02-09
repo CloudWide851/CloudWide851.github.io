@@ -18,7 +18,8 @@
       "Bash(ls -la \"H:\\\\个人网站\\\\CloudWide851.github.io\\\\src\\\\content\\\\blog\"\" 2>&1 || echo \"src/content/blog does not exist \")",
       "Bash(pnpm remove:*)",
       "Bash(python:*)",
-      "WebSearch"
+      "WebSearch",
+      "Bash(ls:*)"
     ]
   }
 }

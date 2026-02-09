@@ -3,6 +3,7 @@ import MainLayout from '@/components/layout/MainLayout';
 import Home from '@/pages/Home';
 import About from '@/pages/About';
 import Blog from '@/pages/Blog';
+import BlogArchive from '@/pages/BlogArchive';
 import BlogPost from '@/pages/BlogPost';
 import Projects from '@/pages/Projects';
 import Lab from '@/pages/Lab';
@@ -30,6 +31,10 @@ const router = createBrowserRouter([
       {
         path: 'blog',
         element: <Blog />,
+      },
+      {
+        path: 'blog/all',
+        element: <BlogArchive />,
       },
       {
         path: 'blog/:slug',

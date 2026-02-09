@@ -8,7 +8,7 @@ export default function SnakePage() {
   const { t } = useTranslation('lab');
 
   return (
-    <div className="min-h-[calc(100vh-4rem)] bg-slate-900 text-white flex flex-col relative overflow-hidden">
+    <div className="h-full flex-1 bg-slate-900 text-white flex flex-col relative overflow-hidden">
       {/* Background Elements */}
       <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_center,_var(--tw-gradient-stops))] from-slate-800 via-slate-900 to-black opacity-80 z-0"></div>
       <div className="absolute inset-0 bg-[url('https://grainy-gradients.vercel.app/noise.svg')] opacity-20 z-0"></div>

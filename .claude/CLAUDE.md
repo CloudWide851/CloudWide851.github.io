@@ -211,6 +211,21 @@ This file records the context, architectural decisions, and operation logs for t
 - **Animations**: `framer-motion` for complex interactions.
 - **Images**: Unsplash API for dynamic, high-quality placeholders.
 
+### 2026-02-09: UI Polish & Judge0 Integration
+- **Task**: Fix routing bugs, improve Home UI, optimize Lab layouts, and integrate real C compiler.
+- **Changes**:
+  - **Routing**: Added explicit `/blog/all` route to `src/router/index.tsx` to fix "Post not found" error.
+  - **Home**:
+    - Implemented Typewriter animation for hero titles using `framer-motion`.
+    - Fixed cramped spacing in "Featured Work" section.
+    - Resized "View Portfolio" button to be slimmer.
+  - **Lab**: Fixed double scrollbar issues in `AgentPage` and `SnakePage` by replacing conflicting `min-h` constraints with `h-full flex-1 overflow-hidden`.
+  - **Compiler**: integrated Judge0 API in `CodeRunner.tsx` for real C compilation, with robust fallback to simulation if API key is missing.
+- **Technical**:
+  - **Router Priority**: Explicit static routes must be defined before dynamic (`:slug`) routes to prevent incorrect matching.
+  - **Layout**: Nested `100vh` or `min-h-screen` containers often cause overflow; prefer `flex-1` and `h-full` for child pages within a fixed layout.
+  - **Judge0**: Real compilation requires an API key. Added a robust fallback to simulation mode to prevent breaking the app for users without keys.
+
 ### 2026-02-09: Feature: Agent UI & C Tutorials
 - **Task**: Polish agent UI, add blog covers, create C tutorial #3.
 - **Changes**:
@@ -218,3 +233,18 @@ This file records the context, architectural decisions, and operation logs for t
   - **Blog**: Fixed blog covers and "view all" button functionality.
   - **Content**: Added C Tutorial #3 (Variables and Data Types).
   - **Research**: Investigated Judge0 compiler for potential future integration.
+
+### 2026-02-09: UI Polish & Judge0 Integration
+- **Task**: Fix routing bugs, improve Home UI, optimize Lab layouts, and integrate real C compiler.
+- **Changes**:
+  - **Routing**: Added explicit `/blog/all` route to `src/router/index.tsx` to fix "Post not found" error.
+  - **Home**:
+    - Implemented Typewriter animation for hero titles using `framer-motion`.
+    - Fixed cramped spacing in "Featured Work" section.
+    - Resized "View Portfolio" button to be slimmer.
+  - **Lab**: Fixed double scrollbar issues in `AgentPage` and `SnakePage` by replacing conflicting `min-h` constraints with `h-full flex-1 overflow-hidden`.
+  - **Compiler**: integrated Judge0 API in `CodeRunner.tsx` for real C compilation, with robust fallback to simulation if API key is missing.
+- **Technical**:
+  - **Router Priority**: Explicit static routes must be defined before dynamic (`:slug`) routes to prevent incorrect matching.
+  - **Layout**: Nested `100vh` or `min-h-screen` containers often cause overflow; prefer `flex-1` and `h-full` for child pages within a fixed layout.
+

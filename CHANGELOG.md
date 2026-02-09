@@ -8,6 +8,21 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ## [Unreleased]
 
 ### Fixed
+- **Routing Bug**: Fixed "Post not found" error when clicking "View All Posts" by explicitly defining the `/blog/all` route.
+- **Lab Layout**: Removed double scrollbars in Agent and Snake pages by resolving conflicting height constraints (`min-h-screen` vs `h-full`).
+- **Home UI**: Fixed cramped spacing in "Featured Work" section and resized "View Portfolio" button to be slimmer.
+
+### Added
+- **C Compiler**: Integrated **Judge0 API** for real C code execution in the blog tutorials.
+  - Robust error handling for network timeouts and compilation errors.
+  - Fallback to simulation mode if API key is missing.
+- **Home Animation**: Added **Typewriter effect** to the Hero section titles using Framer Motion.
+
+### Changed
+- **Blog**: "View All Posts" button now correctly navigates to the archive page.
+- **Agent Page**: Layout optimized for full-height chat experience without window-level scrolling.
+
+### Fixed
 - **Build System**: Resolved TypeScript build failures causing exit code 2.
   - Added missing `@types/three` dependency for 3D components.
   - Fixed `verbatimModuleSyntax` errors by using `import type` for MediaPipe types.

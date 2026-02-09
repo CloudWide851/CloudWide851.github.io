@@ -8,13 +8,48 @@ const titles = [
   "Code. Create. Iterate.",
 ];
 
+// Typewriter component for character-by-character reveal
+function TypewriterText({ text }: { text: string }) {
+  const characters = Array.from(text);
+
+  return (
+    <motion.span
+      initial="hidden"
+      animate="visible"
+      exit={{ opacity: 0, transition: { duration: 0.2 } }}
+      variants={{
+        visible: { transition: { staggerChildren: 0.05 } },
+        hidden: {}
+      }}
+    >
+      {characters.map((char, i) => (
+        <motion.span
+          key={i}
+          variants={{
+            visible: { opacity: 1, y: 0 },
+            hidden: { opacity: 0, y: 5 }
+          }}
+          transition={{ duration: 0.2 }}
+        >
+          {char === " " ? "\u00A0" : char}
+        </motion.span>
+      ))}
+      <motion.span
+        animate={{ opacity: [0, 1, 0] }}
+        transition={{ duration: 0.8, repeat: Infinity }}
+        className="inline-block w-[3px] h-[1em] bg-primary-500 ml-1 align-middle"
+      />
+    </motion.span>
+  );
+}
+
 export default function InteractiveHero() {
   const [index, setIndex] = useState(0);
 
   useEffect(() => {
     const timer = setInterval(() => {
       setIndex((prev) => (prev + 1) % titles.length);
-    }, 4000);
+    }, 5000); // Increased duration to allow reading
     return () => clearInterval(timer);
   }, []);
 
@@ -54,17 +89,13 @@ export default function InteractiveHero() {
           </span>
         </motion.div>
 
-        <div className="h-32 md:h-40 flex items-center justify-center mb-6">
+        <div className="h-32 md:h-40 flex items-center justify-center mb-6 w-full">
           <AnimatePresence mode="wait">
             <motion.h1
               key={index}
-              initial={{ opacity: 0, y: 20, filter: "blur(10px)" }}
-              animate={{ opacity: 1, y: 0, filter: "blur(0px)" }}
-              exit={{ opacity: 0, y: -20, filter: "blur(10px)" }}
-              transition={{ duration: 0.5, ease: "easeOut" }}
               className="text-4xl md:text-6xl lg:text-7xl font-display font-bold tracking-tight text-gray-900 leading-tight"
             >
-              {titles[index]}
+              <TypewriterText text={titles[index]} />
             </motion.h1>
           </AnimatePresence>
         </div>
