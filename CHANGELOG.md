@@ -16,10 +16,15 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - **Home UI**: Fixed cramped spacing in "Featured Work" section and resized "View Portfolio" button to be slimmer.
 
 ### Added
-- **C Compiler**: Integrated **Judge0 API** for real C code execution in the blog tutorials.
-  - Robust error handling for network timeouts and compilation errors.
-  - Fallback to simulation mode if API key is missing.
-- **Home Animation**: Added **Typewriter effect** to the Hero section titles using Framer Motion.
+- **Content**: Added C Tutorial #4: "Control Flow in C - Making Decisions", covering if/else, switch, and logical operators.
+- **Archive UI**: Completely redesigned `/blog/all` layout:
+  - Replaced sidebars with a **Sticky Top Bar** for filters (Search, Series, Tags).
+  - Implemented a **Responsive Grid** (1-3 cols) for blog posts.
+  - Switched to **Vertical Cards** (Image top, content bottom) for better space utilization.
+
+### Fixed
+- **Hero Text Overflow**: Fixed issue where long hero titles were cut off on mobile by removing fixed height constraints and adding dynamic padding.
+
 
 ### Changed
 - **Home UI**: Removed the "Available for projects" status badge for a cleaner Hero section.

@@ -211,6 +211,14 @@ This file records the context, architectural decisions, and operation logs for t
 - **Animations**: `framer-motion` for complex interactions.
 - **Images**: Unsplash API for dynamic, high-quality placeholders.
 
+### 2026-02-09: Blog Archive Redesign & Content
+- **Task**: Redesign Blog Archive layout and add C Tutorial #4.
+- **Changes**:
+  - **Blog Archive**: Converted sidebar layout to a full-width design with a sticky top filter bar. Switched card style to vertical grid for better visual balance.
+  - **Content**: Created "Control Flow" tutorial (C Series #4) with interactive code runners.
+  - **Hero**: Fixed text overflow bug by using `min-h` with flexible padding instead of fixed height.
+- **Design Pattern**: For filter-heavy pages, top bars often work better than sidebars on modern screens as they allow the main content (cards) to use the full width of the viewport.
+
 ### 2026-02-09: Build Fixes & Cleanup
 - **Task**: Fix TypeScript build errors and remove "Available for projects" badge.
 - **Changes**:

@@ -47,7 +47,7 @@ export default function InteractiveHero() {
       />
 
       <div className="container-custom max-w-4xl relative z-10 px-4">
-        <div className="min-h-[8rem] md:min-h-[10rem] flex items-center justify-center mb-6 w-full">
+        <div className="flex items-center justify-center mb-6 w-full py-4 min-h-[10rem]">
           <AnimatePresence mode="wait">
             <motion.h1
               key={index}
