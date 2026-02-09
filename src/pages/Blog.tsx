@@ -78,17 +78,17 @@ export default function Blog() {
         <div className="flex md:hidden justify-center w-full">
           <Link
             to="/blog/all"
-            className="inline-flex items-center gap-2 px-6 py-3 bg-gray-900 text-white rounded-full font-medium hover:bg-black transition-all shadow-lg shadow-gray-200 hover:shadow-xl w-full justify-center sm:w-auto"
+            className="inline-flex items-center gap-2 px-6 py-2 bg-gray-900 text-white rounded-full font-medium hover:bg-black transition-all shadow-lg shadow-gray-200 hover:shadow-xl w-full justify-center sm:w-auto"
           >
-            View All Posts <ArrowRight size={16} />
+            View All <ArrowRight size={16} />
           </Link>
         </div>
         <div className="hidden md:block">
           <Link
             to="/blog/all"
-            className="inline-flex items-center gap-2 px-6 py-3 bg-gray-900 text-white rounded-full font-medium hover:bg-black transition-all shadow-lg shadow-gray-200 hover:shadow-xl"
+            className="inline-flex items-center gap-2 px-6 py-2 bg-gray-900 text-white rounded-full font-medium hover:bg-black transition-all shadow-lg shadow-gray-200 hover:shadow-xl"
           >
-            View All Posts <ArrowRight size={16} />
+            View All <ArrowRight size={16} />
           </Link>
         </div>
       </motion.div>

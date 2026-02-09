@@ -123,27 +123,18 @@ export default function Home() {
 
             {/* Projects - Large */}
             <TiltCard className="md:col-span-2">
-              <div className="h-full bg-white rounded-2xl p-8 border border-gray-100 relative overflow-hidden group hover:shadow-xl hover:border-gray-200 transition-all">
+              <div className="h-full bg-white rounded-2xl p-8 border border-gray-100 relative overflow-hidden group hover:shadow-xl hover:border-gray-200 transition-all flex items-center">
                 <div className="absolute inset-0 bg-gradient-to-r from-gray-50 to-white opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
 
-                <div className="relative z-10 flex flex-col md:flex-row gap-8 items-center h-full">
-                  <div className="flex-1 pt-4">
-                    <h3 className="text-primary-600 font-medium mb-6 text-sm uppercase tracking-wider">Featured Work</h3>
-                    <h2 className="text-3xl font-bold text-gray-900 mb-6 font-display">Building ideas into reality.</h2>
-                    <p className="text-gray-600 mb-8 leading-relaxed">
-                      A curated collection of my latest experiments, production applications, and open source contributions.
-                    </p>
-                    <Link to="/projects" className="btn-primary py-2.5 px-6 inline-flex items-center gap-2 text-sm">
-                      View Portfolio <ArrowRight size={16} />
-                    </Link>
-                  </div>
-                  <div className="w-full md:w-2/5 aspect-video rounded-lg overflow-hidden shadow-sm border border-gray-100 transform group-hover:scale-105 group-hover:rotate-1 transition-all duration-500">
-                    <img
-                      src={getProjectImage(0)}
-                      alt="Project Preview"
-                      className="w-full h-full object-cover grayscale group-hover:grayscale-0 transition-all duration-500"
-                    />
-                  </div>
+                <div className="relative z-10 flex-1">
+                  <h3 className="text-primary-600 font-medium mb-4 text-sm uppercase tracking-wider">Featured Work</h3>
+                  <h2 className="text-3xl font-bold text-gray-900 mb-6 font-display">Building ideas into reality.</h2>
+                  <p className="text-gray-600 mb-8 leading-relaxed max-w-lg">
+                    A curated collection of my latest experiments, production applications, and open source contributions.
+                  </p>
+                  <Link to="/projects" className="btn-primary py-2.5 px-6 inline-flex items-center gap-2 text-sm">
+                    View Portfolio <ArrowRight size={16} />
+                  </Link>
                 </div>
               </div>
             </TiltCard>

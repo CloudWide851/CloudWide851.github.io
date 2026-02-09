@@ -1,5 +1,6 @@
 import { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
+import { animations, getRandomAnimation, AnimationType } from './animations/HeroAnimations';
 
 const titles = [
   "Building the web, one pixel at a time",
@@ -8,50 +9,19 @@ const titles = [
   "Code. Create. Iterate.",
 ];
 
-// Typewriter component for character-by-character reveal
-function TypewriterText({ text }: { text: string }) {
-  const characters = Array.from(text);
-
-  return (
-    <motion.span
-      initial="hidden"
-      animate="visible"
-      exit={{ opacity: 0, transition: { duration: 0.2 } }}
-      variants={{
-        visible: { transition: { staggerChildren: 0.05 } },
-        hidden: {}
-      }}
-    >
-      {characters.map((char, i) => (
-        <motion.span
-          key={i}
-          variants={{
-            visible: { opacity: 1, y: 0 },
-            hidden: { opacity: 0, y: 5 }
-          }}
-          transition={{ duration: 0.2 }}
-        >
-          {char === " " ? "\u00A0" : char}
-        </motion.span>
-      ))}
-      <motion.span
-        animate={{ opacity: [0, 1, 0] }}
-        transition={{ duration: 0.8, repeat: Infinity }}
-        className="inline-block w-[3px] h-[1em] bg-primary-500 ml-1 align-middle"
-      />
-    </motion.span>
-  );
-}
-
 export default function InteractiveHero() {
   const [index, setIndex] = useState(0);
+  const [animationType, setAnimationType] = useState<AnimationType>(getRandomAnimation());
 
   useEffect(() => {
     const timer = setInterval(() => {
       setIndex((prev) => (prev + 1) % titles.length);
-    }, 5000); // Increased duration to allow reading
+      setAnimationType(getRandomAnimation()); // New animation each cycle
+    }, 5000);
     return () => clearInterval(timer);
   }, []);
+
+  const CurrentAnimation = animations[animationType].component;
 
   return (
     <div className="relative min-h-[60vh] flex flex-col justify-center items-center text-center overflow-hidden">
@@ -89,13 +59,13 @@ export default function InteractiveHero() {
           </span>
         </motion.div>
 
-        <div className="h-32 md:h-40 flex items-center justify-center mb-6 w-full">
+        <div className="min-h-[8rem] md:min-h-[10rem] flex items-center justify-center mb-6 w-full">
           <AnimatePresence mode="wait">
             <motion.h1
               key={index}
-              className="text-4xl md:text-6xl lg:text-7xl font-display font-bold tracking-tight text-gray-900 leading-tight"
+              className="text-4xl md:text-6xl lg:text-7xl font-display font-bold tracking-tight text-gray-900 leading-tight px-4 max-w-5xl mx-auto"
             >
-              <TypewriterText text={titles[index]} />
+              <CurrentAnimation text={titles[index]} />
             </motion.h1>
           </AnimatePresence>
         </div>

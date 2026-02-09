@@ -211,20 +211,20 @@ This file records the context, architectural decisions, and operation logs for t
 - **Animations**: `framer-motion` for complex interactions.
 - **Images**: Unsplash API for dynamic, high-quality placeholders.
 
-### 2026-02-09: UI Polish & Judge0 Integration
-- **Task**: Fix routing bugs, improve Home UI, optimize Lab layouts, and integrate real C compiler.
+### 2026-02-09: UI Refinement & Feature Polish
+- **Task**: Comprehensive UI overhaul including layout spacing, hero animations, and blog archive redesign.
 - **Changes**:
-  - **Routing**: Added explicit `/blog/all` route to `src/router/index.tsx` to fix "Post not found" error.
+  - **Layout**: Reduced main content padding (`p-6 md:p-10` → `p-4 md:p-6`) to fix the excessive gap between sidebar and content.
   - **Home**:
-    - Implemented Typewriter animation for hero titles using `framer-motion`.
-    - Fixed cramped spacing in "Featured Work" section.
-    - Resized "View Portfolio" button to be slimmer.
-  - **Lab**: Fixed double scrollbar issues in `AgentPage` and `SnakePage` by replacing conflicting `min-h` constraints with `h-full flex-1 overflow-hidden`.
-  - **Compiler**: integrated Judge0 API in `CodeRunner.tsx` for real C compilation, with robust fallback to simulation if API key is missing.
+    - **Hero**: Implemented 6 distinct animation styles (Typewriter, Fade, Slide, Rotate, Wave, Glitch) that cycle randomly.
+    - **Featured Work**: Redesigned to a text-only card layout, removing the cramped image and improving vertical alignment.
+  - **Blog**:
+    - **Archive UI**: Redesigned `/blog/all` with a fixed top filter bar (Search + Dropdowns) and a responsive vertical card grid.
+    - **Buttons**: Simplified "View All Posts" text to "View All" and reduced button height for a cleaner look.
 - **Technical**:
-  - **Router Priority**: Explicit static routes must be defined before dynamic (`:slug`) routes to prevent incorrect matching.
-  - **Layout**: Nested `100vh` or `min-h-screen` containers often cause overflow; prefer `flex-1` and `h-full` for child pages within a fixed layout.
-  - **Judge0**: Real compilation requires an API key. Added a robust fallback to simulation mode to prevent breaking the app for users without keys.
+  - **Animation System**: Created extensible `HeroAnimations` registry using Framer Motion variants.
+  - **Performance**: Used `layout` prop in Framer Motion for smooth list reordering in Blog Archive.
+
 
 ### 2026-02-09: Feature: Agent UI & C Tutorials
 - **Task**: Polish agent UI, add blog covers, create C tutorial #3.
