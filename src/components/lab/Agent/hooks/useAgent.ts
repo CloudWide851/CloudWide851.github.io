@@ -4,9 +4,12 @@ import { STORAGE_KEY_API_KEY, STORAGE_KEY_CONVERSATIONS } from '../types';
 import { searchWeb } from '../tools/searchTool';
 
 const SYSTEM_PROMPT = `You are a helpful AI assistant powered by DeepSeek.
-You have access to a web search tool. If the user asks about current events or specific technical details you don't know, you should search for it.
-When you use information from search results, you must cite the source URL in your response using markdown links like [1](url), [2](url).
-Format your response nicely with Markdown.`;
+You have access to a web search tool.
+To search the web, output specific XML tags: <search><query>your search terms</query></search>.
+I will intercept these tags, perform the search, and provide you with the results.
+After you receive the results, use them to answer the user's question.
+Always cite your sources using markdown links like [1](url).
+Current Date: ${new Date().toLocaleDateString()} ${new Date().toLocaleTimeString()}`;
 
 export function useAgent() {
   const [apiKey, setApiKey] = useState('');
@@ -64,26 +67,9 @@ export function useAgent() {
     localStorage.removeItem(STORAGE_KEY_CONVERSATIONS);
   };
 
-  const sendMessage = async (content: string) => {
-    if (!content.trim()) return;
-    if (!apiKey) {
-      alert('Please enter your DeepSeek API Key first.');
-      return;
-    }
-
-    const userMsg: AgentMessage = {
-      id: Date.now().toString(),
-      role: 'user',
-      content,
-      timestamp: Date.now()
-    };
-
-    setMessages(prev => [...prev, userMsg]);
-    setIsLoading(true);
-    setStatus('Thinking...');
-    setSearchResults([]); // Clear previous search results
-
+  const processResponse = async (currentMessages: AgentMessage[], currentHistory: any[]) => {
     try {
+<<<<<<< Updated upstream
       // 1. Check if search is needed - Aggressive trigger
       // Search unless it's a simple greeting, acknowledgement, or very short message
       const isSimpleChat = /^(hi|hello|hey|thanks|thank you|thx|ok|okay|got it|bye|good morning|good afternoon|good night)$/i.test(content.trim());
@@ -125,6 +111,8 @@ export function useAgent() {
       setStatus('Thinking...'); // Reset status for LLM generation
 
       // 2. Call DeepSeek API with streaming
+=======
+>>>>>>> Stashed changes
       const response = await fetch('https://api.deepseek.com/chat/completions', {
         method: 'POST',
         headers: {
@@ -133,11 +121,7 @@ export function useAgent() {
         },
         body: JSON.stringify({
           model: 'deepseek-chat',
-          messages: [
-            { role: 'system', content: systemContext },
-            ...messages.filter(m => m.role !== 'system').map(m => ({ role: m.role, content: m.content })),
-            { role: 'user', content }
-          ],
+          messages: currentHistory,
           stream: true
         })
       });
@@ -150,12 +134,11 @@ export function useAgent() {
       if (!response.body) throw new Error('ReadableStream not supported');
 
       // Create placeholder assistant message
-      const assistantMsgId = (Date.now() + 1).toString();
+      const assistantMsgId = Date.now().toString();
       const assistantMsg: AgentMessage = {
         id: assistantMsgId,
         role: 'assistant',
         content: '',
-        citations: citations.length > 0 ? citations : undefined,
         timestamp: Date.now()
       };
 
@@ -195,6 +178,54 @@ export function useAgent() {
         }
       }
 
+      // Check for search tags in the final response
+      const searchMatch = accumulatedContent.match(/<search>\s*<query>(.*?)<\/query>\s*<\/search>/s);
+      if (searchMatch) {
+        const query = searchMatch[1].trim();
+        setStatus(`Searching for: ${query}...`);
+
+        // Force a small delay to update UI
+        await new Promise(r => setTimeout(r, 100));
+
+        const results = await searchWeb(query);
+
+        // Validate URL results
+        const validResults = results.filter(r => {
+           try {
+             new URL(r.url);
+             return true;
+           } catch {
+             return false;
+           }
+        });
+
+        setSearchResults(validResults);
+
+        // Prepare search result context
+        let searchContext = `\n\nSearch Results for "${query}":\n`;
+        if (validResults.length > 0) {
+            validResults.forEach((result, index) => {
+                searchContext += `[${index + 1}] Title: ${result.title}\nURL: ${result.url}\nSnippet: ${result.snippet}\n\n`;
+            });
+        } else {
+            searchContext += "No relevant results found.\n";
+        }
+
+        // Prepare next history:
+        // 1. The original system prompt & user history
+        // 2. The assistant's request (accumulatedContent)
+        // 3. The search results as a system message
+        const nextHistory = [
+          ...currentHistory,
+          { role: 'assistant', content: accumulatedContent },
+          { role: 'system', content: searchContext }
+        ];
+
+        // Recursive call to process the answer
+        setStatus('Synthesizing answer...');
+        await processResponse([...currentMessages, assistantMsg], nextHistory);
+      }
+
     } catch (error: any) {
       console.error('Agent Error:', error);
       const errorMsg: AgentMessage = {
@@ -204,6 +235,38 @@ export function useAgent() {
         timestamp: Date.now()
       };
       setMessages(prev => [...prev, errorMsg]);
+    }
+  };
+
+  const sendMessage = async (content: string) => {
+    if (!content.trim()) return;
+    if (!apiKey) {
+      alert('Please enter your DeepSeek API Key first.');
+      return;
+    }
+
+    const userMsg: AgentMessage = {
+      id: Date.now().toString(),
+      role: 'user',
+      content,
+      timestamp: Date.now()
+    };
+
+    const newMessages = [...messages, userMsg];
+    setMessages(newMessages);
+    setIsLoading(true);
+    setStatus('Thinking...');
+    setSearchResults([]);
+
+    try {
+      const history = [
+        { role: 'system', content: SYSTEM_PROMPT },
+        ...messages.filter(m => m.role !== 'system').map(m => ({ role: m.role, content: m.content })),
+        { role: 'user', content }
+      ];
+
+      await processResponse(newMessages, history);
+
     } finally {
       setIsLoading(false);
       setStatus('');
