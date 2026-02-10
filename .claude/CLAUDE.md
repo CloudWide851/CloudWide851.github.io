@@ -9,6 +9,17 @@ This file records the context, architectural decisions, and operation logs for t
 - **Design Style**: Modern Minimalist (Linear/Vercel inspired)
 
 ## Operation Logs
+### 2026-02-10: Critical Fix: Dark Mode & Project Metadata
+- **Task**: Fix dark mode toggle not working and update project name.
+- **Changes**:
+  - **Tailwind Config**: Added `darkMode: 'class'` to enable class-based dark mode strategy.
+  - **Package.json**: Updated project name from "temp-project" to "cloudwide851-personal-website".
+- **Root Cause**:
+  - Dark mode was implemented (ThemeContext, ThemeToggle component) but Tailwind was not configured to enable the `dark:` prefix utility classes.
+  - The toggle button was showing the animation but styles weren't applying because the `dark` class on `<html>` had no effect on Tailwind-generated CSS.
+- **Lesson**:
+  - **CRITICAL**: When implementing dark mode with Tailwind CSS, `darkMode: 'class'` is mandatory in `tailwind.config.js`. Without it, `dark:` modifiers are stripped during build time.
+
 ### 2026-02-09: Feature: C Tutorial & Web Search Agent Upgrade- **Task**: Added "Variables and Data Types" tutorial; Renamed AI Assistant to "Web Search Agent" with streaming responses, conversation persistence, and citation/source preview UI.
 
 

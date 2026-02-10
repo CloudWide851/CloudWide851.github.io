@@ -8,6 +8,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ## [Unreleased]
 
 ### Fixed
+- **Dark Mode**: Fixed theme toggle not working by adding `darkMode: 'class'` to Tailwind configuration.
+  - Root cause: Tailwind CSS was not configured to enable class-based dark mode strategy.
+  - Theme toggle button was showing animation but not actually applying dark styles.
+- **Project Name**: Updated package.json name from generic "temp-project" to "cloudwide851-personal-website".
 - **Build System**: Resolved TypeScript build failures causing exit code 2.
   - Corrected `AnimationType` import to use `import type` syntax.
   - Removed unused `AnimatePresence` and `getProjectImage` imports.
