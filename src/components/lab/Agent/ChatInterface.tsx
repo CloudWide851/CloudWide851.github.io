@@ -34,7 +34,10 @@ export default function ChatInterface({ messages, isLoading, status, onSendMessa
     }
   };
 
-  const isStreaming = messages.length > 0 && messages[messages.length - 1].role === 'assistant' && messages[messages.length - 1].content.length > 0;
+  const isStreaming = messages.length > 0 &&
+    messages[messages.length - 1].role === 'assistant' &&
+    messages[messages.length - 1].content.length > 0 &&
+    !messages[messages.length - 1].content.includes('<search>');
 
   return (
     <div className="flex flex-col h-full bg-white dark:bg-zinc-900 rounded-lg border border-gray-200 dark:border-zinc-700 overflow-hidden">

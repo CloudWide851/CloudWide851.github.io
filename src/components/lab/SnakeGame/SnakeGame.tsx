@@ -392,14 +392,33 @@ export default function SnakeGame() {
 
       {/* Info Panel (Right Side) */}
       <div className="w-full md:w-64 space-y-6">
-        {/* Score Card */}
+        {/* Combined Stats Card */}
         <div className="bg-slate-800/50 rounded-xl p-5 border border-slate-700 backdrop-blur-sm">
-          <div className="flex items-center justify-between mb-4">
+          {/* Score Section */}
+          <div className="flex items-center justify-between mb-3">
             <div className="text-slate-400 text-sm font-medium uppercase tracking-wider">Score</div>
             <Trophy size={16} className="text-yellow-500" />
           </div>
-          <div className="text-4xl font-bold text-white mb-2">{score}</div>
-          <div className="text-sm text-slate-400">Best: <span className="text-emerald-400 font-bold">{highScore}</span></div>
+          <div className="text-3xl font-bold text-white mb-1">{score}</div>
+          <div className="text-xs text-slate-400 mb-4">Best: <span className="text-emerald-400 font-bold">{highScore}</span></div>
+
+          {/* Divider */}
+          <div className="border-t border-slate-700 my-4" />
+
+          {/* Danger Level Section */}
+          <div className="flex items-center justify-between mb-2">
+            <div className="text-slate-400 text-xs font-medium">Obstacles</div>
+            <span className="text-white font-bold text-sm">{obstacles.length}</span>
+          </div>
+          <div className="w-full bg-slate-700 rounded-full h-1.5 overflow-hidden">
+            <div
+              className="bg-purple-500 h-full transition-all duration-500"
+              style={{ width: `${Math.min(obstacles.length * 10, 100)}%` }}
+            />
+          </div>
+          <p className="text-[10px] text-slate-500 leading-tight mt-2">
+            Obstacles appear randomly every 5 points.
+          </p>
         </div>
 
         {/* Instructions Card */}
@@ -422,29 +441,6 @@ export default function SnakeGame() {
               <span>Don't hit walls or yourself</span>
             </li>
           </ul>
-        </div>
-
-        {/* Difficulty Indicator */}
-        <div className="bg-slate-800/50 rounded-xl p-5 border border-slate-700 backdrop-blur-sm">
-           <div className="flex items-center gap-2 mb-3 text-white font-medium">
-            <Ghost size={18} className="text-purple-400" />
-            <span>Danger Level</span>
-          </div>
-          <div className="space-y-3">
-            <div className="flex justify-between text-xs text-slate-400">
-              <span>Obstacles</span>
-              <span className="text-white font-bold">{obstacles.length}</span>
-            </div>
-            <div className="w-full bg-slate-700 rounded-full h-1.5 overflow-hidden">
-              <div
-                className="bg-purple-500 h-full transition-all duration-500"
-                style={{ width: `${Math.min(obstacles.length * 10, 100)}%` }}
-              />
-            </div>
-            <p className="text-[10px] text-slate-500 leading-tight">
-              Obstacles may appear randomly every 5 points.
-            </p>
-          </div>
         </div>
       </div>
     </div>

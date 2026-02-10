@@ -33,7 +33,8 @@ This file records the context, architectural decisions, and operation logs for t
   - **Snake Game**:
     - **Algorithmic**: Implemented BFS pathfinding (`isPathClear`) to validate obstacle placement.
     - **Visuals**: Switched to Slate-900 dark theme.
-  - **Contact Button**: Added `useRef` timers for inactivity (5s) and tooltip delay (1.5s).
+    - **Layout**: Merged stats into single card, verified no scrollbars.
+  - **Contact Button**: Implemented corner proximity trigger (150px) instead of time-based inactivity.
 - **Fixes**:
   - Resolved `TS2503` (NodeJS namespace) by using `ReturnType<typeof setTimeout>`.
   - Resolved `TS6133` (unused variable) in `SnakeGame.tsx`.

@@ -15,32 +15,19 @@ export default function FloatingContactButton() {
   const inactivityTimerRef = useRef<ReturnType<typeof setTimeout> | null>(null);
   const tooltipTimerRef = useRef<ReturnType<typeof setTimeout> | null>(null);
 
-  // Auto-hide logic based on inactivity
+  // Auto-hide logic based on corner proximity (150px threshold)
   useEffect(() => {
-    const resetTimer = () => {
-      setIsVisible(true);
+    const handleMouseMove = (e: MouseEvent) => {
+      const distanceFromRight = window.innerWidth - e.clientX;
+      const distanceFromBottom = window.innerHeight - e.clientY;
 
-      if (inactivityTimerRef.current) {
-        clearTimeout(inactivityTimerRef.current);
-      }
-
-      // Hide after 5 seconds of inactivity
-      inactivityTimerRef.current = setTimeout(() => {
-        setIsVisible(false);
-      }, 5000);
+      // Show only when near bottom-right corner
+      const isNearCorner = distanceFromRight <= 150 && distanceFromBottom <= 150;
+      setIsVisible(isNearCorner);
     };
 
-    // Events to track user activity
-    const events = ['mousemove', 'scroll', 'click', 'keydown', 'touchstart'];
-    events.forEach(event => window.addEventListener(event, resetTimer));
-
-    // Initial timer
-    resetTimer();
-
-    return () => {
-      events.forEach(event => window.removeEventListener(event, resetTimer));
-      if (inactivityTimerRef.current) clearTimeout(inactivityTimerRef.current);
-    };
+    window.addEventListener('mousemove', handleMouseMove);
+    return () => window.removeEventListener('mousemove', handleMouseMove);
   }, []);
 
   // Force hide on route change

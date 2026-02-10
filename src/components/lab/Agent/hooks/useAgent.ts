@@ -121,9 +121,13 @@ export function useAgent() {
               const content = data.choices[0]?.delta?.content || '';
               if (content) {
                 accumulatedContent += content;
+
+                // Clean content for UI display (remove <search> tags)
+                const cleanContent = accumulatedContent.replace(/<search>[\s\S]*?<\/search>/g, '').trim();
+
                 setMessages(prev => prev.map(msg =>
                   msg.id === assistantMsgId
-                    ? { ...msg, content: accumulatedContent }
+                    ? { ...msg, content: cleanContent || (accumulatedContent.includes('<search>') ? '' : accumulatedContent) }
                     : msg
                 ));
               }
@@ -176,6 +180,13 @@ export function useAgent() {
           { role: 'assistant', content: accumulatedContent },
           { role: 'system', content: searchContext }
         ];
+
+        // Update the assistant message with citations
+        setMessages(prev => prev.map(msg =>
+          msg.id === assistantMsgId
+            ? { ...msg, citations: validResults.map(r => r.url) }
+            : msg
+        ));
 
         // Recursive call to process the answer
         setStatus('Synthesizing answer...');
