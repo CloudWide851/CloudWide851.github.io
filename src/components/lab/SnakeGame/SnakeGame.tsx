@@ -2,9 +2,7 @@ import { useState, useEffect, useRef, useCallback } from 'react';
 import { Play, Pause, RotateCcw, Info, Trophy } from 'lucide-react';
 
 // Game constants
-const CANVAS_SIZE = 400;
 const GRID_SIZE = 20;
-const CELL_SIZE = CANVAS_SIZE / GRID_SIZE;
 const INITIAL_SNAKE = [{ x: 10, y: 10 }];
 const INITIAL_DIRECTION = { x: 1, y: 0 };
 const GAME_SPEED = 150;
@@ -12,7 +10,13 @@ const GAME_SPEED = 150;
 type Point = { x: number; y: number };
 
 export default function SnakeGame() {
+  const containerRef = useRef<HTMLDivElement>(null);
   const canvasRef = useRef<HTMLCanvasElement>(null);
+
+  // Responsive Canvas State
+  const [canvasSize, setCanvasSize] = useState(400);
+  const cellSize = canvasSize / GRID_SIZE;
+
   const [snake, setSnake] = useState<Point[]>(INITIAL_SNAKE);
   const [food, setFood] = useState<Point>({ x: 15, y: 15 });
   const [obstacles, setObstacles] = useState<Point[]>([]); // New obstacle state
@@ -22,6 +26,28 @@ export default function SnakeGame() {
   const [score, setScore] = useState(0);
   const [gameOver, setGameOver] = useState(false);
   const [highScore, setHighScore] = useState(0);
+
+  // Handle Resize
+  useEffect(() => {
+    const updateSize = () => {
+      if (containerRef.current) {
+        // Calculate available width, but keep it square and divisible by GRID_SIZE
+        const maxWidth = Math.min(window.innerWidth - 32, 600); // 32px padding, max 600px
+        const parentWidth = containerRef.current.parentElement?.clientWidth || maxWidth;
+
+        // We want the canvas to be as large as possible but fit within constraints
+        // And it must be a multiple of GRID_SIZE to avoid anti-aliasing artifacts
+        let newSize = Math.floor(Math.min(parentWidth, 600));
+        newSize = Math.floor(newSize / GRID_SIZE) * GRID_SIZE;
+
+        setCanvasSize(Math.max(300, newSize)); // Minimum 300px
+      }
+    };
+
+    updateSize();
+    window.addEventListener('resize', updateSize);
+    return () => window.removeEventListener('resize', updateSize);
+  }, []);
 
   // Initialize high score from local storage
   useEffect(() => {
@@ -252,19 +278,19 @@ export default function SnakeGame() {
 
     // Clear canvas - Dark Theme
     ctx.fillStyle = '#0f172a'; // slate-900
-    ctx.fillRect(0, 0, CANVAS_SIZE, CANVAS_SIZE);
+    ctx.fillRect(0, 0, canvasSize, canvasSize);
 
     // Draw grid - Dark Theme
     ctx.strokeStyle = '#1e293b'; // slate-800
     ctx.lineWidth = 1;
     for (let i = 0; i <= GRID_SIZE; i++) {
       ctx.beginPath();
-      ctx.moveTo(i * CELL_SIZE, 0);
-      ctx.lineTo(i * CELL_SIZE, CANVAS_SIZE);
+      ctx.moveTo(i * cellSize, 0);
+      ctx.lineTo(i * cellSize, canvasSize);
       ctx.stroke();
       ctx.beginPath();
-      ctx.moveTo(0, i * CELL_SIZE);
-      ctx.lineTo(CANVAS_SIZE, i * CELL_SIZE);
+      ctx.moveTo(0, i * cellSize);
+      ctx.lineTo(canvasSize, i * cellSize);
       ctx.stroke();
     }
 
@@ -272,9 +298,9 @@ export default function SnakeGame() {
     ctx.fillStyle = '#f43f5e';
     ctx.beginPath();
     ctx.arc(
-      food.x * CELL_SIZE + CELL_SIZE / 2,
-      food.y * CELL_SIZE + CELL_SIZE / 2,
-      CELL_SIZE / 2 - 2,
+      food.x * cellSize + cellSize / 2,
+      food.y * cellSize + cellSize / 2,
+      cellSize / 2 - 2,
       0,
       2 * Math.PI
     );
@@ -289,19 +315,19 @@ export default function SnakeGame() {
     obstacles.forEach(obs => {
       ctx.fillStyle = '#475569';
       ctx.fillRect(
-        obs.x * CELL_SIZE + 1,
-        obs.y * CELL_SIZE + 1,
-        CELL_SIZE - 2,
-        CELL_SIZE - 2
+        obs.x * cellSize + 1,
+        obs.y * cellSize + 1,
+        cellSize - 2,
+        cellSize - 2
       );
       // X mark on obstacle
       ctx.strokeStyle = '#94a3b8';
       ctx.lineWidth = 2;
       ctx.beginPath();
-      ctx.moveTo(obs.x * CELL_SIZE + 4, obs.y * CELL_SIZE + 4);
-      ctx.lineTo((obs.x + 1) * CELL_SIZE - 4, (obs.y + 1) * CELL_SIZE - 4);
-      ctx.moveTo((obs.x + 1) * CELL_SIZE - 4, obs.y * CELL_SIZE + 4);
-      ctx.lineTo(obs.x * CELL_SIZE + 4, (obs.y + 1) * CELL_SIZE - 4);
+      ctx.moveTo(obs.x * cellSize + 4, obs.y * cellSize + 4);
+      ctx.lineTo((obs.x + 1) * cellSize - 4, (obs.y + 1) * cellSize - 4);
+      ctx.moveTo((obs.x + 1) * cellSize - 4, obs.y * cellSize + 4);
+      ctx.lineTo(obs.x * cellSize + 4, (obs.y + 1) * cellSize - 4);
       ctx.stroke();
     });
 
@@ -309,10 +335,10 @@ export default function SnakeGame() {
     snake.forEach((segment, index) => {
       ctx.fillStyle = index === 0 ? '#10b981' : '#059669'; // Head vs Body
       ctx.fillRect(
-        segment.x * CELL_SIZE + 1,
-        segment.y * CELL_SIZE + 1,
-        CELL_SIZE - 2,
-        CELL_SIZE - 2
+        segment.x * cellSize + 1,
+        segment.y * cellSize + 1,
+        cellSize - 2,
+        cellSize - 2
       );
 
       // Draw eyes for head
@@ -321,22 +347,25 @@ export default function SnakeGame() {
         // Simple logic to position eyes based on direction
         // (Simplified: just draw two dots)
         ctx.beginPath();
-        ctx.arc(segment.x * CELL_SIZE + 6, segment.y * CELL_SIZE + 6, 2, 0, Math.PI * 2);
-        ctx.arc(segment.x * CELL_SIZE + 14, segment.y * CELL_SIZE + 6, 2, 0, Math.PI * 2);
+        ctx.arc(segment.x * cellSize + 6, segment.y * cellSize + 6, 2, 0, Math.PI * 2);
+        ctx.arc(segment.x * cellSize + 14, segment.y * cellSize + 6, 2, 0, Math.PI * 2);
         ctx.fill();
       }
     });
 
-  }, [snake, food, obstacles]);
+  }, [snake, food, obstacles, canvasSize, cellSize]);
 
   return (
-    <div className="flex flex-col md:flex-row items-start gap-8">
+    <div className="flex flex-col xl:flex-row items-center justify-center gap-8 w-full max-w-6xl mx-auto" ref={containerRef}>
       {/* Game Board */}
-      <div className="relative rounded-xl overflow-hidden shadow-2xl border border-slate-700 bg-slate-900">
+      <div
+        className="relative rounded-xl overflow-hidden shadow-2xl border border-slate-700 bg-slate-900 transition-all duration-300 ease-out"
+        style={{ width: canvasSize, height: canvasSize }}
+      >
         <canvas
           ref={canvasRef}
-          width={CANVAS_SIZE}
-          height={CANVAS_SIZE}
+          width={canvasSize}
+          height={canvasSize}
           className="block"
         />
 

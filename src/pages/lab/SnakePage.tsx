@@ -33,8 +33,8 @@ export default function SnakePage() {
       </header>
 
       {/* 2. Game Canvas Container */}
-      <main className="flex-1 flex items-center justify-center p-4 overflow-hidden bg-[radial-gradient(ellipse_at_center,_var(--tw-gradient-stops))] from-slate-900 via-slate-950 to-black">
-        <div className="relative z-10 w-full max-w-5xl">
+      <main className="flex-1 flex items-center justify-center p-4 overflow-hidden bg-[radial-gradient(ellipse_at_center,_var(--tw-gradient-stops))] from-slate-900 via-slate-950 to-black w-full">
+        <div className="relative z-10 w-full">
           <SnakeGame />
         </div>
       </main>

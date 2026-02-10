@@ -1,5 +1,5 @@
-import { useState } from 'react';
-import { Play, RotateCcw, AlertCircle, CheckCircle2 } from 'lucide-react';
+import { useState, useEffect } from 'react';
+import { Play, RotateCcw, AlertCircle, CheckCircle2, Settings, X, Save, ExternalLink } from 'lucide-react';
 import { cn } from '@/lib/utils';
 
 interface CodeRunnerProps {
@@ -13,6 +13,38 @@ export default function CodeRunner({ initialCode = '', language: _language = 'c'
   const [isRunning, setIsRunning] = useState(false);
   const [status, setStatus] = useState<'idle' | 'running' | 'success' | 'error'>('idle');
 
+  // API Key Management
+  const [showSettings, setShowSettings] = useState(false);
+  const [apiKey, setApiKey] = useState('');
+  const [tempKey, setTempKey] = useState('');
+
+  // Load API key on mount
+  useEffect(() => {
+    const envKey = import.meta.env.VITE_JUDGE0_API_KEY;
+    const localKey = localStorage.getItem('judge0_api_key');
+
+    if (envKey) {
+      setApiKey(envKey);
+    } else if (localKey) {
+      setApiKey(localKey);
+      setTempKey(localKey);
+    }
+  }, []);
+
+  const saveApiKey = () => {
+    if (tempKey.trim()) {
+      localStorage.setItem('judge0_api_key', tempKey.trim());
+      setApiKey(tempKey.trim());
+      setShowSettings(false);
+    }
+  };
+
+  const clearApiKey = () => {
+    localStorage.removeItem('judge0_api_key');
+    setApiKey('');
+    setTempKey('');
+  };
+
   // Real execution using Judge0 API
   const runCode = async () => {
     setIsRunning(true);
@@ -23,11 +55,13 @@ export default function CodeRunner({ initialCode = '', language: _language = 'c'
       // API Configuration
       // Using Judge0 CE on RapidAPI (Free Tier)
       const API_URL = 'https://judge0-ce.p.rapidapi.com/submissions';
-      const API_KEY = import.meta.env.VITE_JUDGE0_API_KEY;
+
+      // Use the key from state
+      const currentKey = apiKey;
 
       // If no API key is present, fallback to mock with a warning
-      if (!API_KEY) {
-        setOutput("Warning: VITE_JUDGE0_API_KEY not found. Running in simulation mode...\n\n" + simulateExecution(code));
+      if (!currentKey) {
+        setOutput("Warning: Judge0 API Key not found.\n\nPlease click the Settings (⚙️) icon to add your free RapidAPI key, or continue in simulation mode below.\n\n" + simulateExecution(code));
         setStatus('success');
         setIsRunning(false);
         return;
@@ -38,7 +72,7 @@ export default function CodeRunner({ initialCode = '', language: _language = 'c'
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
-          'X-RapidAPI-Key': API_KEY,
+          'X-RapidAPI-Key': currentKey,
           'X-RapidAPI-Host': 'judge0-ce.p.rapidapi.com'
         },
         body: JSON.stringify({
@@ -49,6 +83,9 @@ export default function CodeRunner({ initialCode = '', language: _language = 'c'
       });
 
       if (!submitResponse.ok) {
+        if (submitResponse.status === 401 || submitResponse.status === 403) {
+             throw new Error("Invalid API Key. Please check your key in Settings.");
+        }
         throw new Error(`Submission failed: ${submitResponse.statusText}`);
       }
 
@@ -64,7 +101,7 @@ export default function CodeRunner({ initialCode = '', language: _language = 'c'
 
         const checkResponse = await fetch(`${API_URL}/${token}?base64_encoded=true`, {
           headers: {
-            'X-RapidAPI-Key': API_KEY,
+            'X-RapidAPI-Key': currentKey,
             'X-RapidAPI-Host': 'judge0-ce.p.rapidapi.com'
           }
         });
@@ -147,7 +184,64 @@ export default function CodeRunner({ initialCode = '', language: _language = 'c'
   };
 
   return (
-    <div className="my-8 rounded-xl overflow-hidden border border-gray-200 shadow-sm bg-gray-50">
+    <div className="my-8 rounded-xl overflow-hidden border border-gray-200 shadow-sm bg-gray-50 relative">
+      {/* Settings Modal */}
+      {showSettings && (
+        <div className="absolute inset-0 z-20 bg-white/95 backdrop-blur-sm flex flex-col items-center justify-center p-6 animate-in fade-in duration-200">
+           <div className="w-full max-w-md space-y-4">
+              <div className="flex items-center justify-between">
+                <h3 className="text-lg font-bold text-gray-800 flex items-center gap-2">
+                  <Settings size={20} /> API Configuration
+                </h3>
+                <button onClick={() => setShowSettings(false)} className="p-1 hover:bg-gray-100 rounded-full">
+                  <X size={20} className="text-gray-500" />
+                </button>
+              </div>
+
+              <div className="bg-blue-50 border border-blue-100 rounded-lg p-3 text-sm text-blue-800">
+                <p>To run C code securely in your browser, you need a free API key from RapidAPI.</p>
+                <a
+                  href="https://rapidapi.com/judge0-official/api/judge0-ce"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="inline-flex items-center gap-1 font-bold hover:underline mt-1"
+                >
+                  Get Free Key <ExternalLink size={12} />
+                </a>
+              </div>
+
+              <div className="space-y-1">
+                <label className="text-xs font-bold text-gray-500 uppercase">RapidAPI Key</label>
+                <input
+                  type="password"
+                  value={tempKey}
+                  onChange={(e) => setTempKey(e.target.value)}
+                  placeholder="Paste your key here..."
+                  className="w-full p-2 border border-gray-300 rounded-lg font-mono text-sm focus:ring-2 focus:ring-blue-500 focus:border-transparent outline-none"
+                />
+                <p className="text-[10px] text-gray-400">Key is stored locally in your browser. No server involved.</p>
+              </div>
+
+              <div className="flex gap-2 pt-2">
+                <button
+                  onClick={saveApiKey}
+                  className="flex-1 bg-blue-600 hover:bg-blue-700 text-white py-2 rounded-lg font-bold text-sm flex items-center justify-center gap-2 transition-colors"
+                >
+                  <Save size={16} /> Save Key
+                </button>
+                {apiKey && (
+                  <button
+                    onClick={clearApiKey}
+                    className="px-4 py-2 border border-red-200 text-red-600 hover:bg-red-50 rounded-lg font-bold text-sm transition-colors"
+                  >
+                    Clear
+                  </button>
+                )}
+              </div>
+           </div>
+        </div>
+      )}
+
       {/* Header */}
       <div className="flex items-center justify-between px-4 py-3 bg-white border-b border-gray-200">
         <div className="flex items-center gap-2">
@@ -159,6 +253,20 @@ export default function CodeRunner({ initialCode = '', language: _language = 'c'
           <span className="ml-2 text-xs font-mono text-gray-500">main.c</span>
         </div>
         <div className="flex items-center gap-2">
+          <button
+            onClick={() => {
+              setTempKey(apiKey);
+              setShowSettings(true);
+            }}
+            className={cn(
+              "p-1.5 rounded-md transition-colors",
+              !apiKey ? "text-orange-500 bg-orange-50 hover:bg-orange-100 animate-pulse" : "text-gray-400 hover:text-gray-600 hover:bg-gray-100"
+            )}
+            title="Configure API Key"
+          >
+            <Settings size={14} />
+          </button>
+          <div className="w-px h-4 bg-gray-200 mx-1" />
           <button
             onClick={resetCode}
             className="p-1.5 text-gray-400 hover:text-gray-600 hover:bg-gray-100 rounded-md transition-colors"

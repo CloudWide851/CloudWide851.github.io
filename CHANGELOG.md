@@ -8,6 +8,15 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ## [Unreleased]
 
 ### Added
+- **Content**: Added C Tutorial #7: "Strings in C - Working with Text Data", covering char arrays, null terminators, and string.h functions.
+- **Judge0 Settings**: Added a settings modal in `CodeRunner` to allow users to input their own RapidAPI key for the online compiler (stored in localStorage).
+- **Snake Game**: Implemented responsive canvas resizing. The game board now automatically scales to fill the available width while maintaining the grid aspect ratio.
+
+### Changed
+- **Snake Game**: Refactored `SnakeGame.tsx` to use `ResizeObserver` for dynamic canvas sizing (min 300px, max 600px).
+- **CodeRunner**: improved error handling for missing/invalid API keys with a clear UI guide.
+
+### Added
 - **Content**: Added C Tutorial #6: "Arrays in C - Storing Multiple Values", covering declaration, initialization, loops, and 2D arrays.
 
 ### Fixed

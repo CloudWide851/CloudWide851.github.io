@@ -9,6 +9,22 @@ This file records the context, architectural decisions, and operation logs for t
 - **Design Style**: Modern Minimalist (Linear/Vercel inspired)
 
 ## Operation Logs
+### 2026-02-10: Feature - Judge0 Key, Strings Tutorial & Responsive Game
+- **Task**: Fix API key warning, add tutorial content, and improve game layout.
+- **Changes**:
+  - **Judge0**: Implemented client-side API key management in `CodeRunner.tsx`.
+    - **UI**: Added Settings (Gear icon) button and modal.
+    - **Storage**: Uses `localStorage` to persist the key across sessions without backend/env vars.
+    - **Fallback**: Gracefully falls back to simulation mode if no key is present.
+  - **Content**: Added `07-strings.md` (Tutorial #7).
+  - **Snake Game**:
+    - **Responsive**: Removed fixed `CANVAS_SIZE` constant. Added logic to calculate canvas size based on parent container width (`Math.min(parentWidth, 600)`).
+    - **Logic**: Ensured canvas size is always a multiple of `GRID_SIZE` (20) to prevent rendering artifacts.
+    - **Layout**: Updated `SnakePage` container to `w-full` to allow expansion.
+- **Architectural Decisions**:
+  - **Static Site Secrets**: For GitHub Pages, `localStorage` is the preferred way to handle user-specific secrets like API keys vs build-time env vars which are public.
+  - **Canvas Resizing**: Using `ResizeObserver` (or `window.resize` event) coupled with React state allows the HTML5 Canvas to redraw correctly on screen size changes. Always clamp values (min/max) to preserve playability.
+
 ### 2026-02-10: Complete UI/UX Overhaul & Agent Fixes
 - **Task**: Fix Home page text wrapping, Agent dark mode, layout, time context, and URL cards.
 - **Changes**:
