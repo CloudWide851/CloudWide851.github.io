@@ -63,7 +63,7 @@ export default function Home() {
           >
             {/* About Card - Large */}
             <TiltCard className="md:col-span-2 row-span-1">
-              <div className="h-full bg-gray-900 rounded-2xl p-8 relative overflow-hidden group hover:shadow-xl transition-shadow border border-gray-800">
+              <div className="h-full bg-gray-900 dark:bg-zinc-900 rounded-2xl p-8 relative overflow-hidden group hover:shadow-xl transition-shadow border border-gray-800 dark:border-zinc-800">
                 <div className="absolute top-0 right-0 p-8 opacity-5 group-hover:opacity-10 transition-opacity duration-500">
                   <Terminal size={140} className="text-white" />
                 </div>
@@ -87,15 +87,15 @@ export default function Home() {
 
             {/* Tech Stack - Small */}
             <TiltCard>
-              <div className="h-full bg-white rounded-2xl p-8 border border-gray-100 flex flex-col justify-between hover:shadow-lg hover:-translate-y-1 transition-all duration-300">
-                <div className="w-12 h-12 bg-blue-50 rounded-xl flex items-center justify-center mb-4 text-blue-600">
+              <div className="h-full bg-white dark:bg-zinc-900 rounded-2xl p-8 border border-gray-100 dark:border-zinc-800 flex flex-col justify-between hover:shadow-lg hover:-translate-y-1 transition-all duration-300">
+                <div className="w-12 h-12 bg-blue-50 dark:bg-blue-900/20 rounded-xl flex items-center justify-center mb-4 text-blue-600 dark:text-blue-400">
                   <Layers size={24} />
                 </div>
                 <div>
-                  <h3 className="text-xl font-bold text-gray-900 mb-3 font-display">Tech Stack</h3>
+                  <h3 className="text-xl font-bold text-gray-900 dark:text-white mb-3 font-display">Tech Stack</h3>
                   <div className="flex flex-wrap gap-2">
                     {['React', 'TypeScript', 'Tailwind', 'Vite', 'Node.js', 'Next.js'].map(tech => (
-                      <span key={tech} className="text-xs font-medium bg-gray-50 px-2.5 py-1 rounded-md text-gray-600 border border-gray-100">
+                      <span key={tech} className="text-xs font-medium bg-gray-50 dark:bg-zinc-800 px-2.5 py-1 rounded-md text-gray-600 dark:text-gray-300 border border-gray-100 dark:border-zinc-700">
                         {tech}
                       </span>
                     ))}
@@ -106,14 +106,14 @@ export default function Home() {
 
             {/* Blog - Small */}
             <TiltCard>
-              <div className="h-full bg-white rounded-2xl p-8 border border-gray-100 flex flex-col justify-between hover:border-primary-100 hover:shadow-lg hover:-translate-y-1 transition-all duration-300 group">
-                <div className="w-12 h-12 bg-orange-50 rounded-xl flex items-center justify-center mb-4 text-orange-600 group-hover:bg-orange-100 transition-colors">
+              <div className="h-full bg-white dark:bg-zinc-900 rounded-2xl p-8 border border-gray-100 dark:border-zinc-800 flex flex-col justify-between hover:border-primary-100 dark:hover:border-primary-900 hover:shadow-lg hover:-translate-y-1 transition-all duration-300 group">
+                <div className="w-12 h-12 bg-orange-50 dark:bg-orange-900/20 rounded-xl flex items-center justify-center mb-4 text-orange-600 dark:text-orange-400 group-hover:bg-orange-100 dark:group-hover:bg-orange-900/30 transition-colors">
                   <Coffee size={24} />
                 </div>
                 <div>
-                  <h3 className="text-xl font-bold text-gray-900 mb-2 font-display">Thoughts</h3>
-                  <p className="text-gray-500 text-sm mb-4 line-clamp-2">Insights on web development, design patterns, and digital minimalism.</p>
-                  <Link to="/blog" className="text-gray-900 font-medium hover:text-orange-600 transition-colors inline-flex items-center gap-1">
+                  <h3 className="text-xl font-bold text-gray-900 dark:text-white mb-2 font-display">Thoughts</h3>
+                  <p className="text-gray-500 dark:text-gray-400 text-sm mb-4 line-clamp-2">Insights on web development, design patterns, and digital minimalism.</p>
+                  <Link to="/blog" className="text-gray-900 dark:text-white font-medium hover:text-orange-600 dark:hover:text-orange-400 transition-colors inline-flex items-center gap-1">
                     Read Articles <ArrowRight size={14} />
                   </Link>
                 </div>
@@ -122,13 +122,13 @@ export default function Home() {
 
             {/* Projects - Large */}
             <TiltCard className="md:col-span-2">
-              <div className="h-full bg-white rounded-2xl p-8 border border-gray-100 relative overflow-hidden group hover:shadow-xl hover:border-gray-200 transition-all flex items-center">
-                <div className="absolute inset-0 bg-gradient-to-r from-gray-50 to-white opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
+              <div className="h-full bg-white dark:bg-zinc-900 rounded-2xl p-8 border border-gray-100 dark:border-zinc-800 relative overflow-hidden group hover:shadow-xl hover:border-gray-200 dark:hover:border-zinc-700 transition-all flex items-center">
+                <div className="absolute inset-0 bg-gradient-to-r from-gray-50 to-white dark:from-zinc-800/50 dark:to-zinc-900 opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
 
                 <div className="relative z-10 flex-1">
-                  <h3 className="text-primary-600 font-medium mb-4 text-sm uppercase tracking-wider">Featured Work</h3>
-                  <h2 className="text-3xl font-bold text-gray-900 mb-6 font-display">Building ideas into reality.</h2>
-                  <p className="text-gray-600 mb-8 leading-relaxed max-w-lg">
+                  <h3 className="text-primary-600 dark:text-primary-400 font-medium mb-4 text-sm uppercase tracking-wider">Featured Work</h3>
+                  <h2 className="text-3xl font-bold text-gray-900 dark:text-white mb-6 font-display">Building ideas into reality.</h2>
+                  <p className="text-gray-600 dark:text-gray-400 mb-8 leading-relaxed max-w-lg">
                     A curated collection of my latest experiments, production applications, and open source contributions.
                   </p>
                   <Link to="/projects" className="btn-primary py-2.5 px-6 inline-flex items-center gap-2 text-sm">

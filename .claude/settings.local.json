@@ -19,7 +19,8 @@
       "Bash(pnpm remove:*)",
       "Bash(python:*)",
       "WebSearch",
-      "Bash(ls:*)"
+      "Bash(ls:*)",
+      "Bash(read_file:*)"
     ]
   }
 }

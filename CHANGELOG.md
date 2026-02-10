@@ -16,11 +16,12 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - **Home UI**: Fixed cramped spacing in "Featured Work" section and resized "View Portfolio" button to be slimmer.
 
 ### Added
-- **Content**: Added C Tutorial #4: "Control Flow in C - Making Decisions", covering if/else, switch, and logical operators.
-- **Archive UI**: Completely redesigned `/blog/all` layout:
-  - Replaced sidebars with a **Sticky Top Bar** for filters (Search, Series, Tags).
-  - Implemented a **Responsive Grid** (1-3 cols) for blog posts.
-  - Switched to **Vertical Cards** (Image top, content bottom) for better space utilization.
+- **Content**: Added C Tutorial #5: "Loops in C - Repeating Code Efficiently", covering while, do-while, and for loops.
+- **Archive UI**: Implemented sticky top bar filter layout for `/blog/all` with native select dropdowns and responsive grid.
+
+### Changed
+- **Blog Archive**: Switched from sidebar layout to full-width grid layout for better space utilization.
+- **Snake Page**: Removed complex background effects and nesting to focus on the game canvas. Simplified header and controls.
 
 ### Fixed
 - **Hero Text Overflow**: Fixed issue where long hero titles were cut off on mobile by removing fixed height constraints and adding dynamic padding.
