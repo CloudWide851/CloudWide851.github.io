@@ -7,8 +7,13 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+### Added
+- **Content**: Added C Tutorial #6: "Arrays in C - Storing Multiple Values", covering declaration, initialization, loops, and 2D arrays.
+
 ### Fixed
-- **Build System**: Resolved `TS6133` error in `SnakeGame.tsx` by removing unused `useTranslation` import.
+- **Build System**: Resolved TypeScript unused variable errors (`TS6133`):
+  - Removed unused `inactivityTimerRef` in `FloatingContactButton.tsx` (replaced by proximity logic).
+  - Removed unused `Ghost` icon import in `SnakeGame.tsx`.
 
 ### Changed
 - **Web Search Agent**:

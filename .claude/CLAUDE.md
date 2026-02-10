@@ -26,6 +26,13 @@ This file records the context, architectural decisions, and operation logs for t
   - **Layout**: Avoid fixed heights in main content areas; use `flex-1 h-full` for app-like layouts.
   - **LLM Context**: Dynamic data (like time) must be injected at runtime, not hardcoded in prompts.
 
+### 2026-02-10: Content & Build Fixes
+- **Task**: Add C Tutorial #6 and fix TypeScript build errors.
+- **Changes**:
+  - **Content**: Created `06-arrays.md`.
+  - **Fixes**: Removed unused variables (`inactivityTimerRef`, `Ghost`) that caused build failures in strict mode.
+  - **Verification**: `pnpm run build` passed successfully.
+
 ### 2026-02-10: Feature - Agent Tool Loop & Game Mechanics
 - **Task**: Fix Agent search execution, redesign Snake Game, optimize Contact Button.
 - **Changes**:

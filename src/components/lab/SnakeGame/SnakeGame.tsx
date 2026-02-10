@@ -1,5 +1,5 @@
 import { useState, useEffect, useRef, useCallback } from 'react';
-import { Play, Pause, RotateCcw, Info, Trophy, Ghost } from 'lucide-react';
+import { Play, Pause, RotateCcw, Info, Trophy } from 'lucide-react';
 
 // Game constants
 const CANVAS_SIZE = 400;
