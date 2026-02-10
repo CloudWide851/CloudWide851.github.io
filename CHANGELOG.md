@@ -8,6 +8,13 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ## [Unreleased]
 
 ### Added
+- **Content**: Added C Tutorial #8: "Functions in C - Organizing Your Code", covering function syntax, parameters, return values, scope, and recursion.
+
+### Changed
+- **CodeRunner**: Enhanced API key onboarding with a prominent button-style link to RapidAPI.
+- **UI Polish**: Removed decorative emoji characters (⚙️) from warning messages, maintaining clean design standard.
+
+### Added
 - **Content**: Added C Tutorial #7: "Strings in C - Working with Text Data", covering char arrays, null terminators, and string.h functions.
 - **Judge0 Settings**: Added a settings modal in `CodeRunner` to allow users to input their own RapidAPI key for the online compiler (stored in localStorage).
 - **Snake Game**: Implemented responsive canvas resizing. The game board now automatically scales to fill the available width while maintaining the grid aspect ratio.

@@ -61,7 +61,7 @@ export default function CodeRunner({ initialCode = '', language: _language = 'c'
 
       // If no API key is present, fallback to mock with a warning
       if (!currentKey) {
-        setOutput("Warning: Judge0 API Key not found.\n\nPlease click the Settings (⚙️) icon to add your free RapidAPI key, or continue in simulation mode below.\n\n" + simulateExecution(code));
+        setOutput("Warning: Judge0 API Key not found.\n\nPlease click the Settings icon to add your free RapidAPI key, or continue in simulation mode below.\n\n" + simulateExecution(code));
         setStatus('success');
         setIsRunning(false);
         return;
@@ -199,14 +199,15 @@ export default function CodeRunner({ initialCode = '', language: _language = 'c'
               </div>
 
               <div className="bg-blue-50 border border-blue-100 rounded-lg p-3 text-sm text-blue-800">
-                <p>To run C code securely in your browser, you need a free API key from RapidAPI.</p>
+                <p>To compile and run C code in your browser, get a free RapidAPI key (no credit card required).</p>
                 <a
                   href="https://rapidapi.com/judge0-official/api/judge0-ce"
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="inline-flex items-center gap-1 font-bold hover:underline mt-1"
+                  className="inline-flex items-center justify-center gap-2 px-4 py-2 bg-blue-600 hover:bg-blue-700 text-white rounded-lg font-bold text-sm transition-colors shadow-sm mt-3 w-full"
                 >
-                  Get Free Key <ExternalLink size={12} />
+                  <ExternalLink size={16} />
+                  Apply for Free API Key
                 </a>
               </div>
 

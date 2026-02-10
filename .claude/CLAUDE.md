@@ -9,6 +9,16 @@ This file records the context, architectural decisions, and operation logs for t
 - **Design Style**: Modern Minimalist (Linear/Vercel inspired)
 
 ## Operation Logs
+### 2026-02-10: UI Polish, C Tutorial #8 & Enhanced Onboarding
+- **Task**: Remove emojis, create Functions tutorial, improve API key UX.
+- **Changes**:
+  - **Emoji Cleanup**: Removed `⚙️` from CodeRunner warning message (redundant with icon button).
+  - **Content**: Added `08-functions.md` covering function basics, parameters, recursion.
+  - **UX**: Transformed RapidAPI text link into a primary action button in Settings modal.
+- **Lessons**:
+  - **Emoji Policy**: Per design standard, decorative emojis are removed, but functional non-ASCII (i18n text, typography) is preserved.
+  - **CTA Design**: Action buttons with icons and clear labels ("Apply for Free API Key") have higher engagement than plain text links.
+
 ### 2026-02-10: Feature - Judge0 Key, Strings Tutorial & Responsive Game
 - **Task**: Fix API key warning, add tutorial content, and improve game layout.
 - **Changes**:
