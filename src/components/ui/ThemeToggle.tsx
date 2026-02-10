@@ -1,16 +1,17 @@
 import { Moon, Sun } from 'lucide-react';
 import { useTheme } from '@/context/ThemeContext';
 import { cn } from '@/lib/utils';
-import { useEffect, useRef } from 'react';
+import { useRef, type MouseEvent } from 'react';
 
 export function ThemeToggle({ className }: { className?: string }) {
   const { theme, setTheme } = useTheme();
   const buttonRef = useRef<HTMLButtonElement>(null);
 
-  const toggleTheme = async (event: React.MouseEvent<HTMLButtonElement>) => {
+  const toggleTheme = async (event: MouseEvent<HTMLButtonElement>) => {
     const newTheme = theme === 'light' ? 'dark' : 'light';
 
     // Check if View Transitions API is supported
+    // @ts-ignore - Document.startViewTransition is not yet in all TS types
     if (
       !document.startViewTransition ||
       window.matchMedia('(prefers-reduced-motion: reduce)').matches
@@ -27,6 +28,7 @@ export function ThemeToggle({ className }: { className?: string }) {
       Math.max(y, innerHeight - y)
     );
 
+    // @ts-ignore - Document.startViewTransition
     const transition = document.startViewTransition(() => {
       setTheme(newTheme);
     });
@@ -45,6 +47,7 @@ export function ThemeToggle({ className }: { className?: string }) {
         duration: 500,
         easing: 'ease-in-out',
         // Specify which pseudo-element to animate
+        // @ts-ignore - pseudoElement is not in KeyframeAnimationOptions in some TS versions
         pseudoElement: '::view-transition-new(root)',
       }
     );

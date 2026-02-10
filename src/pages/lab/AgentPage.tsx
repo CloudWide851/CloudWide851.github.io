@@ -1,15 +1,23 @@
 import AgentExperiment from '@/components/lab/Agent/AgentExperiment';
+import SettingsPanelInline from '@/components/lab/Agent/SettingsPanelInline';
 import { useTranslation } from 'react-i18next';
-import { ArrowLeft, Bot, Sparkles, Zap } from 'lucide-react';
+import { ArrowLeft, Bot, Trash2 } from 'lucide-react';
 import { Link } from 'react-router-dom';
-
+import { useAgent } from '@/components/lab/Agent/hooks/useAgent';
 
 export default function AgentPage() {
   const { t } = useTranslation('lab');
+  const {
+    apiKey,
+    saveApiKey,
+    deleteApiKey,
+    clearMessages,
+    ...experimentProps
+  } = useAgent();
 
   return (
     <div className="h-full flex-1 bg-gradient-to-b from-gray-50 to-white flex flex-col font-sans overflow-hidden">
-      {/* Header */}
+      {/* Header with Toolbar */}
       <header className="bg-white/50 backdrop-blur-xl border-b border-gray-100 sticky top-0 z-20 shrink-0">
         <div className="max-w-6xl mx-auto px-4 sm:px-6 h-16 flex items-center justify-between">
           <div className="flex items-center gap-4">
@@ -30,7 +38,7 @@ export default function AgentPage() {
                   {t('experiments.agent.title')}
                 </h1>
                 <div className="flex items-center gap-1.5 mt-0.5">
-                  <span className="w-1.5 h-1.5 rounded-full bg-emerald-500 animate-pulse shadow-[0_0_8px_rgba(16,185,129,0.4)]" />
+                  <span className="w-1.5 h-1.5 rounded-full bg-emerald-500 shadow-[0_0_8px_rgba(16,185,129,0.4)]" />
                   <span className="text-[10px] font-medium text-emerald-600 uppercase tracking-wide">Online</span>
                 </div>
               </div>
@@ -38,27 +46,34 @@ export default function AgentPage() {
           </div>
 
           <div className="flex items-center gap-3">
-             <div className="hidden sm:flex items-center gap-1.5 px-3 py-1.5 bg-white/50 border border-gray-100 rounded-full text-xs font-medium text-gray-600 shadow-sm backdrop-blur-sm">
-               <Sparkles size={12} className="text-amber-500" />
-               <span>DeepSeek V3</span>
-             </div>
+            <SettingsPanelInline
+              apiKey={apiKey}
+              onSave={saveApiKey}
+              onDelete={deleteApiKey}
+            />
+
+            <button
+              onClick={() => {
+                if (confirm('Are you sure you want to clear the conversation? This cannot be undone.')) {
+                  clearMessages();
+                }
+              }}
+              className="flex items-center gap-2 px-3 py-1.5 text-xs font-medium text-red-600 hover:text-red-700 hover:bg-red-50 rounded-md border border-transparent hover:border-red-100 transition-all"
+              title="Clear conversation"
+            >
+              <Trash2 size={14} />
+              <span className="hidden sm:inline">Clear Chat</span>
+            </button>
           </div>
         </div>
       </header>
 
       {/* Main Content */}
       <main className="flex-1 w-full max-w-6xl mx-auto p-4 md:p-6 flex flex-col overflow-hidden">
-        <div className="flex-1 overflow-hidden flex flex-col relative z-10">
-          <AgentExperiment />
-        </div>
-
-        <div className="mt-4 flex justify-center gap-6 text-xs text-gray-400 font-medium shrink-0">
-          <span className="flex items-center gap-1.5">
-            <Zap size={12} className="text-amber-400" /> Fast Inference
-          </span>
-          <span>•</span>
-          <span>AI generated content may be inaccurate</span>
-        </div>
+        <AgentExperiment
+          apiKey={apiKey}
+          {...experimentProps}
+        />
       </main>
     </div>
   );

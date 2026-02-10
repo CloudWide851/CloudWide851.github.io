@@ -84,8 +84,10 @@ export function useAgent() {
     setSearchResults([]); // Clear previous search results
 
     try {
-      // 1. Check if search is needed
-      const shouldSearch = /what|who|when|where|why|how|latest|current|news/i.test(content);
+      // 1. Check if search is needed - Aggressive trigger
+      // Search unless it's a simple greeting, acknowledgement, or very short message
+      const isSimpleChat = /^(hi|hello|hey|thanks|thank you|thx|ok|okay|got it|bye|good morning|good afternoon|good night)$/i.test(content.trim());
+      const shouldSearch = !isSimpleChat && content.length > 3; // Reduced threshold to capture short queries like "Apple stock"
 
       let systemContext = SYSTEM_PROMPT;
       let citations: string[] = [];

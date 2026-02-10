@@ -9,6 +9,21 @@ This file records the context, architectural decisions, and operation logs for t
 - **Design Style**: Modern Minimalist (Linear/Vercel inspired)
 
 ## Operation Logs
+### 2026-02-10: Web Search Agent Performance & UX Overhaul
+- **Task**: Fix search trigger logic, optimize performance, redesign layout
+- **Changes**:
+  - **Search Logic**: Updated regex in `useAgent.ts` to trigger search by default (except for greetings/short chat), fixing the "answers without searching" issue.
+  - **Performance**:
+    - Memoized `ReactMarkdown` components in `ChatInterface` to prevent re-creation on every render.
+    - Optimized auto-scroll to trigger only on new messages, not every status update.
+  - **UX/UI**:
+    - Moved API key management and Clear Chat controls to a new header toolbar (`SettingsPanelInline`).
+    - Removed bottom "Fast Inference" disclaimer.
+    - Removed redundant scroll containers to fix scrolling issues.
+- **Technical**:
+  - Refactored `AgentExperiment` to receive hook state via props (hoisted to `AgentPage`).
+  - Created `SettingsPanelInline` component for compact API key management.
+
 ### 2026-02-10: Critical Fix: Dark Mode & Project Metadata
 - **Task**: Fix dark mode toggle not working and update project name.
 - **Changes**:
