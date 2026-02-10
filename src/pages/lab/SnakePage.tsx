@@ -7,9 +7,9 @@ export default function SnakePage() {
   const { t } = useTranslation('lab');
 
   return (
-    <div className="h-full flex-1 bg-slate-900 text-white flex flex-col">
+    <div className="h-full flex-1 bg-slate-950 text-white flex flex-col">
       {/* 1. Header & Controls */}
-      <header className="flex-none p-4 flex items-center justify-between border-b border-slate-800 bg-slate-900/50 backdrop-blur-sm z-10">
+      <header className="flex-none p-4 flex items-center justify-between border-b border-slate-800 bg-slate-900/80 backdrop-blur-md z-10">
         <div className="flex items-center gap-4">
           <Link
             to="/lab"
@@ -33,13 +33,9 @@ export default function SnakePage() {
       </header>
 
       {/* 2. Game Canvas Container */}
-      <main className="flex-1 flex flex-col items-center justify-center p-4 overflow-hidden bg-slate-950/50">
-        <div className="relative z-10">
+      <main className="flex-1 flex items-center justify-center p-4 overflow-hidden bg-[radial-gradient(ellipse_at_center,_var(--tw-gradient-stops))] from-slate-900 via-slate-950 to-black">
+        <div className="relative z-10 w-full max-w-5xl">
           <SnakeGame />
-        </div>
-
-        <div className="mt-6 text-center max-w-md text-slate-500 text-sm">
-          <p>{t('experiments.snakeGame.description')}</p>
         </div>
       </main>
     </div>

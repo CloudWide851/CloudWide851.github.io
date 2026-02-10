@@ -1,5 +1,6 @@
 import { useState, useEffect, useRef, useCallback } from 'react';
-import { Play, Pause, RotateCcw } from 'lucide-react';
+import { Play, Pause, RotateCcw, Info, Trophy, Ghost } from 'lucide-react';
+import { useTranslation } from 'react-i18next';
 
 // Game constants
 const CANVAS_SIZE = 400;
@@ -12,10 +13,13 @@ const GAME_SPEED = 150;
 type Point = { x: number; y: number };
 
 export default function SnakeGame() {
+  const { t } = useTranslation('lab');
   const canvasRef = useRef<HTMLCanvasElement>(null);
   const [snake, setSnake] = useState<Point[]>(INITIAL_SNAKE);
   const [food, setFood] = useState<Point>({ x: 15, y: 15 });
+  const [obstacles, setObstacles] = useState<Point[]>([]); // New obstacle state
   const [direction, setDirection] = useState<Point>(INITIAL_DIRECTION);
+  const [nextDirection, setNextDirection] = useState<Point>(INITIAL_DIRECTION); // Prevent rapid keypress bug
   const [isPlaying, setIsPlaying] = useState(false);
   const [score, setScore] = useState(0);
   const [gameOver, setGameOver] = useState(false);
@@ -27,32 +31,116 @@ export default function SnakeGame() {
     if (saved) setHighScore(parseInt(saved, 10));
   }, []);
 
-  const generateFood = useCallback((currentSnake: Point[]) => {
+  // Utility to check if a point is occupied by anything
+  const isOccupied = useCallback((p: Point, currentSnake: Point[], currentObstacles: Point[]) => {
+    // Check snake
+    if (currentSnake.some(s => s.x === p.x && s.y === p.y)) return true;
+    // Check obstacles
+    if (currentObstacles.some(o => o.x === p.x && o.y === p.y)) return true;
+    return false;
+  }, []);
+
+  // BFS to check if path exists from head to food (prevent impossible obstacles)
+  const isPathClear = useCallback((start: Point, target: Point, currentSnake: Point[], currentObstacles: Point[]) => {
+    const queue = [start];
+    const visited = new Set<string>();
+    visited.add(`${start.x},${start.y}`);
+
+    while (queue.length > 0) {
+      const current = queue.shift()!;
+      if (current.x === target.x && current.y === target.y) return true;
+
+      const neighbors = [
+        { x: current.x + 1, y: current.y },
+        { x: current.x - 1, y: current.y },
+        { x: current.x, y: current.y + 1 },
+        { x: current.x, y: current.y - 1 }
+      ];
+
+      for (const next of neighbors) {
+        // Bounds check
+        if (next.x < 0 || next.x >= GRID_SIZE || next.y < 0 || next.y >= GRID_SIZE) continue;
+
+        // Obstacle/Body check
+        if (isOccupied(next, currentSnake, currentObstacles)) continue;
+
+        const key = `${next.x},${next.y}`;
+        if (!visited.has(key)) {
+          visited.add(key);
+          queue.push(next);
+        }
+      }
+    }
+    return false;
+  }, [isOccupied]);
+
+  const generateFood = useCallback((currentSnake: Point[], currentObstacles: Point[]) => {
     let newFood: Point;
-    while (true) {
+    let attempts = 0;
+    while (attempts < 100) {
       newFood = {
         x: Math.floor(Math.random() * GRID_SIZE),
         y: Math.floor(Math.random() * GRID_SIZE),
       };
-      // Check if food spawns on snake
-      const onSnake = currentSnake.some(
-        segment => segment.x === newFood.x && segment.y === newFood.y
-      );
-      if (!onSnake) break;
+      if (!isOccupied(newFood, currentSnake, currentObstacles)) return newFood;
+      attempts++;
     }
-    return newFood;
-  }, []);
+    return { x: 0, y: 0 }; // Fallback (rare)
+  }, [isOccupied]);
+
+  const generateObstacles = useCallback((currentSnake: Point[], currentFood: Point[], currentObstacles: Point[]) => {
+    let newObstacle: Point;
+    let attempts = 0;
+
+    // Try to find a valid spot
+    while (attempts < 50) {
+      newObstacle = {
+        x: Math.floor(Math.random() * GRID_SIZE),
+        y: Math.floor(Math.random() * GRID_SIZE),
+      };
+
+      // 1. Don't spawn on snake, food, or existing obstacles
+      if (isOccupied(newObstacle, currentSnake, currentObstacles)) {
+        attempts++;
+        continue;
+      }
+      if (newObstacle.x === currentFood[0]?.x && newObstacle.y === currentFood[0]?.y) {
+        attempts++;
+        continue;
+      }
+
+      // 2. Don't spawn too close to head (give player reaction time)
+      const head = currentSnake[0];
+      const dist = Math.abs(head.x - newObstacle.x) + Math.abs(head.y - newObstacle.y);
+      if (dist < 3) {
+        attempts++;
+        continue;
+      }
+
+      // 3. Ensure path still exists (optional optimization: only check sometimes to save perf)
+      const tempObstacles = [...currentObstacles, newObstacle];
+      if (isPathClear(head, currentFood[0] || {x:0, y:0}, currentSnake, tempObstacles)) {
+        return newObstacle;
+      }
+
+      attempts++;
+    }
+    return null;
+  }, [isOccupied, isPathClear]);
 
   const resetGame = () => {
     setSnake(INITIAL_SNAKE);
     setDirection(INITIAL_DIRECTION);
-    setFood(generateFood(INITIAL_SNAKE));
+    setNextDirection(INITIAL_DIRECTION);
+    setObstacles([]);
+    const initialFood = generateFood(INITIAL_SNAKE, []);
+    setFood(initialFood);
     setScore(0);
     setGameOver(false);
     setIsPlaying(true);
   };
 
-  const checkCollision = (head: Point, currentSnake: Point[]) => {
+  const checkCollision = (head: Point, currentSnake: Point[], currentObstacles: Point[]) => {
     // Wall collision
     if (head.x < 0 || head.x >= GRID_SIZE || head.y < 0 || head.y >= GRID_SIZE) {
       return true;
@@ -63,6 +151,11 @@ export default function SnakeGame() {
         return true;
       }
     }
+    // Obstacle collision
+    if (currentObstacles.some(o => o.x === head.x && o.y === head.y)) {
+      return true;
+    }
+
     return false;
   };
 
@@ -71,13 +164,15 @@ export default function SnakeGame() {
     if (!isPlaying || gameOver) return;
 
     const moveSnake = () => {
+      setDirection(nextDirection); // Apply buffered direction
+
       setSnake(prevSnake => {
         const newHead = {
-          x: prevSnake[0].x + direction.x,
-          y: prevSnake[0].y + direction.y
+          x: prevSnake[0].x + nextDirection.x,
+          y: prevSnake[0].y + nextDirection.y
         };
 
-        if (checkCollision(newHead, prevSnake)) {
+        if (checkCollision(newHead, prevSnake, obstacles)) {
           setGameOver(true);
           setIsPlaying(false);
           if (score > highScore) {
@@ -91,8 +186,21 @@ export default function SnakeGame() {
 
         // Check food collision
         if (newHead.x === food.x && newHead.y === food.y) {
-          setScore(s => s + 10);
-          setFood(generateFood(newSnake));
+          const newScore = score + 1;
+          setScore(newScore);
+
+          // Generate new food
+          setFood(generateFood(newSnake, obstacles));
+
+          // Generate obstacle logic: 30% chance every 5 points
+          if (newScore > 0 && newScore % 5 === 0) {
+             if (Math.random() > 0.7) {
+                const newObs = generateObstacles(newSnake, [food], obstacles);
+                if (newObs) {
+                  setObstacles(prev => [...prev, newObs]);
+                }
+             }
+          }
         } else {
           newSnake.pop(); // Remove tail
         }
@@ -103,7 +211,7 @@ export default function SnakeGame() {
 
     const gameInterval = setInterval(moveSnake, GAME_SPEED);
     return () => clearInterval(gameInterval);
-  }, [isPlaying, gameOver, direction, food, score, highScore, generateFood]);
+  }, [isPlaying, gameOver, nextDirection, food, score, highScore, obstacles, generateFood, generateObstacles]);
 
   // Keyboard Controls
   useEffect(() => {
@@ -114,18 +222,21 @@ export default function SnakeGame() {
 
       if (!isPlaying) return;
 
+      // Prevent 180 degree turns using current direction state isn't enough because of rapid key presses
+      // Use logic against the *current* direction, but set *nextDirection*
+
       switch (e.key) {
         case 'ArrowUp':
-          if (direction.y === 0) setDirection({ x: 0, y: -1 });
+          if (direction.y === 0) setNextDirection({ x: 0, y: -1 });
           break;
         case 'ArrowDown':
-          if (direction.y === 0) setDirection({ x: 0, y: 1 });
+          if (direction.y === 0) setNextDirection({ x: 0, y: 1 });
           break;
         case 'ArrowLeft':
-          if (direction.x === 0) setDirection({ x: -1, y: 0 });
+          if (direction.x === 0) setNextDirection({ x: -1, y: 0 });
           break;
         case 'ArrowRight':
-          if (direction.x === 0) setDirection({ x: 1, y: 0 });
+          if (direction.x === 0) setNextDirection({ x: 1, y: 0 });
           break;
       }
     };
@@ -141,12 +252,12 @@ export default function SnakeGame() {
     const ctx = canvas.getContext('2d');
     if (!ctx) return;
 
-    // Clear canvas
-    ctx.fillStyle = '#f9fafb'; // gray-50
+    // Clear canvas - Dark Theme
+    ctx.fillStyle = '#0f172a'; // slate-900
     ctx.fillRect(0, 0, CANVAS_SIZE, CANVAS_SIZE);
 
-    // Draw grid (optional, subtle)
-    ctx.strokeStyle = '#e5e7eb'; // gray-200
+    // Draw grid - Dark Theme
+    ctx.strokeStyle = '#1e293b'; // slate-800
     ctx.lineWidth = 1;
     for (let i = 0; i <= GRID_SIZE; i++) {
       ctx.beginPath();
@@ -159,8 +270,8 @@ export default function SnakeGame() {
       ctx.stroke();
     }
 
-    // Draw food
-    ctx.fillStyle = '#ef4444'; // red-500
+    // Draw food - Rose-500
+    ctx.fillStyle = '#f43f5e';
     ctx.beginPath();
     ctx.arc(
       food.x * CELL_SIZE + CELL_SIZE / 2,
@@ -170,28 +281,60 @@ export default function SnakeGame() {
       2 * Math.PI
     );
     ctx.fill();
+    // Food Glow
+    ctx.shadowColor = '#f43f5e';
+    ctx.shadowBlur = 10;
+    ctx.fill();
+    ctx.shadowBlur = 0;
 
-    // Draw snake
+    // Draw obstacles - Slate-600
+    obstacles.forEach(obs => {
+      ctx.fillStyle = '#475569';
+      ctx.fillRect(
+        obs.x * CELL_SIZE + 1,
+        obs.y * CELL_SIZE + 1,
+        CELL_SIZE - 2,
+        CELL_SIZE - 2
+      );
+      // X mark on obstacle
+      ctx.strokeStyle = '#94a3b8';
+      ctx.lineWidth = 2;
+      ctx.beginPath();
+      ctx.moveTo(obs.x * CELL_SIZE + 4, obs.y * CELL_SIZE + 4);
+      ctx.lineTo((obs.x + 1) * CELL_SIZE - 4, (obs.y + 1) * CELL_SIZE - 4);
+      ctx.moveTo((obs.x + 1) * CELL_SIZE - 4, obs.y * CELL_SIZE + 4);
+      ctx.lineTo(obs.x * CELL_SIZE + 4, (obs.y + 1) * CELL_SIZE - 4);
+      ctx.stroke();
+    });
+
+    // Draw snake - Emerald-500
     snake.forEach((segment, index) => {
-      ctx.fillStyle = index === 0 ? '#059669' : '#10b981'; // emerald-600 head, emerald-500 body
+      ctx.fillStyle = index === 0 ? '#10b981' : '#059669'; // Head vs Body
       ctx.fillRect(
         segment.x * CELL_SIZE + 1,
         segment.y * CELL_SIZE + 1,
         CELL_SIZE - 2,
         CELL_SIZE - 2
       );
+
+      // Draw eyes for head
+      if (index === 0) {
+        ctx.fillStyle = 'white';
+        // Simple logic to position eyes based on direction
+        // (Simplified: just draw two dots)
+        ctx.beginPath();
+        ctx.arc(segment.x * CELL_SIZE + 6, segment.y * CELL_SIZE + 6, 2, 0, Math.PI * 2);
+        ctx.arc(segment.x * CELL_SIZE + 14, segment.y * CELL_SIZE + 6, 2, 0, Math.PI * 2);
+        ctx.fill();
+      }
     });
 
-  }, [snake, food]);
+  }, [snake, food, obstacles]);
 
   return (
-    <div className="flex flex-col items-center w-full max-w-md mx-auto">
-      <div className="w-full flex justify-between items-center mb-4 px-2">
-        <div className="text-gray-600 font-medium">Score: <span className="text-primary-600 font-bold">{score}</span></div>
-        <div className="text-gray-500 text-sm">Best: {highScore}</div>
-      </div>
-
-      <div className="relative rounded-xl overflow-hidden shadow-lg border border-gray-200 bg-white">
+    <div className="flex flex-col md:flex-row items-start gap-8">
+      {/* Game Board */}
+      <div className="relative rounded-xl overflow-hidden shadow-2xl border border-slate-700 bg-slate-900">
         <canvas
           ref={canvasRef}
           width={CANVAS_SIZE}
@@ -200,25 +343,27 @@ export default function SnakeGame() {
         />
 
         {(!isPlaying && !gameOver) && (
-          <div className="absolute inset-0 bg-black/50 flex flex-col items-center justify-center text-white">
-            <h3 className="text-2xl font-bold mb-4">Snake Game</h3>
+          <div className="absolute inset-0 bg-black/60 flex flex-col items-center justify-center text-white backdrop-blur-sm">
+            <h3 className="text-3xl font-bold mb-6 font-display">Snake Game</h3>
             <button
               onClick={resetGame}
-              className="px-6 py-2 bg-primary-600 hover:bg-primary-700 rounded-full font-medium transition-colors flex items-center gap-2"
+              className="group px-8 py-3 bg-emerald-600 hover:bg-emerald-500 rounded-full font-bold transition-all flex items-center gap-2 shadow-lg hover:shadow-emerald-500/25 hover:scale-105"
             >
-              <Play size={20} /> Start Game
+              <Play size={24} className="fill-current" /> Start Game
             </button>
-            <p className="mt-4 text-sm text-gray-200">Use arrow keys to move</p>
+            <p className="mt-6 text-sm text-slate-300 flex items-center gap-2">
+              <span className="px-2 py-1 bg-slate-800 rounded border border-slate-700">Arrow Keys</span> to move
+            </p>
           </div>
         )}
 
         {gameOver && (
-          <div className="absolute inset-0 bg-black/60 flex flex-col items-center justify-center text-white">
-            <h3 className="text-3xl font-bold mb-2">Game Over!</h3>
-            <p className="mb-6 text-xl">Final Score: {score}</p>
+          <div className="absolute inset-0 bg-black/75 flex flex-col items-center justify-center text-white backdrop-blur-sm">
+            <h3 className="text-4xl font-bold mb-2 text-rose-500">Game Over!</h3>
+            <p className="mb-8 text-2xl font-light">Score: <span className="font-bold text-white">{score}</span></p>
             <button
               onClick={resetGame}
-              className="px-6 py-2 bg-white text-gray-900 hover:bg-gray-100 rounded-full font-medium transition-colors flex items-center gap-2"
+              className="px-8 py-3 bg-white text-slate-900 hover:bg-slate-200 rounded-full font-bold transition-all flex items-center gap-2 shadow-lg hover:scale-105"
             >
               <RotateCcw size={20} /> Play Again
             </button>
@@ -228,7 +373,7 @@ export default function SnakeGame() {
         {isPlaying && (
           <button
             onClick={() => setIsPlaying(false)}
-            className="absolute top-2 right-2 p-2 bg-white/80 hover:bg-white text-gray-700 rounded-full shadow-sm backdrop-blur-sm"
+            className="absolute top-4 right-4 p-2 bg-slate-800/80 hover:bg-slate-700 text-white rounded-full shadow-lg backdrop-blur-sm border border-slate-600 transition-colors"
             title="Pause"
           >
             <Pause size={20} />
@@ -236,20 +381,72 @@ export default function SnakeGame() {
         )}
 
         {!isPlaying && !gameOver && snake.length > 1 && (
-          <div className="absolute inset-0 bg-black/20 flex items-center justify-center">
+          <div className="absolute inset-0 bg-black/40 flex items-center justify-center backdrop-blur-[2px]">
              <button
               onClick={() => setIsPlaying(true)}
-              className="px-6 py-2 bg-primary-600 hover:bg-primary-700 text-white rounded-full font-medium transition-colors flex items-center gap-2 shadow-lg"
+              className="px-8 py-3 bg-emerald-600 hover:bg-emerald-500 text-white rounded-full font-bold transition-all flex items-center gap-2 shadow-lg hover:shadow-emerald-500/25 hover:scale-105"
             >
-              <Play size={20} /> Resume
+              <Play size={24} className="fill-current" /> Resume
             </button>
           </div>
         )}
       </div>
 
-      <div className="mt-6 flex gap-4">
-        <div className="text-sm text-gray-500 bg-gray-100 px-3 py-1 rounded-md">
-          Controls: Arrow Keys
+      {/* Info Panel (Right Side) */}
+      <div className="w-full md:w-64 space-y-6">
+        {/* Score Card */}
+        <div className="bg-slate-800/50 rounded-xl p-5 border border-slate-700 backdrop-blur-sm">
+          <div className="flex items-center justify-between mb-4">
+            <div className="text-slate-400 text-sm font-medium uppercase tracking-wider">Score</div>
+            <Trophy size={16} className="text-yellow-500" />
+          </div>
+          <div className="text-4xl font-bold text-white mb-2">{score}</div>
+          <div className="text-sm text-slate-400">Best: <span className="text-emerald-400 font-bold">{highScore}</span></div>
+        </div>
+
+        {/* Instructions Card */}
+        <div className="bg-slate-800/50 rounded-xl p-5 border border-slate-700 backdrop-blur-sm">
+          <div className="flex items-center gap-2 mb-3 text-white font-medium">
+            <Info size={18} className="text-blue-400" />
+            <span>How to Play</span>
+          </div>
+          <ul className="space-y-2 text-sm text-slate-400">
+            <li className="flex gap-2">
+              <span className="text-emerald-500">•</span>
+              <span>Eat <strong>Red Food</strong> to grow</span>
+            </li>
+            <li className="flex gap-2">
+              <span className="text-slate-500">•</span>
+              <span>Avoid <strong>Grey Obstacles</strong></span>
+            </li>
+            <li className="flex gap-2">
+              <span className="text-rose-500">•</span>
+              <span>Don't hit walls or yourself</span>
+            </li>
+          </ul>
+        </div>
+
+        {/* Difficulty Indicator */}
+        <div className="bg-slate-800/50 rounded-xl p-5 border border-slate-700 backdrop-blur-sm">
+           <div className="flex items-center gap-2 mb-3 text-white font-medium">
+            <Ghost size={18} className="text-purple-400" />
+            <span>Danger Level</span>
+          </div>
+          <div className="space-y-3">
+            <div className="flex justify-between text-xs text-slate-400">
+              <span>Obstacles</span>
+              <span className="text-white font-bold">{obstacles.length}</span>
+            </div>
+            <div className="w-full bg-slate-700 rounded-full h-1.5 overflow-hidden">
+              <div
+                className="bg-purple-500 h-full transition-all duration-500"
+                style={{ width: `${Math.min(obstacles.length * 10, 100)}%` }}
+              />
+            </div>
+            <p className="text-[10px] text-slate-500 leading-tight">
+              Obstacles may appear randomly every 5 points.
+            </p>
+          </div>
         </div>
       </div>
     </div>
