@@ -20,7 +20,10 @@
       "Bash(python:*)",
       "WebSearch",
       "Bash(ls:*)",
-      "Bash(read_file:*)"
+      "Bash(read_file:*)",
+      "Skill(commit-commands:commit-push-pr)",
+      "Skill(commit-commands:commit-push-pr:*)",
+      "Bash(git checkout:*)"
     ]
   }
 }

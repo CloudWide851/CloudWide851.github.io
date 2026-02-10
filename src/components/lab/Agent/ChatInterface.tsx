@@ -34,8 +34,10 @@ export default function ChatInterface({ messages, isLoading, status, onSendMessa
     }
   };
 
+  const isStreaming = messages.length > 0 && messages[messages.length - 1].role === 'assistant' && messages[messages.length - 1].content.length > 0;
+
   return (
-    <div className="flex flex-col h-[500px] bg-white rounded-lg border border-gray-200 overflow-hidden">
+    <div className="flex flex-col h-full bg-white dark:bg-zinc-900 rounded-lg border border-gray-200 dark:border-zinc-700 overflow-hidden">
       {/* Messages Area */}
       <div className="flex-1 overflow-y-auto p-4 space-y-6">
         {messages.map((msg) => (
@@ -49,7 +51,7 @@ export default function ChatInterface({ messages, isLoading, status, onSendMessa
             <div
               className={cn(
                 "w-8 h-8 rounded-full flex items-center justify-center flex-shrink-0 mt-1",
-                msg.role === 'user' ? "bg-primary-100 text-primary-600" : "bg-purple-100 text-purple-600"
+                msg.role === 'user' ? "bg-primary-100 text-primary-600" : "bg-purple-100 dark:bg-purple-900/30 text-purple-600 dark:text-purple-400"
               )}
             >
               {msg.role === 'user' ? <UserIcon size={18} /> : <Bot size={18} />}
@@ -61,13 +63,13 @@ export default function ChatInterface({ messages, isLoading, status, onSendMessa
                   "p-3 rounded-2xl text-sm leading-relaxed",
                   msg.role === 'user'
                     ? "bg-primary-600 text-white rounded-tr-none"
-                    : "bg-gray-100 text-gray-800 rounded-tl-none"
+                    : "bg-gray-100 dark:bg-zinc-800 text-gray-800 dark:text-gray-100 rounded-tl-none"
                 )}
               >
                 {msg.role === 'user' ? (
                   <p>{msg.content}</p>
                 ) : (
-                  <div className="prose prose-sm max-w-none prose-p:my-1 prose-headings:my-2">
+                  <div className="prose prose-sm dark:prose-invert max-w-none prose-p:my-1 prose-headings:my-2">
                     <ReactMarkdown
                       components={{
                         a: ({ node, href, children, ...props }) => {
@@ -79,7 +81,7 @@ export default function ChatInterface({ messages, isLoading, status, onSendMessa
                                   href={href}
                                   target="_blank"
                                   rel="noopener noreferrer"
-                                  className="text-primary-600 hover:text-primary-700 font-bold no-underline px-1 rounded hover:bg-primary-50 transition-colors cursor-pointer"
+                                  className="text-primary-600 dark:text-primary-400 hover:text-primary-700 dark:hover:text-primary-300 font-bold no-underline px-1 rounded hover:bg-primary-50 dark:hover:bg-primary-900/30 transition-colors cursor-pointer"
                                   {...props}
                                 >
                                   {children}
@@ -92,7 +94,7 @@ export default function ChatInterface({ messages, isLoading, status, onSendMessa
                               href={href}
                               target="_blank"
                               rel="noopener noreferrer"
-                              className="text-primary-600 hover:underline break-all"
+                              className="text-primary-600 dark:text-primary-400 hover:underline break-all"
                               {...props}
                             >
                               {children}
@@ -109,18 +111,18 @@ export default function ChatInterface({ messages, isLoading, status, onSendMessa
 
               {/* Citations / References */}
               {msg.citations && msg.citations.length > 0 && (
-                <div className="text-xs bg-gray-50 border border-gray-100 rounded-lg p-3 mt-1">
-                  <p className="font-semibold text-gray-500 mb-2 flex items-center gap-1">
+                <div className="text-xs bg-gray-50 dark:bg-zinc-800/50 border border-gray-100 dark:border-zinc-700/50 rounded-lg p-3 mt-1">
+                  <p className="font-semibold text-gray-500 dark:text-gray-400 mb-2 flex items-center gap-1">
                     <ExternalLink size={12} /> {t('agent.chat.references')}
                   </p>
-                  <ol className="list-decimal list-inside space-y-1 text-gray-600">
+                  <ol className="list-decimal list-inside space-y-1 text-gray-600 dark:text-gray-300">
                     {msg.citations.map((url, idx) => (
                       <li key={idx} className="truncate">
                         <a
                           href={url}
                           target="_blank"
                           rel="noopener noreferrer"
-                          className="text-primary-600 hover:underline"
+                          className="text-primary-600 dark:text-primary-400 hover:underline"
                         >
                           {url}
                         </a>
@@ -133,13 +135,13 @@ export default function ChatInterface({ messages, isLoading, status, onSendMessa
           </div>
         ))}
 
-        {isLoading && (
+        {isLoading && !isStreaming && (
           <div className="flex gap-3">
-             <div className="w-8 h-8 rounded-full bg-purple-100 text-purple-600 flex items-center justify-center flex-shrink-0 mt-1">
+             <div className="w-8 h-8 rounded-full bg-purple-100 dark:bg-purple-900/30 text-purple-600 dark:text-purple-400 flex items-center justify-center flex-shrink-0 mt-1">
               <Bot size={18} />
             </div>
             <div className="flex flex-col gap-1">
-              <div className="bg-gray-100 text-gray-500 p-3 rounded-2xl rounded-tl-none text-sm flex items-center gap-2">
+              <div className="bg-gray-100 dark:bg-zinc-800 text-gray-500 dark:text-gray-400 p-3 rounded-2xl rounded-tl-none text-sm flex items-center gap-2">
                 <Loader2 size={16} className="animate-spin" />
                 <span>{status || t('agent.chat.thinking')}</span>
               </div>
@@ -150,7 +152,7 @@ export default function ChatInterface({ messages, isLoading, status, onSendMessa
       </div>
 
       {/* Input Area */}
-      <div className="p-4 bg-gray-50 border-t border-gray-200">
+      <div className="p-4 bg-gray-50 dark:bg-zinc-900 border-t border-gray-200 dark:border-zinc-700">
         <form onSubmit={handleSubmit} className="flex gap-2">
           <input
             type="text"
@@ -158,7 +160,7 @@ export default function ChatInterface({ messages, isLoading, status, onSendMessa
             onChange={(e) => setInput(e.target.value)}
             placeholder={hasApiKey ? t('agent.chat.placeholder') : t('agent.welcome')}
             disabled={!hasApiKey || isLoading}
-            className="flex-1 px-4 py-2 border border-gray-300 rounded-full focus:outline-none focus:ring-2 focus:ring-primary-500 focus:border-transparent disabled:opacity-50 disabled:bg-gray-100 text-sm"
+            className="flex-1 px-4 py-2 border border-gray-300 dark:border-zinc-700 bg-white dark:bg-zinc-800 rounded-full focus:outline-none focus:ring-2 focus:ring-primary-500 dark:focus:ring-primary-600 focus:border-transparent disabled:opacity-50 disabled:bg-gray-100 dark:disabled:bg-zinc-800/50 text-sm dark:text-gray-100 dark:placeholder:text-gray-500"
           />
           <button
             type="submit"

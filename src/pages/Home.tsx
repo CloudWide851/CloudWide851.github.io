@@ -72,8 +72,8 @@ export default function Home() {
                     <h3 className="text-primary-400 font-medium mb-3 flex items-center gap-2 text-sm uppercase tracking-wider">
                       <Code2 size={16} /> About
                     </h3>
-                    <h2 className="text-3xl font-bold text-white mb-4 font-display">Code is my craft.</h2>
-                    <p className="text-gray-400 max-w-md leading-relaxed">
+                    <h2 className="text-3xl font-bold text-white mb-4 font-display break-words">Code is my craft.</h2>
+                    <p className="text-gray-400 max-w-md leading-relaxed break-words">
                       Specializing in React, TypeScript, and modern frontend architecture.
                       I transform complex requirements into elegant, high-performance interfaces.
                     </p>
