@@ -13,7 +13,6 @@ const GAME_SPEED = 150;
 type Point = { x: number; y: number };
 
 export default function SnakeGame() {
-  const { t } = useTranslation('lab');
   const canvasRef = useRef<HTMLCanvasElement>(null);
   const [snake, setSnake] = useState<Point[]>(INITIAL_SNAKE);
   const [food, setFood] = useState<Point>({ x: 15, y: 15 });

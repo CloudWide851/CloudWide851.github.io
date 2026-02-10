@@ -69,50 +69,6 @@ export function useAgent() {
 
   const processResponse = async (currentMessages: AgentMessage[], currentHistory: any[]) => {
     try {
-<<<<<<< Updated upstream
-      // 1. Check if search is needed - Aggressive trigger
-      // Search unless it's a simple greeting, acknowledgement, or very short message
-      const isSimpleChat = /^(hi|hello|hey|thanks|thank you|thx|ok|okay|got it|bye|good morning|good afternoon|good night)$/i.test(content.trim());
-      const shouldSearch = !isSimpleChat && content.length > 3; // Reduced threshold to capture short queries like "Apple stock"
-
-      // Dynamically update system prompt with current date
-      let systemContext = `${SYSTEM_PROMPT}\n\nCurrent Date: ${new Date().toLocaleDateString()} ${new Date().toLocaleTimeString()}`;
-      let citations: string[] = [];
-
-      if (shouldSearch) {
-        setStatus('Searching the web...');
-        // Force a small delay so UI updates to "Searching..." before the async call blocks
-        await new Promise(r => setTimeout(r, 100));
-
-        const results = await searchWeb(content);
-
-        // Validate URL results
-        const validResults = results.filter(r => {
-           try {
-             new URL(r.url);
-             return true;
-           } catch {
-             return false;
-           }
-        });
-
-        setSearchResults(validResults);
-
-        // Add search results to context
-        if (validResults.length > 0) {
-            systemContext += `\n\nSearch Results for "${content}" (Date: ${new Date().toISOString().split('T')[0]}):\n`;
-            validResults.forEach((result, index) => {
-            systemContext += `[${index + 1}] Title: ${result.title}\nURL: ${result.url}\nSnippet: ${result.snippet}\n\n`;
-            citations.push(result.url);
-            });
-        }
-      }
-
-      setStatus('Thinking...'); // Reset status for LLM generation
-
-      // 2. Call DeepSeek API with streaming
-=======
->>>>>>> Stashed changes
       const response = await fetch('https://api.deepseek.com/chat/completions', {
         method: 'POST',
         headers: {

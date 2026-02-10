@@ -12,8 +12,8 @@ export default function FloatingContactButton() {
 
   const email = "cloudwide851@gmail.com";
   const location = useLocation();
-  const inactivityTimerRef = useRef<NodeJS.Timeout | null>(null);
-  const tooltipTimerRef = useRef<NodeJS.Timeout | null>(null);
+  const inactivityTimerRef = useRef<ReturnType<typeof setTimeout> | null>(null);
+  const tooltipTimerRef = useRef<ReturnType<typeof setTimeout> | null>(null);
 
   // Auto-hide logic based on inactivity
   useEffect(() => {
