@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react';
-// import { useTranslation } from 'react-i18next';
+import { useTranslation } from 'react-i18next';
 import {
   Trash2,
   Edit2,
@@ -23,7 +23,7 @@ interface StorageItem {
 }
 
 export default function StorageManager() {
-  // const { t } = useTranslation();
+  const { t } = useTranslation('storage');
   const [items, setItems] = useState<StorageItem[]>([]);
   const [filter, setFilter] = useState('');
   const [newItemKey, setNewItemKey] = useState('');
@@ -49,14 +49,14 @@ export default function StorageManager() {
   }, []);
 
   const handleDelete = (key: string) => {
-    if (confirm(`Are you sure you want to delete "${key}"?`)) {
+    if (confirm(t('messages.deleteConfirm', { key }))) {
       localStorage.removeItem(key);
       loadItems();
     }
   };
 
   const handleClearAll = () => {
-    if (confirm('WARNING: This will delete ALL data including your API keys, game scores, and theme preferences. Are you sure?')) {
+    if (confirm(t('messages.clearAllConfirm'))) {
       localStorage.clear();
       loadItems();
       // Reload to reflect theme/lang changes if necessary, but maybe too disruptive
@@ -86,7 +86,7 @@ export default function StorageManager() {
   const handleAddItem = () => {
     if (!newItemKey.trim()) return;
     if (localStorage.getItem(newItemKey)) {
-      alert('Key already exists!');
+      alert(t('messages.keyExists'));
       return;
     }
     localStorage.setItem(newItemKey, newItemValue);
@@ -126,18 +126,18 @@ export default function StorageManager() {
       try {
         const json = JSON.parse(event.target?.result as string);
         if (typeof json === 'object' && json !== null) {
-          if (confirm('This will overwrite existing keys with the same name. Continue?')) {
+          if (confirm(t('messages.importConfirm'))) {
             Object.entries(json).forEach(([key, value]) => {
               if (typeof value === 'string') {
                 localStorage.setItem(key, value);
               }
             });
             loadItems();
-            alert('Import successful!');
+            alert(t('messages.importSuccess'));
           }
         }
       } catch (err) {
-        alert('Invalid JSON file');
+        alert(t('messages.invalidJson'));
       }
     };
     reader.readAsText(file);
@@ -161,10 +161,10 @@ export default function StorageManager() {
             <div className="p-2 bg-blue-100 dark:bg-blue-900/30 rounded-lg text-blue-600 dark:text-blue-400">
               <Database size={24} />
             </div>
-            Storage Manager
+            {t('title')}
           </h1>
           <p className="text-gray-500 dark:text-gray-400 mt-1">
-            Manage your local browser data including API keys, settings, and progress.
+            {t('description')}
           </p>
         </div>
 
@@ -173,17 +173,17 @@ export default function StorageManager() {
             onClick={handleExport}
             className="flex items-center gap-2 px-4 py-2 bg-white dark:bg-zinc-800 border border-gray-200 dark:border-zinc-700 rounded-lg text-sm font-medium hover:bg-gray-50 dark:hover:bg-zinc-700 transition-colors"
           >
-            <Download size={16} /> Export
+            <Download size={16} /> {t('buttons.export')}
           </button>
           <label className="flex items-center gap-2 px-4 py-2 bg-white dark:bg-zinc-800 border border-gray-200 dark:border-zinc-700 rounded-lg text-sm font-medium hover:bg-gray-50 dark:hover:bg-zinc-700 transition-colors cursor-pointer">
-            <Upload size={16} /> Import
+            <Upload size={16} /> {t('buttons.import')}
             <input type="file" accept=".json" onChange={handleImport} className="hidden" />
           </label>
           <button
             onClick={handleClearAll}
             className="flex items-center gap-2 px-4 py-2 bg-red-50 dark:bg-red-900/20 border border-red-200 dark:border-red-900/50 text-red-600 dark:text-red-400 rounded-lg text-sm font-medium hover:bg-red-100 dark:hover:bg-red-900/30 transition-colors"
           >
-            <Trash2 size={16} /> Clear All
+            <Trash2 size={16} /> {t('buttons.clearAll')}
           </button>
         </div>
       </div>
@@ -194,7 +194,7 @@ export default function StorageManager() {
           <Search className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-400" size={18} />
           <input
             type="text"
-            placeholder="Search keys or values..."
+            placeholder={t('placeholders.search')}
             value={filter}
             onChange={(e) => setFilter(e.target.value)}
             className="w-full pl-10 pr-4 py-2 bg-gray-50 dark:bg-zinc-800 border border-gray-200 dark:border-zinc-700 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500/20 focus:border-blue-500 transition-all"
@@ -210,7 +210,7 @@ export default function StorageManager() {
           )}
         >
           {isAdding ? <X size={18} /> : <Plus size={18} />}
-          {isAdding ? "Cancel" : "Add Key"}
+          {isAdding ? t('buttons.cancel') : t('buttons.addKey')}
         </button>
       </div>
 
@@ -219,20 +219,20 @@ export default function StorageManager() {
         <div className="bg-blue-50 dark:bg-blue-900/10 border border-blue-100 dark:border-blue-900/30 rounded-xl p-4 animate-in slide-in-from-top-2">
           <div className="grid grid-cols-1 md:grid-cols-12 gap-4 items-end">
             <div className="md:col-span-4 space-y-1">
-              <label className="text-xs font-medium text-blue-800 dark:text-blue-300 ml-1">Key Name</label>
+              <label className="text-xs font-medium text-blue-800 dark:text-blue-300 ml-1">{t('labels.keyName')}</label>
               <input
                 type="text"
-                placeholder="e.g., my_setting"
+                placeholder={t('placeholders.keyName')}
                 value={newItemKey}
                 onChange={(e) => setNewItemKey(e.target.value)}
                 className="w-full px-4 py-2 bg-white dark:bg-zinc-900 border border-blue-200 dark:border-blue-800 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
               />
             </div>
             <div className="md:col-span-6 space-y-1">
-              <label className="text-xs font-medium text-blue-800 dark:text-blue-300 ml-1">Value</label>
+              <label className="text-xs font-medium text-blue-800 dark:text-blue-300 ml-1">{t('labels.value')}</label>
               <input
                 type="text"
-                placeholder="Value..."
+                placeholder={t('placeholders.value')}
                 value={newItemValue}
                 onChange={(e) => setNewItemValue(e.target.value)}
                 className="w-full px-4 py-2 bg-white dark:bg-zinc-900 border border-blue-200 dark:border-blue-800 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
@@ -244,7 +244,7 @@ export default function StorageManager() {
                 disabled={!newItemKey.trim()}
                 className="w-full flex items-center justify-center gap-2 px-4 py-2 bg-blue-600 text-white rounded-lg font-medium hover:bg-blue-700 disabled:opacity-50 disabled:cursor-not-allowed transition-colors"
               >
-                <Save size={18} /> Save
+                <Save size={18} /> {t('buttons.save')}
               </button>
             </div>
           </div>
@@ -256,16 +256,16 @@ export default function StorageManager() {
         {filteredItems.length === 0 ? (
           <div className="p-12 text-center text-gray-500 dark:text-gray-400">
             <Database size={48} className="mx-auto mb-4 opacity-20" />
-            <p>No items found</p>
+            <p>{t('messages.noItems')}</p>
           </div>
         ) : (
           <div className="overflow-x-auto">
             <table className="w-full text-left text-sm">
               <thead className="bg-gray-50 dark:bg-zinc-800/50 border-b border-gray-200 dark:border-zinc-800">
                 <tr>
-                  <th className="px-6 py-3 font-medium text-gray-500 dark:text-gray-400">Key</th>
-                  <th className="px-6 py-3 font-medium text-gray-500 dark:text-gray-400">Value</th>
-                  <th className="px-6 py-3 font-medium text-gray-500 dark:text-gray-400 text-right">Actions</th>
+                  <th className="px-6 py-3 font-medium text-gray-500 dark:text-gray-400">{t('table.key')}</th>
+                  <th className="px-6 py-3 font-medium text-gray-500 dark:text-gray-400">{t('table.value')}</th>
+                  <th className="px-6 py-3 font-medium text-gray-500 dark:text-gray-400 text-right">{t('table.actions')}</th>
                 </tr>
               </thead>
               <tbody className="divide-y divide-gray-100 dark:divide-zinc-800">

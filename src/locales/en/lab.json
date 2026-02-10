@@ -14,6 +14,43 @@
     "faceRecognition": {
       "title": "3D Face Analysis",
       "description": "Real-time facial landmark detection and 3D mesh reconstruction using MediaPipe and React Three Fiber."
+    },
+    "codePractice": {
+      "title": "C Programming Practice",
+      "problems": "Problems",
+      "testCases": "Test Cases",
+      "input": "Input",
+      "expectedOutput": "Expected Output",
+      "empty": "(Empty)",
+      "hint": "Hint",
+      "difficulty": {
+        "easy": "Easy",
+        "medium": "Medium",
+        "hard": "Hard"
+      }
+    }
+  },
+  "codeRunner": {
+    "fileName": "main.c",
+    "status": {
+      "compilerError": "Compiler Error",
+      "loadingWasm": "Loading WASM...",
+      "compilerReady": "Compiler Ready"
+    },
+    "buttons": {
+      "resetCode": "Reset Code",
+      "run": "Run",
+      "running": "Running..."
+    },
+    "output": {
+      "title": "Terminal Output",
+      "placeholder": "Ready to compile. Click 'Run' to execute.",
+      "compiling": "Compiling and running...",
+      "loading": "Compiler is still loading... Please wait.",
+      "exitCode": "Program exited with code {{code}} (No output)",
+      "error": "Program exited with error code {{code}}",
+      "unknownError": "Unknown execution error",
+      "simulated": "Program Output (Simulated)"
     }
   },
   "agent": {

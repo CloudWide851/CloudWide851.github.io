@@ -1,0 +1,37 @@
+{
+  "title": "Storage Manager",
+  "description": "Manage your local browser data including API keys, settings, and progress.",
+  "buttons": {
+    "export": "Export",
+    "import": "Import",
+    "clearAll": "Clear All",
+    "addKey": "Add Key",
+    "cancel": "Cancel",
+    "save": "Save",
+    "edit": "Edit",
+    "delete": "Delete"
+  },
+  "table": {
+    "key": "Key",
+    "value": "Value",
+    "actions": "Actions"
+  },
+  "placeholders": {
+    "search": "Search keys or values...",
+    "keyName": "e.g., my_setting",
+    "value": "Value..."
+  },
+  "labels": {
+    "keyName": "Key Name",
+    "value": "Value"
+  },
+  "messages": {
+    "noItems": "No items found",
+    "deleteConfirm": "Are you sure you want to delete \"{{key}}\"?",
+    "clearAllConfirm": "WARNING: This will delete ALL data including your API keys, game scores, and theme preferences. Are you sure?",
+    "keyExists": "Key already exists!",
+    "importConfirm": "This will overwrite existing keys with the same name. Continue?",
+    "importSuccess": "Import successful!",
+    "invalidJson": "Invalid JSON file"
+  }
+}

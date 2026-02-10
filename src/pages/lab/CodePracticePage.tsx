@@ -1,20 +1,17 @@
-import { useState, useEffect } from 'react';
+import { useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { Link } from 'react-router-dom';
-import { ArrowLeft, Code, ChevronRight } from 'lucide-react';
+import { ArrowLeft, Code, Check, ChevronsUpDown } from 'lucide-react';
 import { cn } from '@/lib/utils';
 import { practiceProblems } from '@/data/practiceProblems';
 import type { PracticeProblem, Difficulty } from '@/data/practiceProblems';
-import CodeRunner from '@/components/blog/CodeRunner'; // We'll reuse the improved CodeRunner or a variation
+import CodeRunner from '@/components/blog/CodeRunner';
+import { Combobox, ComboboxButton, ComboboxInput, ComboboxOption, ComboboxOptions } from '@headlessui/react';
 
 export default function CodePracticePage() {
   const { t } = useTranslation('lab');
   const [selectedProblem, setSelectedProblem] = useState<PracticeProblem>(practiceProblems[0]);
-
-  // Reset code when problem changes
-  useEffect(() => {
-    // Logic handled by key prop on CodeRunner
-  }, [selectedProblem]);
+  const [query, setQuery] = useState('');
 
   const difficultyColor = (diff: Difficulty) => {
     switch (diff) {
@@ -23,6 +20,13 @@ export default function CodePracticePage() {
       case 'hard': return 'text-red-500 bg-red-50 dark:bg-red-900/20 border-red-200 dark:border-red-900';
     }
   };
+
+  const filteredProblems =
+    query === ''
+      ? practiceProblems
+      : practiceProblems.filter((problem) => {
+          return problem.title.toLowerCase().includes(query.toLowerCase());
+        });
 
   return (
     <div className="h-full flex-1 bg-gray-50 dark:bg-zinc-950 flex flex-col font-sans overflow-hidden">
@@ -49,94 +53,127 @@ export default function CodePracticePage() {
         </div>
       </header>
 
-      {/* Main Content */}
-      <main className="flex-1 max-w-7xl mx-auto w-full p-4 md:p-6 overflow-hidden flex flex-col md:flex-row gap-6">
+      {/* Main Content - Two Column Layout */}
+      <main className="flex-1 max-w-7xl mx-auto w-full flex flex-col lg:flex-row overflow-hidden">
 
-        {/* Sidebar: Problem List */}
-        <div className="w-full md:w-80 flex-shrink-0 flex flex-col gap-4 overflow-hidden">
-          <div className="bg-white dark:bg-zinc-900 rounded-xl border border-gray-200 dark:border-zinc-800 flex-1 flex flex-col overflow-hidden shadow-sm">
-            <div className="p-4 border-b border-gray-200 dark:border-zinc-800 font-bold text-gray-700 dark:text-gray-200">
-              Problems
-            </div>
-            <div className="flex-1 overflow-y-auto p-2 space-y-1">
-              {practiceProblems.map(problem => (
-                <button
-                  key={problem.id}
-                  onClick={() => setSelectedProblem(problem)}
-                  className={cn(
-                    "w-full text-left px-3 py-3 rounded-lg flex items-center justify-between transition-colors",
-                    selectedProblem.id === problem.id
-                      ? "bg-blue-50 dark:bg-blue-900/20 border border-blue-200 dark:border-blue-900/50"
-                      : "hover:bg-gray-50 dark:hover:bg-zinc-800 border border-transparent"
+        {/* LEFT: Description Panel */}
+        <div className="w-full lg:w-1/2 flex flex-col border-r border-gray-200 dark:border-zinc-800 bg-white dark:bg-zinc-900 overflow-y-auto">
+
+          {/* Problem Selector Dropdown */}
+          <div className="p-4 border-b border-gray-100 dark:border-zinc-800 sticky top-0 bg-white/95 dark:bg-zinc-900/95 backdrop-blur z-20">
+            <Combobox value={selectedProblem} onChange={(val) => val && setSelectedProblem(val)}>
+              <div className="relative">
+                <div className="relative w-full cursor-default overflow-hidden rounded-lg bg-gray-50 dark:bg-zinc-800 border border-gray-200 dark:border-zinc-700 text-left focus:outline-none focus-visible:ring-2 focus-visible:ring-white/75 focus-visible:ring-offset-2 focus-visible:ring-offset-blue-300 sm:text-sm">
+                  <ComboboxInput
+                    className="w-full border-none py-2.5 pl-3 pr-10 text-sm leading-5 text-gray-900 dark:text-gray-100 bg-transparent focus:ring-0 focus:outline-none"
+                    displayValue={(problem: PracticeProblem) => problem.title}
+                    onChange={(event) => setQuery(event.target.value)}
+                    placeholder={t('experiments.codePractice.problems', 'Search problems...')}
+                  />
+                  <ComboboxButton className="absolute inset-y-0 right-0 flex items-center pr-2">
+                    <ChevronsUpDown
+                      className="h-5 w-5 text-gray-400"
+                      aria-hidden="true"
+                    />
+                  </ComboboxButton>
+                </div>
+                <ComboboxOptions className="absolute mt-1 max-h-60 w-full overflow-auto rounded-md bg-white dark:bg-zinc-800 py-1 text-base shadow-lg ring-1 ring-black/5 focus:outline-none sm:text-sm z-50">
+                  {filteredProblems.length === 0 && query !== '' ? (
+                    <div className="relative cursor-default select-none py-2 px-4 text-gray-700 dark:text-gray-300">
+                      Nothing found.
+                    </div>
+                  ) : (
+                    filteredProblems.map((problem) => (
+                      <ComboboxOption
+                        key={problem.id}
+                        className={({ active }) =>
+                          `relative cursor-default select-none py-2 pl-10 pr-4 ${
+                            active ? 'bg-blue-600 text-white' : 'text-gray-900 dark:text-gray-100'
+                          }`
+                        }
+                        value={problem}
+                      >
+                        {({ selected, active }) => (
+                          <>
+                            <span className={`block truncate ${selected ? 'font-medium' : 'font-normal'}`}>
+                              {problem.title}
+                            </span>
+                            <span className={cn(
+                                "absolute right-4 top-1/2 -translate-y-1/2 text-xs px-2 py-0.5 rounded-full border opacity-80",
+                                active ? "border-white/50" : difficultyColor(problem.difficulty)
+                              )}>
+                                {t(`experiments.codePractice.difficulty.${problem.difficulty}`, problem.difficulty)}
+                            </span>
+                            {selected ? (
+                              <span
+                                className={`absolute inset-y-0 left-0 flex items-center pl-3 ${
+                                  active ? 'text-white' : 'text-blue-600'
+                                }`}
+                              >
+                                <Check className="h-5 w-5" aria-hidden="true" />
+                              </span>
+                            ) : null}
+                          </>
+                        )}
+                      </ComboboxOption>
+                    ))
                   )}
-                >
-                  <div className="flex-1 min-w-0">
-                    <div className={cn("font-medium truncate", selectedProblem.id === problem.id ? "text-blue-700 dark:text-blue-300" : "text-gray-700 dark:text-gray-300")}>
-                      {problem.title}
-                    </div>
-                    <div className="text-xs text-gray-400 mt-0.5 flex gap-2">
-                      <span className={cn("capitalize", difficultyColor(problem.difficulty).split(' ')[0])}>
-                        {problem.difficulty}
-                      </span>
-                      <span>•</span>
-                      <span>{problem.category}</span>
-                    </div>
-                  </div>
-                  {selectedProblem.id === problem.id && <ChevronRight size={16} className="text-blue-500" />}
-                </button>
-              ))}
-            </div>
+                </ComboboxOptions>
+              </div>
+            </Combobox>
           </div>
-        </div>
 
-        {/* Editor & Description */}
-        <div className="flex-1 flex flex-col min-w-0 gap-6 overflow-y-auto">
-
-          {/* Problem Description */}
-          <div className="bg-white dark:bg-zinc-900 rounded-xl border border-gray-200 dark:border-zinc-800 p-6 shadow-sm">
+          {/* Problem Content */}
+          <div className="p-6 md:p-8">
             <div className="flex items-center justify-between mb-4">
               <h2 className="text-2xl font-bold text-gray-900 dark:text-white">{selectedProblem.title}</h2>
               <span className={cn("px-3 py-1 rounded-full text-xs font-bold uppercase tracking-wide border", difficultyColor(selectedProblem.difficulty))}>
-                {selectedProblem.difficulty}
+                {t(`experiments.codePractice.difficulty.${selectedProblem.difficulty}`, selectedProblem.difficulty)}
               </span>
             </div>
-            <p className="text-gray-600 dark:text-gray-300 leading-relaxed mb-6">
-              {selectedProblem.description}
-            </p>
 
-            <div className="space-y-3">
-              <h3 className="font-bold text-sm text-gray-900 dark:text-white uppercase tracking-wider">Test Cases</h3>
+            <div className="prose dark:prose-invert max-w-none mb-8">
+              <p className="text-gray-600 dark:text-gray-300 leading-relaxed text-base">
+                {selectedProblem.description}
+              </p>
+            </div>
+
+            <div className="space-y-4">
+              <h3 className="font-bold text-sm text-gray-900 dark:text-white uppercase tracking-wider flex items-center gap-2">
+                {t('experiments.codePractice.testCases', 'Test Cases')}
+              </h3>
               <div className="grid gap-3">
                 {selectedProblem.testCases.map((test, i) => (
-                  <div key={i} className="bg-gray-50 dark:bg-zinc-800/50 rounded-lg p-3 text-sm font-mono border border-gray-100 dark:border-zinc-800 flex gap-4">
+                  <div key={i} className="bg-gray-50 dark:bg-zinc-800/50 rounded-lg p-4 text-sm font-mono border border-gray-100 dark:border-zinc-800 flex flex-col sm:flex-row gap-4">
                     <div className="flex-1">
-                      <div className="text-xs text-gray-400 mb-1">Input</div>
-                      <div className="text-gray-800 dark:text-gray-200">{test.input || "(Empty)"}</div>
+                      <div className="text-xs text-gray-400 mb-1 font-sans">{t('experiments.codePractice.input', 'Input')}</div>
+                      <div className="text-gray-800 dark:text-gray-200 bg-white dark:bg-zinc-900 px-2 py-1 rounded border border-gray-200 dark:border-zinc-700">
+                        {test.input || <span className="text-gray-400 italic">{t('experiments.codePractice.empty', '(Empty)')}</span>}
+                      </div>
                     </div>
                     <div className="flex-1">
-                      <div className="text-xs text-gray-400 mb-1">Expected Output</div>
-                      <div className="text-gray-800 dark:text-gray-200">{test.expectedOutput}</div>
+                      <div className="text-xs text-gray-400 mb-1 font-sans">{t('experiments.codePractice.expectedOutput', 'Expected Output')}</div>
+                      <div className="text-gray-800 dark:text-gray-200 bg-white dark:bg-zinc-900 px-2 py-1 rounded border border-gray-200 dark:border-zinc-700">
+                        {test.expectedOutput}
+                      </div>
                     </div>
                   </div>
                 ))}
               </div>
             </div>
           </div>
-
-          {/* Code Editor */}
-          <div className="flex-1 flex flex-col">
-             {/* We'll use the modified CodeRunner here, but we need to inject the WASM logic later */}
-             {/* For now, just rendering the CodeRunner in 'controlled' mode if possible, or we might need to modify it to accept external state */}
-             {/* Actually, CodeRunner manages its own state. Let's modify CodeRunner to be more flexible or wrap it here. */}
-             {/* Given the plan to overhaul CodeRunner for WASM, let's place a placeholder here that will be the "WASM Runner" */}
-             <CodeRunner
-                key={selectedProblem.id} // Force reset on problem change
-                initialCode={selectedProblem.initialCode}
-                language="c"
-             />
-          </div>
-
         </div>
+
+        {/* RIGHT: Editor Panel */}
+        <div className="w-full lg:w-1/2 flex flex-col bg-gray-50 dark:bg-zinc-950 overflow-hidden h-[500px] lg:h-auto border-t lg:border-t-0 lg:border-l border-gray-200 dark:border-zinc-800">
+           <CodeRunner
+              key={selectedProblem.id}
+              initialCode={selectedProblem.initialCode}
+              language="c"
+              className="h-full my-0 rounded-none border-0"
+           />
+        </div>
+
       </main>
     </div>
   );

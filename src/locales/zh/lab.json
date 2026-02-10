@@ -14,6 +14,43 @@
     "faceRecognition": {
       "title": "3D 人脸分析",
       "description": "使用 MediaPipe 和 React Three Fiber 进行实时人脸特征点检测和 3D 网格重建。"
+    },
+    "codePractice": {
+      "title": "C 语言编程练习",
+      "problems": "问题列表",
+      "testCases": "测试用例",
+      "input": "输入",
+      "expectedOutput": "预期输出",
+      "empty": "(空)",
+      "hint": "提示",
+      "difficulty": {
+        "easy": "简单",
+        "medium": "中等",
+        "hard": "困难"
+      }
+    }
+  },
+  "codeRunner": {
+    "fileName": "main.c",
+    "status": {
+      "compilerError": "编译器错误",
+      "loadingWasm": "加载 WASM 中...",
+      "compilerReady": "编译器就绪"
+    },
+    "buttons": {
+      "resetCode": "重置代码",
+      "run": "运行",
+      "running": "运行中..."
+    },
+    "output": {
+      "title": "终端输出",
+      "placeholder": "准备编译。点击“运行”开始执行。",
+      "compiling": "编译并运行中...",
+      "loading": "编译器仍在加载中... 请稍候。",
+      "exitCode": "程序退出，代码 {{code}}（无输出）",
+      "error": "程序退出，错误代码 {{code}}",
+      "unknownError": "未知执行错误",
+      "simulated": "程序输出（模拟）"
     }
   },
   "agent": {

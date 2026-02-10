@@ -13,6 +13,7 @@ import FaceRecognitionPage from '@/pages/lab/FaceRecognitionPage';
 import CodePracticePage from '@/pages/lab/CodePracticePage';
 import Resume from '@/pages/Resume';
 import Creative from '@/pages/Creative';
+import StorageManager from '@/pages/StorageManager';
 import NotFound from '@/pages/NotFound';
 
 const router = createBrowserRouter([
@@ -72,6 +73,10 @@ const router = createBrowserRouter([
       {
         path: 'creative',
         element: <Creative />,
+      },
+      {
+        path: 'storage',
+        element: <StorageManager />,
       },
     ],
   },
