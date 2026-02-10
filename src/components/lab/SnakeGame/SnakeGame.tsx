@@ -1,6 +1,5 @@
 import { useState, useEffect, useRef, useCallback } from 'react';
 import { Play, Pause, RotateCcw, Info, Trophy, Ghost } from 'lucide-react';
-import { useTranslation } from 'react-i18next';
 
 // Game constants
 const CANVAS_SIZE = 400;

@@ -26,6 +26,18 @@ This file records the context, architectural decisions, and operation logs for t
   - **Layout**: Avoid fixed heights in main content areas; use `flex-1 h-full` for app-like layouts.
   - **LLM Context**: Dynamic data (like time) must be injected at runtime, not hardcoded in prompts.
 
+### 2026-02-10: Feature - Agent Tool Loop & Game Mechanics
+- **Task**: Fix Agent search execution, redesign Snake Game, optimize Contact Button.
+- **Changes**:
+  - **Agent**: Refactored `useAgent.ts` to parse streaming responses for `<search>` tags. Implemented recursive `processResponse` loop to feed search results back to the LLM.
+  - **Snake Game**:
+    - **Algorithmic**: Implemented BFS pathfinding (`isPathClear`) to validate obstacle placement.
+    - **Visuals**: Switched to Slate-900 dark theme.
+  - **Contact Button**: Added `useRef` timers for inactivity (5s) and tooltip delay (1.5s).
+- **Fixes**:
+  - Resolved `TS2503` (NodeJS namespace) by using `ReturnType<typeof setTimeout>`.
+  - Resolved `TS6133` (unused variable) in `SnakeGame.tsx`.
+
 ### 2026-02-10: Web Search Agent Performance & UX Overhaul
 - **Task**: Fix search trigger logic, optimize performance, redesign layout
 - **Changes**:

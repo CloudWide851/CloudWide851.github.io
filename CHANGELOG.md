@@ -8,6 +8,17 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ## [Unreleased]
 
 ### Fixed
+- **Build System**: Resolved `TS6133` error in `SnakeGame.tsx` by removing unused `useTranslation` import.
+
+### Changed
+- **Web Search Agent**: Implemented "True Tool Use" architecture. The Agent now outputs `<search>` tags which are intercepted by the client to perform real-time searches, fixing the issue where it would hallucinate performing a search.
+- **Snake Game**:
+  - Redesigned layout to a horizontal split (Game Left, Info Right).
+  - Implemented Dark Theme for the canvas to match the site aesthetic.
+  - Added "Safe Obstacle Generation" using BFS pathfinding to ensure obstacles never block the path to food.
+- **Contact Button**: Added "Smart Visibility" - button auto-hides after 5s of inactivity or on route change. Tooltip has a 1.5s delay to prevent visual clutter.
+
+### Fixed
 - **Dark Mode**: Fixed theme toggle not working by adding `darkMode: 'class'` to Tailwind configuration.
   - Root cause: Tailwind CSS was not configured to enable class-based dark mode strategy.
   - Theme toggle button was showing animation but not actually applying dark styles.
