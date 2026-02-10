@@ -9,6 +9,23 @@ This file records the context, architectural decisions, and operation logs for t
 - **Design Style**: Modern Minimalist (Linear/Vercel inspired)
 
 ## Operation Logs
+### 2026-02-10: Complete UI/UX Overhaul & Agent Fixes
+- **Task**: Fix Home page text wrapping, Agent dark mode, layout, time context, and URL cards.
+- **Changes**:
+  - **Home**: Added `break-words whitespace-pre-wrap` to Hero titles and Bento cards.
+  - **Agent UI**:
+    - **Dark Mode**: Added missing `dark:` classes to ChatInterface (bg, text, prose, input).
+    - **Layout**: Changed fixed height `h-[500px]` to `h-full` for adaptive sizing.
+    - **Streaming**: Hided "Thinking" status when `isStreaming` is true.
+    - **Cards**: Converted SearchResultsPreview to vertical stack layout.
+  - **Agent Logic**:
+    - **Time**: Injected `new Date()` into System Prompt and Search Context.
+    - **Validation**: Added URL validity check for search results.
+- **Lessons**:
+  - **Dark Mode**: Always test new components in dark mode; `prose-invert` is essential for markdown.
+  - **Layout**: Avoid fixed heights in main content areas; use `flex-1 h-full` for app-like layouts.
+  - **LLM Context**: Dynamic data (like time) must be injected at runtime, not hardcoded in prompts.
+
 ### 2026-02-10: Web Search Agent Performance & UX Overhaul
 - **Task**: Fix search trigger logic, optimize performance, redesign layout
 - **Changes**:

@@ -89,7 +89,8 @@ export function useAgent() {
       const isSimpleChat = /^(hi|hello|hey|thanks|thank you|thx|ok|okay|got it|bye|good morning|good afternoon|good night)$/i.test(content.trim());
       const shouldSearch = !isSimpleChat && content.length > 3; // Reduced threshold to capture short queries like "Apple stock"
 
-      let systemContext = SYSTEM_PROMPT;
+      // Dynamically update system prompt with current date
+      let systemContext = `${SYSTEM_PROMPT}\n\nCurrent Date: ${new Date().toLocaleDateString()} ${new Date().toLocaleTimeString()}`;
       let citations: string[] = [];
 
       if (shouldSearch) {
@@ -98,12 +99,23 @@ export function useAgent() {
         await new Promise(r => setTimeout(r, 100));
 
         const results = await searchWeb(content);
-        setSearchResults(results);
+
+        // Validate URL results
+        const validResults = results.filter(r => {
+           try {
+             new URL(r.url);
+             return true;
+           } catch {
+             return false;
+           }
+        });
+
+        setSearchResults(validResults);
 
         // Add search results to context
-        if (results.length > 0) {
-            systemContext += `\n\nSearch Results for "${content}":\n`;
-            results.forEach((result, index) => {
+        if (validResults.length > 0) {
+            systemContext += `\n\nSearch Results for "${content}" (Date: ${new Date().toISOString().split('T')[0]}):\n`;
+            validResults.forEach((result, index) => {
             systemContext += `[${index + 1}] Title: ${result.title}\nURL: ${result.url}\nSnippet: ${result.snippet}\n\n`;
             citations.push(result.url);
             });
