@@ -129,5 +129,81 @@ int main() {
       { input: '-5 5', expectedOutput: '5 -5' }
     ],
     hint: 'Use a temporary variable to hold one value while swapping.'
+  },
+  {
+    id: 'factorial',
+    title: 'Factorial Calculator',
+    description: 'Write a function that calculates the factorial of a number n (n!). Factorial of n is n * (n-1) * ... * 1. For n=0, factorial is 1.',
+    difficulty: 'medium',
+    category: 'Loops',
+    initialCode: `#include <stdio.h>
+
+long factorial(int n) {
+    // Implement factorial logic
+    return 0;
+}
+
+int main() {
+    int n;
+    scanf("%d", &n);
+
+    printf("%ld", factorial(n));
+    return 0;
+}`,
+    testCases: [
+      { input: '5', expectedOutput: '120' },
+      { input: '0', expectedOutput: '1' },
+      { input: '10', expectedOutput: '3628800' }
+    ]
+  },
+  {
+    id: 'check-prime',
+    title: 'Check Prime Number',
+    description: 'Write a program to check if a given integer n is prime. Print 1 if prime, 0 otherwise. A prime number is only divisible by 1 and itself.',
+    difficulty: 'medium',
+    category: 'Algorithms',
+    initialCode: `#include <stdio.h>
+
+int isPrime(int n) {
+    // Return 1 if prime, 0 if not
+    return 0;
+}
+
+int main() {
+    int n;
+    scanf("%d", &n);
+
+    printf("%d", isPrime(n));
+    return 0;
+}`,
+    testCases: [
+      { input: '7', expectedOutput: '1' },
+      { input: '10', expectedOutput: '0' },
+      { input: '23', expectedOutput: '1' },
+      { input: '1', expectedOutput: '0' }
+    ]
+  },
+  {
+    id: 'palindrome-check',
+    title: 'Palindrome Check',
+    description: 'Check if a given string is a palindrome (reads the same forwards and backwards). Print 1 if it is, 0 otherwise.',
+    difficulty: 'hard',
+    category: 'Strings',
+    initialCode: `#include <stdio.h>
+#include <string.h>
+
+int main() {
+    char str[100];
+    scanf("%s", str);
+
+    // Check if palindrome
+
+    return 0;
+}`,
+    testCases: [
+      { input: 'racecar', expectedOutput: '1' },
+      { input: 'hello', expectedOutput: '0' },
+      { input: 'madam', expectedOutput: '1' }
+    ]
   }
 ];

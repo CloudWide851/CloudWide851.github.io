@@ -9,6 +9,21 @@ This file records the context, architectural decisions, and operation logs for t
 - **Design Style**: Modern Minimalist (Linear/Vercel inspired)
 
 ## Operation Logs
+### 2026-02-10: UX Optimization - Agent & Code Practice
+- **Task**: Optimize Agent search experience, remove scrollbars, improve Code Practice layout, and add more problems.
+- **Changes**:
+  - **Agent**:
+    - **Ephemeral Status**: "Searching..." is now a temporary UI state (like "Thinking") instead of a permanent message.
+    - **Scroll**: Moved scrollbar inside the chat container (`h-[100dvh]`) to eliminate window scrolling.
+    - **Prompt**: Updated system prompt to prevent conversational filler when using tools.
+  - **Code Practice**:
+    - **Layout**: Adjusted split view to 1/3 (Description) and 2/3 (Editor).
+    - **Performance**: Removed artificial 1.5s WASM loading delay.
+    - **Content**: Added 3 new problems (Factorial, Prime Check, Palindrome).
+- **Architectural Decisions**:
+  - **Ephemeral UI**: Search actions are "meta-actions" and shouldn't pollute the chat history. Using a temporary status indicator provides feedback without clutter.
+  - **Layout**: Code editors require significant horizontal space; giving 2/3 width to the editor prioritizes the primary task (coding) over reading instructions.
+
 ### 2026-02-10: Major Feature - WASM Compiler & Storage Manager
 - **Task**: Replace Judge0, add Storage Manager, Code Practice page, and Pointers tutorial.
 - **Changes**:

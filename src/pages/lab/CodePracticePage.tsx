@@ -57,7 +57,7 @@ export default function CodePracticePage() {
       <main className="flex-1 max-w-7xl mx-auto w-full flex flex-col lg:flex-row overflow-hidden">
 
         {/* LEFT: Description Panel */}
-        <div className="w-full lg:w-1/2 flex flex-col border-r border-gray-200 dark:border-zinc-800 bg-white dark:bg-zinc-900 overflow-y-auto">
+        <div className="w-full lg:w-1/3 flex flex-col border-r border-gray-200 dark:border-zinc-800 bg-white dark:bg-zinc-900 overflow-y-auto">
 
           {/* Problem Selector Dropdown */}
           <div className="p-4 border-b border-gray-100 dark:border-zinc-800 sticky top-0 bg-white/95 dark:bg-zinc-900/95 backdrop-blur z-20">
@@ -165,7 +165,7 @@ export default function CodePracticePage() {
         </div>
 
         {/* RIGHT: Editor Panel */}
-        <div className="w-full lg:w-1/2 flex flex-col bg-gray-50 dark:bg-zinc-950 overflow-hidden h-[500px] lg:h-auto border-t lg:border-t-0 lg:border-l border-gray-200 dark:border-zinc-800">
+        <div className="w-full lg:w-2/3 flex flex-col bg-gray-50 dark:bg-zinc-950 overflow-hidden h-[500px] lg:h-auto border-t lg:border-t-0 lg:border-l border-gray-200 dark:border-zinc-800">
            <CodeRunner
               key={selectedProblem.id}
               initialCode={selectedProblem.initialCode}

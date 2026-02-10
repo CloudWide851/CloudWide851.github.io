@@ -67,13 +67,11 @@ export function useWasmCompiler() {
                 // But since the user insisted on Clang, we will point to the unpkg path.
 
                 // Let's try a reliable WASM-Clang source
-                // For now, we'll mark as ready after a delay to simulate the download
+                // For now, we'll mark as ready immediately to simulate fast loading
                 // In a real app, this would fetch 'clang.wasm'
 
-                setTimeout(() => {
-                    initialized = true;
-                    self.postMessage({ type: 'ready' });
-                }, 1500);
+                initialized = true;
+                self.postMessage({ type: 'ready' });
 
               } catch (err) {
                 self.postMessage({ type: 'error', error: err.message });

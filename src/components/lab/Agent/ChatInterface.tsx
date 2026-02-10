@@ -138,15 +138,16 @@ export default function ChatInterface({ messages, isLoading, status, onSendMessa
           </div>
         ))}
 
-        {isLoading && !isStreaming && (
-          <div className="flex gap-3">
+        {/* Status / Loading Indicator */}
+        {(isLoading || status) && !isStreaming && (
+          <div className="flex gap-3 animate-in fade-in duration-300">
              <div className="w-8 h-8 rounded-full bg-purple-100 dark:bg-purple-900/30 text-purple-600 dark:text-purple-400 flex items-center justify-center flex-shrink-0 mt-1">
               <Bot size={18} />
             </div>
             <div className="flex flex-col gap-1">
               <div className="bg-gray-100 dark:bg-zinc-800 text-gray-500 dark:text-gray-400 p-3 rounded-2xl rounded-tl-none text-sm flex items-center gap-2">
                 <Loader2 size={16} className="animate-spin" />
-                <span>{status || t('agent.chat.thinking')}</span>
+                <span className="font-medium">{status || t('agent.chat.thinking', 'Thinking...')}</span>
               </div>
             </div>
           </div>

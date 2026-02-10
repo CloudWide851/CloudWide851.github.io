@@ -6,6 +6,7 @@ import { searchWeb } from '../tools/searchTool';
 const SYSTEM_PROMPT = `You are a helpful AI assistant powered by DeepSeek.
 You have access to a web search tool.
 To search the web, output specific XML tags: <search><query>your search terms</query></search>.
+IMPORTANT: When you decide to search, output ONLY the search tag. Do not output any conversational text like "I will search for..." before or after the tag.
 I will intercept these tags, perform the search, and provide you with the results.
 After you receive the results, use them to answer the user's question.
 Always cite your sources using markdown links like [1](url).
@@ -143,6 +144,13 @@ export function useAgent() {
       if (searchMatch) {
         const query = searchMatch[1].trim();
         setStatus(`Searching for: ${query}...`);
+
+        // CLEAR the assistant message content so "I will search..." doesn't show
+        setMessages(prev => prev.map(msg =>
+          msg.id === assistantMsgId
+            ? { ...msg, content: '' } // Clear content completely while searching
+            : msg
+        ));
 
         // Force a small delay to update UI
         await new Promise(r => setTimeout(r, 100));

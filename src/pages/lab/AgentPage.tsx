@@ -16,7 +16,7 @@ export default function AgentPage() {
   } = useAgent();
 
   return (
-    <div className="h-full flex-1 bg-gradient-to-b from-gray-50 to-white flex flex-col font-sans overflow-hidden">
+    <div className="h-[100dvh] flex-1 bg-gradient-to-b from-gray-50 to-white flex flex-col font-sans overflow-hidden">
       {/* Header with Toolbar */}
       <header className="bg-white/50 backdrop-blur-xl border-b border-gray-100 sticky top-0 z-20 shrink-0">
         <div className="max-w-6xl mx-auto px-4 sm:px-6 h-16 flex items-center justify-between">
