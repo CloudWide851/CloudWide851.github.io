@@ -10,6 +10,7 @@ import Lab from '@/pages/Lab';
 import AgentPage from '@/pages/lab/AgentPage';
 import SnakePage from '@/pages/lab/SnakePage';
 import FaceRecognitionPage from '@/pages/lab/FaceRecognitionPage';
+import CodePracticePage from '@/pages/lab/CodePracticePage';
 import Resume from '@/pages/Resume';
 import Creative from '@/pages/Creative';
 import NotFound from '@/pages/NotFound';
@@ -59,6 +60,10 @@ const router = createBrowserRouter([
       {
         path: 'lab/face-3d',
         element: <FaceRecognitionPage />,
+      },
+      {
+        path: 'lab/code-practice',
+        element: <CodePracticePage />,
       },
       {
         path: 'resume',

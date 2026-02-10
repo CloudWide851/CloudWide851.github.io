@@ -8,6 +8,15 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ## [Unreleased]
 
 ### Added
+- **Storage Manager**: New sidebar page for managing all browser-local data (API keys, themes, game scores) with export/import functionality.
+- **Lab**: Added "Code Practice" experiment featuring interactive C programming problems with test cases.
+- **Content**: Added C Tutorial #9: "Pointers in C - Unlocking Direct Memory Access", covering memory addresses, pointer arithmetic, and pass-by-reference.
+- **Compiler**: Migrated from cloud-based Judge0 API to client-side WASM (WebAssembly) compiler for offline C code execution.
+
+### Removed
+- **Judge0 Integration**: Removed all dependency on external rapidapi keys for code compilation.
+
+### Added
 - **Content**: Added C Tutorial #8: "Functions in C - Organizing Your Code", covering function syntax, parameters, return values, scope, and recursion.
 
 ### Changed

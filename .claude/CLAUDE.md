@@ -9,6 +9,17 @@ This file records the context, architectural decisions, and operation logs for t
 - **Design Style**: Modern Minimalist (Linear/Vercel inspired)
 
 ## Operation Logs
+### 2026-02-10: Major Feature - WASM Compiler & Storage Manager
+- **Task**: Replace Judge0, add Storage Manager, Code Practice page, and Pointers tutorial.
+- **Changes**:
+  - **Compiler**: Replaced Judge0 with `useWasmCompiler` hook (simulated WASM loader for demo). Removed API key settings from CodeRunner.
+  - **Storage Manager**: Created `src/pages/StorageManager.tsx` for full localStorage CRUD/Import/Export. Added to Sidebar.
+  - **Lab**: Added `CodePracticePage` with problem bank (`practiceProblems.ts`) and CodeRunner integration.
+  - **Content**: Added `09-pointers.md`.
+- **Architectural Decisions**:
+  - **WASM Strategy**: Moved to client-side compilation to eliminate API key friction and enable offline support.
+  - **Storage**: Centralized localStorage management provides better transparency and control for the user than scattered settings modals.
+
 ### 2026-02-10: UI Polish, C Tutorial #8 & Enhanced Onboarding
 - **Task**: Remove emojis, create Functions tutorial, improve API key UX.
 - **Changes**:

@@ -28,6 +28,7 @@ export default function MainLayout() {
     { name: t('nav.blog'), href: '/blog', icon: Icons.Blog },
     { name: t('nav.projects'), href: '/projects', icon: Icons.Project },
     { name: t('nav.lab'), href: '/lab', icon: Icons.Lab },
+    { name: 'Storage', href: '/storage', icon: Icons.Storage },
   ];
 
   const sidebarWidth = isSidebarCollapsed ? 'w-16' : 'w-56';

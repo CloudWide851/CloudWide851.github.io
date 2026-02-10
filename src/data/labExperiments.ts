@@ -1,4 +1,4 @@
-import { Bot, Gamepad2, ScanFace } from 'lucide-react';
+import { Bot, Gamepad2, ScanFace, Code } from 'lucide-react';
 
 export interface Experiment {
   id: string;
@@ -12,6 +12,16 @@ export interface Experiment {
 }
 
 export const labExperiments: Experiment[] = [
+  {
+    id: 'code-practice',
+    titleKey: 'experiments.codePractice.title',
+    descriptionKey: 'experiments.codePractice.description',
+    defaultTitle: 'C Code Practice',
+    defaultDescription: 'Interactive C programming exercises with difficulty levels and test cases.',
+    icon: Code,
+    tags: ['Education', 'C Programming', 'Practice', 'WASM'],
+    link: '/lab/code-practice'
+  },
   {
     id: 'agent',
     titleKey: 'experiments.agent.title',
