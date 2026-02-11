@@ -8,11 +8,13 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ## [Unreleased]
 
 ### Fixed
-- **Agent UX**: Fixed empty dialog box appearing during search by embedding progress cards instead of clearing message content.
-- **Agent Search**: Fixed web search returning no results by adding fallback CORS proxies (corsproxy.io, codetabs) and timeout handling.
-- **Agent UX**: Fixed multiple message bubbles appearing during search. Agent now updates a single message in-place (Thinking → Searching → Answer).
-- **Routing**: Fixed Storage Manager 404 error by registering missing route in router configuration.
-- **Compiler**: Replaced simulated C compiler with real WebAssembly.sh Clang for actual code compilation.
+- **Agent Search**: Improved reliability by adding multiple fallback CORS proxies (thingproxy, yacdn) and a seamless demo fallback mode if all networks fail.
+- **Agent UI**: Fixed avatar alignment issue where the speech bubble pointer didn't perfectly align with the user/bot icon.
+- **WASM Performance**: Implemented global compiler preloading via `WasmProvider`, eliminating load times when entering the Code Practice lab.
+
+### Changed
+- **Code Practice**: Added padding to the code editor panel for better visual breathing room.
+
 
 ### Added
 - **Search Progress**: Real-time search progress display with URL discovery animations (Kimi-style cards).

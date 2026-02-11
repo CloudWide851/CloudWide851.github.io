@@ -54,7 +54,7 @@ export default function ChatInterface({ messages, isLoading, status, onSendMessa
           >
             <div
               className={cn(
-                "w-8 h-8 rounded-full flex items-center justify-center flex-shrink-0 mt-1",
+                "w-8 h-8 rounded-full flex items-center justify-center flex-shrink-0",
                 msg.role === 'user' ? "bg-primary-100 text-primary-600" : "bg-purple-100 dark:bg-purple-900/30 text-purple-600 dark:text-purple-400"
               )}
             >
@@ -158,7 +158,7 @@ export default function ChatInterface({ messages, isLoading, status, onSendMessa
         {/* Status / Loading Indicator (Only shown when not streaming and no search progress in bubble) */}
         {(isLoading || status) && !isStreaming && !status.includes('Searching') && (
           <div className="flex gap-3 animate-in fade-in duration-300">
-             <div className="w-8 h-8 rounded-full bg-purple-100 dark:bg-purple-900/30 text-purple-600 dark:text-purple-400 flex items-center justify-center flex-shrink-0 mt-1">
+             <div className="w-8 h-8 rounded-full bg-purple-100 dark:bg-purple-900/30 text-purple-600 dark:text-purple-400 flex items-center justify-center flex-shrink-0">
               <Bot size={18} />
             </div>
             <div className="flex flex-col gap-1">

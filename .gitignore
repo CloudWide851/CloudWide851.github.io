@@ -36,3 +36,7 @@ Thumbs.db
 # Claude
 .claude/
 !.claude/claude.md
+
+# errors
+*.err
+errors.txt

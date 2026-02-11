@@ -3,6 +3,7 @@ import router from './router';
 import { Suspense, useState, useEffect } from 'react';
 import Loading from '@/components/common/Loading';
 import { useTranslation } from 'react-i18next';
+import { WasmProvider } from '@/context/WasmContext';
 
 function useDynamicTitle() {
   const { i18n } = useTranslation();
@@ -32,9 +33,11 @@ function App() {
   }
 
   return (
-    <Suspense fallback={<Loading />}>
-      <RouterProvider router={router} />
-    </Suspense>
+    <WasmProvider>
+      <Suspense fallback={<Loading />}>
+        <RouterProvider router={router} />
+      </Suspense>
+    </WasmProvider>
   );
 }
 

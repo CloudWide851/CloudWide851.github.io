@@ -165,7 +165,7 @@ export default function CodePracticePage() {
         </div>
 
         {/* RIGHT: Editor Panel */}
-        <div className="w-full lg:w-2/3 flex flex-col bg-gray-50 dark:bg-zinc-950 overflow-hidden h-[500px] lg:h-auto border-t lg:border-t-0 lg:border-l border-gray-200 dark:border-zinc-800">
+        <div className="w-full lg:w-2/3 flex flex-col bg-gray-50 dark:bg-zinc-950 overflow-hidden h-[500px] lg:h-auto border-t lg:border-t-0 lg:border-l border-gray-200 dark:border-zinc-800 pr-4 pb-4">
            <CodeRunner
               key={selectedProblem.id}
               initialCode={selectedProblem.initialCode}
