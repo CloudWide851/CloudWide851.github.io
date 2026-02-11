@@ -6,9 +6,12 @@ import { searchWeb } from '../tools/searchTool';
 const SYSTEM_PROMPT = `You are a helpful AI assistant powered by DeepSeek.
 You have access to a web search tool.
 To search the web, output specific XML tags: <search><query>your search terms</query></search>.
-IMPORTANT: When you decide to search, output ONLY the search tag. Do not output any conversational text like "I will search for..." before or after the tag.
-I will intercept these tags, perform the search, and provide you with the results.
-After you receive the results, use them to answer the user's question.
+
+When searching, be transparent about your reasoning:
+- After receiving search results, briefly explain what you found before answering
+- Use inline citations [1][2] to reference sources in your response
+- If you explore multiple search queries, mention them
+
 Always cite your sources using markdown links like [1](url).
 Current Date: ${new Date().toLocaleDateString()} ${new Date().toLocaleTimeString()}`;
 
@@ -152,17 +155,44 @@ export function useAgent() {
         const query = searchMatch[1].trim();
         setStatus(`Searching for: ${query}...`);
 
-        // CLEAR the assistant message content so "I will search..." doesn't show
+        // Initialize search progress instead of clearing content
         setMessages(prev => prev.map(msg =>
           msg.id === assistantMsgId
-            ? { ...msg, content: '' } // Clear content completely while searching
+            ? {
+                ...msg,
+                content: '', // Clear conversational text to focus on search
+                searchProgress: {
+                  stage: 'searching',
+                  query: query,
+                  thoughts: [`Searching for: "${query}"`],
+                  discoveredUrls: []
+                }
+              }
             : msg
         ));
 
-        // Force a small delay to update UI
-        await new Promise(r => setTimeout(r, 100));
-
-        const results = await searchWeb(query);
+        // Perform search with progressive updates
+        const results = await searchWeb(query, {
+          onProgress: async (url, index, total) => {
+            setMessages(prev => prev.map(msg =>
+              msg.id === assistantMsgId
+                ? {
+                    ...msg,
+                    searchProgress: {
+                      ...msg.searchProgress!,
+                      discoveredUrls: [...(msg.searchProgress?.discoveredUrls || []), url],
+                      thoughts: [
+                        ...(msg.searchProgress?.thoughts || []),
+                        `Found result ${index + 1}/${total}: ${new URL(url).hostname}`
+                      ]
+                    }
+                  }
+                : msg
+            ));
+            // Staggered delay for visual effect
+            await new Promise(r => setTimeout(r, 150));
+          }
+        });
 
         // Validate URL results
         const validResults = results.filter(r => {
@@ -176,6 +206,21 @@ export function useAgent() {
 
         setSearchResults(validResults);
 
+        // Update stage to synthesizing
+        setMessages(prev => prev.map(msg =>
+          msg.id === assistantMsgId
+            ? {
+                ...msg,
+                citations: validResults.map(r => r.url),
+                searchProgress: {
+                  ...msg.searchProgress!,
+                  stage: 'synthesizing',
+                  thoughts: [...(msg.searchProgress?.thoughts || []), 'Synthesizing answer from sources...']
+                }
+              }
+            : msg
+        ));
+
         // Prepare search result context
         let searchContext = `\n\nSearch Results for "${query}":\n`;
         if (validResults.length > 0) {
@@ -186,22 +231,12 @@ export function useAgent() {
             searchContext += "No relevant results found.\n";
         }
 
-        // Prepare next history:
-        // 1. The original system prompt & user history
-        // 2. The assistant's request (accumulatedContent)
-        // 3. The search results as a system message
+        // Prepare next history
         const nextHistory = [
           ...currentHistory,
           { role: 'assistant', content: accumulatedContent },
           { role: 'system', content: searchContext }
         ];
-
-        // Update the assistant message with citations
-        setMessages(prev => prev.map(msg =>
-          msg.id === assistantMsgId
-            ? { ...msg, citations: validResults.map(r => r.url) }
-            : msg
-        ));
 
         // Recursive call to process the answer - PASS THE ID to reuse it!
         setStatus('Synthesizing answer...');

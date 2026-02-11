@@ -8,22 +8,27 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ## [Unreleased]
 
 ### Fixed
+- **Agent UX**: Fixed empty dialog box appearing during search by embedding progress cards instead of clearing message content.
 - **Agent Search**: Fixed web search returning no results by adding fallback CORS proxies (corsproxy.io, codetabs) and timeout handling.
 - **Agent UX**: Fixed multiple message bubbles appearing during search. Agent now updates a single message in-place (Thinking → Searching → Answer).
 - **Routing**: Fixed Storage Manager 404 error by registering missing route in router configuration.
 - **Compiler**: Replaced simulated C compiler with real WebAssembly.sh Clang for actual code compilation.
 
-### Changed
-- **Code Practice**: Redesigned layout with searchable dropdown selector and side-by-side Description/Editor panels.
-- **Internationalization**: Translated 86+ UI strings across Storage Manager, Code Practice, and Code Runner components.
-
 ### Added
+- **Search Progress**: Real-time search progress display with URL discovery animations (Kimi-style cards).
+- **Agent Transparency**: Agent's reasoning steps and search queries now visible during exploration (Google Deep Research-style).
+- **Citation Enhancement**: Hybrid citation system with inline superscripts [1][2] and top-right badge showing total sources.
+- **Progressive Disclosure**: Search results appear one-by-one with staggered animations for better UX.
 - **WASM**: Integrated full LLVM/Clang compiler (~8-12MB) with WASI filesystem support for real C/C++ compilation.
 - **UI**: Added Headless UI Combobox for problem selection with search and keyboard navigation.
 - **Storage Manager**: New sidebar page for managing all browser-local data (API keys, themes, game scores) with export/import functionality.
 - **Lab**: Added "Code Practice" experiment featuring interactive C programming problems with test cases.
 - **Content**: Added C Tutorial #9: "Pointers in C - Unlocking Direct Memory Access", covering memory addresses, pointer arithmetic, and pass-by-reference.
 - **Compiler**: Migrated from cloud-based Judge0 API to client-side WASM (WebAssembly) compiler for offline C code execution.
+
+### Changed
+- **Code Practice**: Redesigned layout with searchable dropdown selector and side-by-side Description/Editor panels.
+- **Internationalization**: Translated 86+ UI strings across Storage Manager, Code Practice, and Code Runner components.
 
 ### Removed
 - **Judge0 Integration**: Removed all dependency on external rapidapi keys for code compilation.

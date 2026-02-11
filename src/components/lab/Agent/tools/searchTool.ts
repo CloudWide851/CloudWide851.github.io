@@ -5,7 +5,10 @@ import type { SearchResult } from '../types';
  * This is a free solution that doesn't require an API key.
  * Now supports multiple fallback proxies and timeouts for better reliability.
  */
-export async function searchWeb(query: string): Promise<SearchResult[]> {
+export async function searchWeb(
+  query: string,
+  options?: { onProgress?: (url: string, index: number, total: number) => Promise<void> }
+): Promise<SearchResult[]> {
   console.log(`Searching web for: ${query}`);
 
   // List of CORS proxies to try in order
@@ -73,6 +76,14 @@ export async function searchWeb(query: string): Promise<SearchResult[]> {
       // If we have results, return them immediately
       if (results.length > 0) {
         console.log(`Found ${results.length} results via ${proxy}`);
+
+        // Notify caller about each result progressively
+        if (options?.onProgress) {
+          for (let i = 0; i < results.length; i++) {
+            await options.onProgress(results[i].url, i, results.length);
+          }
+        }
+
         return results;
       }
 

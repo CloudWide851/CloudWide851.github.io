@@ -4,6 +4,7 @@ import { useTranslation } from 'react-i18next';
 import ReactMarkdown from 'react-markdown';
 import type { AgentMessage } from './types';
 import { cn } from '@/lib/utils';
+import { SearchProgressCards } from './SearchProgressCards';
 
 interface ChatInterfaceProps {
   messages: AgentMessage[];
@@ -60,59 +61,75 @@ export default function ChatInterface({ messages, isLoading, status, onSendMessa
               {msg.role === 'user' ? <UserIcon size={18} /> : <Bot size={18} />}
             </div>
 
-            <div className="flex flex-col gap-2">
+            <div className="flex flex-col gap-2 min-w-0 flex-1">
               <div
                 className={cn(
-                  "p-3 rounded-2xl text-sm leading-relaxed",
+                  "p-3 rounded-2xl text-sm leading-relaxed relative",
                   msg.role === 'user'
                     ? "bg-primary-600 text-white rounded-tr-none"
                     : "bg-gray-100 dark:bg-zinc-800 text-gray-800 dark:text-gray-100 rounded-tl-none"
                 )}
               >
+                {/* Search Progress Cards */}
+                {msg.searchProgress && (
+                  <SearchProgressCards searchProgress={msg.searchProgress} />
+                )}
+
                 {msg.role === 'user' ? (
                   <p>{msg.content}</p>
                 ) : (
-                  <div className="prose prose-sm dark:prose-invert max-w-none prose-p:my-1 prose-headings:my-2">
-                    <ReactMarkdown
-                      components={{
-                        a: ({ node, href, children, ...props }) => {
-                          const isCitation = typeof children === 'string' && /^\[\d+\]$/.test(children);
-                          if (isCitation) {
+                  msg.content && (
+                    <div className="prose prose-sm dark:prose-invert max-w-none prose-p:my-1 prose-headings:my-2">
+                      <ReactMarkdown
+                        components={{
+                          a: ({ node, href, children, ...props }) => {
+                            // Check for citation format [1], [2], etc.
+                            const isCitation = typeof children === 'string' && /^\[\d+\]$/.test(children);
+
+                            if (isCitation) {
+                              return (
+                                <sup className="inline-block ml-0.5 select-none">
+                                  <a
+                                    href={href}
+                                    target="_blank"
+                                    rel="noopener noreferrer"
+                                    className="text-primary-600 dark:text-primary-400 hover:text-white dark:hover:text-white font-bold no-underline px-1.5 py-0.5 rounded-full hover:bg-primary-500 dark:hover:bg-primary-600 transition-all cursor-pointer text-[10px]"
+                                    {...props}
+                                  >
+                                    {children}
+                                  </a>
+                                </sup>
+                              );
+                            }
                             return (
-                              <sup className="inline-block ml-0.5 select-none">
-                                <a
-                                  href={href}
-                                  target="_blank"
-                                  rel="noopener noreferrer"
-                                  className="text-primary-600 dark:text-primary-400 hover:text-primary-700 dark:hover:text-primary-300 font-bold no-underline px-1 rounded hover:bg-primary-50 dark:hover:bg-primary-900/30 transition-colors cursor-pointer"
-                                  {...props}
-                                >
-                                  {children}
-                                </a>
-                              </sup>
+                              <a
+                                href={href}
+                                target="_blank"
+                                rel="noopener noreferrer"
+                                className="text-primary-600 dark:text-primary-400 hover:underline break-all"
+                                {...props}
+                              >
+                                {children}
+                              </a>
                             );
                           }
-                          return (
-                            <a
-                              href={href}
-                              target="_blank"
-                              rel="noopener noreferrer"
-                              className="text-primary-600 dark:text-primary-400 hover:underline break-all"
-                              {...props}
-                            >
-                              {children}
-                            </a>
-                          );
-                        }
-                      }}
-                    >
-                      {msg.content}
-                    </ReactMarkdown>
+                        }}
+                      >
+                        {msg.content}
+                      </ReactMarkdown>
+                    </div>
+                  )
+                )}
+
+                {/* Citation Badge */}
+                {msg.role === 'assistant' && msg.citations && msg.citations.length > 0 && (
+                  <div className="absolute -top-2 -right-2 bg-primary-500 text-white text-[10px] font-bold rounded-full w-5 h-5 flex items-center justify-center shadow-sm z-10 border-2 border-white dark:border-zinc-900">
+                    {msg.citations.length}
                   </div>
                 )}
               </div>
 
-              {/* Citations / References */}
+              {/* Citations / References List (Legacy support + Detail view) */}
               {msg.citations && msg.citations.length > 0 && (
                 <div className="text-xs bg-gray-50 dark:bg-zinc-800/50 border border-gray-100 dark:border-zinc-700/50 rounded-lg p-3 mt-1">
                   <p className="font-semibold text-gray-500 dark:text-gray-400 mb-2 flex items-center gap-1">
@@ -138,8 +155,8 @@ export default function ChatInterface({ messages, isLoading, status, onSendMessa
           </div>
         ))}
 
-        {/* Status / Loading Indicator */}
-        {(isLoading || status) && !isStreaming && (
+        {/* Status / Loading Indicator (Only shown when not streaming and no search progress in bubble) */}
+        {(isLoading || status) && !isStreaming && !status.includes('Searching') && (
           <div className="flex gap-3 animate-in fade-in duration-300">
              <div className="w-8 h-8 rounded-full bg-purple-100 dark:bg-purple-900/30 text-purple-600 dark:text-purple-400 flex items-center justify-center flex-shrink-0 mt-1">
               <Bot size={18} />
