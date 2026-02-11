@@ -7,7 +7,19 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+### Fixed
+- **Agent Search**: Fixed web search returning no results by adding fallback CORS proxies (corsproxy.io, codetabs) and timeout handling.
+- **Agent UX**: Fixed multiple message bubbles appearing during search. Agent now updates a single message in-place (Thinking → Searching → Answer).
+- **Routing**: Fixed Storage Manager 404 error by registering missing route in router configuration.
+- **Compiler**: Replaced simulated C compiler with real WebAssembly.sh Clang for actual code compilation.
+
+### Changed
+- **Code Practice**: Redesigned layout with searchable dropdown selector and side-by-side Description/Editor panels.
+- **Internationalization**: Translated 86+ UI strings across Storage Manager, Code Practice, and Code Runner components.
+
 ### Added
+- **WASM**: Integrated full LLVM/Clang compiler (~8-12MB) with WASI filesystem support for real C/C++ compilation.
+- **UI**: Added Headless UI Combobox for problem selection with search and keyboard navigation.
 - **Storage Manager**: New sidebar page for managing all browser-local data (API keys, themes, game scores) with export/import functionality.
 - **Lab**: Added "Code Practice" experiment featuring interactive C programming problems with test cases.
 - **Content**: Added C Tutorial #9: "Pointers in C - Unlocking Direct Memory Access", covering memory addresses, pointer arithmetic, and pass-by-reference.

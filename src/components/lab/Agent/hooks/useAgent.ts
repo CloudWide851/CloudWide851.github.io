@@ -68,7 +68,11 @@ export function useAgent() {
     localStorage.removeItem(STORAGE_KEY_CONVERSATIONS);
   };
 
-  const processResponse = async (currentMessages: AgentMessage[], currentHistory: any[]) => {
+  const processResponse = async (
+    currentMessages: AgentMessage[],
+    currentHistory: any[],
+    existingAssistantId?: string
+  ) => {
     try {
       const response = await fetch('https://api.deepseek.com/chat/completions', {
         method: 'POST',
@@ -90,8 +94,8 @@ export function useAgent() {
 
       if (!response.body) throw new Error('ReadableStream not supported');
 
-      // Create placeholder assistant message
-      const assistantMsgId = Date.now().toString();
+      // Create placeholder assistant message OR reuse existing ID
+      const assistantMsgId = existingAssistantId || Date.now().toString();
       const assistantMsg: AgentMessage = {
         id: assistantMsgId,
         role: 'assistant',
@@ -99,7 +103,10 @@ export function useAgent() {
         timestamp: Date.now()
       };
 
-      setMessages(prev => [...prev, assistantMsg]);
+      // Only append if this is a NEW message (not a recursive update)
+      if (!existingAssistantId) {
+        setMessages(prev => [...prev, assistantMsg]);
+      }
 
       const reader = response.body.getReader();
       const decoder = new TextDecoder();
@@ -196,9 +203,13 @@ export function useAgent() {
             : msg
         ));
 
-        // Recursive call to process the answer
+        // Recursive call to process the answer - PASS THE ID to reuse it!
         setStatus('Synthesizing answer...');
-        await processResponse([...currentMessages, assistantMsg], nextHistory);
+        await processResponse(
+          [...currentMessages, assistantMsg],
+          nextHistory,
+          assistantMsgId // <--- Critical fix: Pass existing ID
+        );
       }
 
     } catch (error: any) {

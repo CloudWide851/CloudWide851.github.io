@@ -9,6 +9,19 @@ This file records the context, architectural decisions, and operation logs for t
 - **Design Style**: Modern Minimalist (Linear/Vercel inspired)
 
 ## Operation Logs
+### 2026-02-10: Agent Search Bug Fixes
+- **Task**: Fix search tool returning no results and multiple message bubble issue.
+- **Changes**:
+  - **Search Tool**: Added fallback CORS proxies (corsproxy.io, codetabs) with 10s timeout. Improved error logging.
+  - **Message Management**: Fixed recursive `processResponse` to reuse existing assistant message ID instead of creating new messages.
+- **Root Causes**:
+  - **Search**: Single CORS proxy (allorigins.win) was unreliable. No timeout caused hanging.
+  - **Bubbles**: Each recursive call created a new message instead of updating the existing one. The update-in-place pattern existed but wasn't used consistently.
+- **Lessons**:
+  - **CORS Proxies**: Always implement fallback proxies for critical features. Single points of failure break user experience.
+  - **Recursive State**: When recursively calling async functions that modify React state, pass identifiers to prevent duplicate state entries.
+  - **Consistency**: Use existing patterns (update-in-place via `.map()`) consistently throughout the codebase.
+
 ### 2026-02-10: UX Optimization - Agent & Code Practice
 - **Task**: Optimize Agent search experience, remove scrollbars, improve Code Practice layout, and add more problems.
 - **Changes**:
@@ -94,9 +107,9 @@ This file records the context, architectural decisions, and operation logs for t
     - **Visuals**: Switched to Slate-900 dark theme.
     - **Layout**: Merged stats into single card, verified no scrollbars.
   - **Contact Button**: Implemented corner proximity trigger (150px) instead of time-based inactivity.
-- **Fixes**:
-  - Resolved `TS2503` (NodeJS namespace) by using `ReturnType<typeof setTimeout>`.
-  - Resolved `TS6133` (unused variable) in `SnakeGame.tsx`.
+    - **Fixes**:
+    - Resolved `TS2503` (NodeJS namespace) by using `ReturnType<typeof setTimeout>`.
+    - Resolved `TS6133` (unused variable) in `SnakeGame.tsx`.
 
 ### 2026-02-10: Web Search Agent Performance & UX Overhaul
 - **Task**: Fix search trigger logic, optimize performance, redesign layout
