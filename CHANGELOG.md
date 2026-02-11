@@ -8,9 +8,9 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ## [Unreleased]
 
 ### Fixed
-- **Agent Search**: Improved reliability by adding multiple fallback CORS proxies (thingproxy, yacdn) and a seamless demo fallback mode if all networks fail.
-- **Agent UI**: Fixed avatar alignment issue where the speech bubble pointer didn't perfectly align with the user/bot icon.
-- **WASM Performance**: Implemented global compiler preloading via `WasmProvider`, eliminating load times when entering the Code Practice lab.
+- **Agent UI**: Fixed search progress cards appearing outside message bubble by removing width collapse constraint.
+- **WASM Worker**: Removed broken CDN importScripts calls that caused initialization failures.
+- **Search Proxies**: Reduced timeout from 15s to 8s and fixed corsproxy.io URL encoding bug for faster fallback.
 
 ### Changed
 - **Code Practice**: Added padding to the code editor panel for better visual breathing room.

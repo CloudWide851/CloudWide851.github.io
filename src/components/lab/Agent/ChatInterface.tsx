@@ -61,7 +61,7 @@ export default function ChatInterface({ messages, isLoading, status, onSendMessa
               {msg.role === 'user' ? <UserIcon size={18} /> : <Bot size={18} />}
             </div>
 
-            <div className="flex flex-col gap-2 min-w-0 flex-1">
+            <div className="flex flex-col gap-2 flex-1">
               <div
                 className={cn(
                   "p-3 rounded-2xl text-sm leading-relaxed relative",
