@@ -40,3 +40,7 @@ Thumbs.db
 # errors
 *.err
 errors.txt
+
+# Agent instructions
+AGENTS
+AGENTS.md
